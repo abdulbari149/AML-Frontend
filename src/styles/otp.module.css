@@ -1,0 +1,9 @@
+.otpBoxShadow{
+    box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.1);
+}
+
+@media only screen and (max-width: 768px) {
+    .otpBoxShadow{
+        box-shadow: none
+    }
+}
