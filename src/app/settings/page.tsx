@@ -1,4 +1,4 @@
-import AccountSettings from "@/components/account-settings/AccountSettings";
+import AccountSettings from "@/components/settings/AccountSettings";
 import React from "react";
 
 const page = () => {

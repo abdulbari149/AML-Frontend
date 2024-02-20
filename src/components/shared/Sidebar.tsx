@@ -77,7 +77,7 @@ const AppBar = styled(MuiAppBar, {
   }),
   color: "black",
   boxShadow: "none",
-  backgroundColor: "transparent",
+  backgroundColor: "#f9f9f9",
   width: `calc(100% - 4.8%)`,
   ...(open && {
     marginLeft: drawerWidth,
@@ -113,7 +113,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
 
   // PAGES LINK
   const [currentPage, setCurrentPage] = React.useState<PagesRouteType>();
-  
+
   React.useEffect(() => {
     const filterPathData = mainLinks.find((item) => item.path === pathname);
     const filterPathSubData = subLinks.find((item) => item.path === pathname);
@@ -123,7 +123,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
     }
     console.log(filterPathData);
   }, []);
-  
+
   const handleDrawer = () => {
     setOpen((prev) => !prev);
   };
@@ -133,7 +133,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
       {/* DESKTOP */}
       <Box className={"md:flex hidden"}>
         <CssBaseline />
-        <AppBar position="fixed" open={open} className="bg-[#f9f9f9]">
+        <AppBar position="fixed" open={open}>
           <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
             <h3 className=" text-4xl font-bold"> {currentPage?.title}</h3>
             <div className=" flex gap-2 items-center">
@@ -205,86 +205,90 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
           </DrawerHeader>
           <List sx={{ height: "100%" }}>
             {mainLinks.map((item, index) => (
-              <ListItem
-                key={index}
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={() => setCurrentPage(item)}
-              >
-                <ListItemButton
-                  sx={{
-                    minHeight: 45,
-                    paddingTop: "0px",
-                    paddingBottom: "0px",
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
+              <Link href={item.path}>
+                <ListItem
+                  key={index}
+                  disablePadding
+                  sx={{ display: "block" }}
+                  onClick={() => setCurrentPage(item)}
                 >
-                  <Link className=" flex gap-1" href={item.path}>
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Image alt="icon" src={item.icon} />
-                    </ListItemIcon>
-                    <p
-                      className={` ${
-                        item.path === currentPage?.path
-                          ? "text-base font-bold"
-                          : "text-[15px] font-normal"
-                      } `}
-                      style={{ display: open ? "block" : "none" }}
-                    >
-                      {item.title}
-                    </p>
-                  </Link>
-                </ListItemButton>
-              </ListItem>
+                  <ListItemButton
+                    sx={{
+                      minHeight: 45,
+                      paddingTop: "0px",
+                      paddingBottom: "0px",
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <div className=" flex gap-1">
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Image alt="icon" src={item.icon} />
+                      </ListItemIcon>
+                      <p
+                        className={` ${
+                          item.path === currentPage?.path
+                            ? "text-base font-bold"
+                            : "text-[15px] font-normal"
+                        } `}
+                        style={{ display: open ? "block" : "none" }}
+                      >
+                        {item.title}
+                      </p>
+                    </div>
+                  </ListItemButton>
+                </ListItem>
+              </Link>
             ))}
           </List>
-          <List sx={{ height: "110px" }}>
+          <List sx={{ height: "100px" }}>
             {subLinks.map((item, index) => (
-              <ListItem
-                key={index}
-                disablePadding
-                sx={{ display: "block" }}
-                onClick={() => setCurrentPage(item)}
-              >
-                <ListItemButton
-                  sx={{
-                    minHeight: 45,
-                    paddingTop: "0px",
-                    paddingBottom: "0px",
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
+              <Link href={item.path}>
+                <ListItem
+                  key={index}
+                  disablePadding
+                  sx={{ display: "block" }}
+                  onClick={() => setCurrentPage(item)}
                 >
-                  <Link className=" flex gap-1" href={item.path}>
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Image alt="icon" src={item.icon} />
-                    </ListItemIcon>
-                    <p
-                      className={` ${
-                        item.path === currentPage?.path
-                          ? "text-base font-bold"
-                          : "text-[15px] font-normal"
-                      } `}
-                      style={{ display: open ? "block" : "none" }}
-                    >
-                      {item.title}
-                    </p>
-                  </Link>
-                </ListItemButton>
-              </ListItem>
+                  <ListItemButton
+                    sx={{
+                      minHeight: 45,
+                      paddingTop: "0px",
+                      paddingBottom: "0px",
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <div className=" flex gap-1">
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Image alt="icon" src={item.icon} />
+                      </ListItemIcon>
+                      <p
+                        className={` ${
+                          item.path === currentPage?.path
+                            ? "text-base font-bold"
+                            : "text-[15px] font-normal"
+                        } `}
+                        style={{ display: open ? "block" : "none" }}
+                      >
+                        {item.title}
+                      </p>
+                    </div>
+                  </ListItemButton>
+                </ListItem>
+              </Link>
             ))}
           </List>
         </Drawer>
