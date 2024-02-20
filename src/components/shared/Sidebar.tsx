@@ -110,8 +110,10 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
   const theme = useTheme();
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
-  const [currentPage, setCurrentPage] = React.useState<PagesRouteType>();
 
+  // PAGES LINK
+  const [currentPage, setCurrentPage] = React.useState<PagesRouteType>();
+  
   React.useEffect(() => {
     const filterPathData = mainLinks.find((item) => item.path === pathname);
     const filterPathSubData = subLinks.find((item) => item.path === pathname);
@@ -121,7 +123,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
     }
     console.log(filterPathData);
   }, []);
-
+  
   const handleDrawer = () => {
     setOpen((prev) => !prev);
   };
