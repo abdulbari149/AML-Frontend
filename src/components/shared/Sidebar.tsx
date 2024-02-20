@@ -205,7 +205,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
           </DrawerHeader>
           <List sx={{ height: "100%" }}>
             {mainLinks.map((item, index) => (
-              <Link href={item.path}>
+              <Link key={index} href={item.path}>
                 <ListItem
                   key={index}
                   disablePadding
@@ -249,9 +249,8 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
           </List>
           <List sx={{ height: "100px" }}>
             {subLinks.map((item, index) => (
-              <Link href={item.path}>
+              <Link key={index} href={item.path}>
                 <ListItem
-                  key={index}
                   disablePadding
                   sx={{ display: "block" }}
                   onClick={() => setCurrentPage(item)}
