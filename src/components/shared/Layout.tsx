@@ -10,7 +10,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <>
       {pathname === "/login" ||
       pathname === "/otp" ||
-      pathname === "/create-password" ? (
+      pathname === "/create-password" ||
+      pathname === "/complete-profile" ? (
         <>{children}</>
       ) : (
         <>
