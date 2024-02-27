@@ -8,7 +8,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   return (
     <>
-      {pathname === "/login" || pathname === "/otp" ? (
+      {pathname === "/login" ||
+      pathname === "/otp" ||
+      pathname === "/create-password" ? (
         <>{children}</>
       ) : (
         <>
