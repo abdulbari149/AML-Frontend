@@ -240,7 +240,7 @@ const ReportSection = () => {
               {
                 paddingBottom: "0px",
               },
-            "& .MuiInput-underline:before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::after":
+            "& .MuiInput-underline:before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::after, .css-jcincl::after":
               {
                 borderBottom: "none !important",
               },
