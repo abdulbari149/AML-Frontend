@@ -19,7 +19,7 @@ const page = () => {
           <h2 className=" md:text-3xl text-2xl font-semibold">
             Create Password
           </h2>
-          <p className="md:text-sm text-[10px] w-3/4 font-normal text-[#000000BF]">
+          <p className="md:text-sm text-[10px] w-[350px] font-normal text-[#000000BF]">
             You are signing in for the first time, create your password now.
           </p>
         </div>

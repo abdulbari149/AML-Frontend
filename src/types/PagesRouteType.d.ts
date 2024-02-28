@@ -1,6 +1,7 @@
 interface PagesRouteType {
     id: number,
-    title: string,
+    title?: string,
     icon: any,
     path: string,
+    type:string
 }
