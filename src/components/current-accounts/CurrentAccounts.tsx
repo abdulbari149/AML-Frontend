@@ -146,120 +146,107 @@ const initialState = {
 const CurrentAccounts = () => {
   return (
     <>
-      <div className=" flex flex-col">
-        <div className=" flex justify-between mb-3">
-          {/* buttons */}
-          <div className=" flex gap-3">
-            <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]">
-              <Image src={plusSvg} alt="plusSvg" className=" md:block hidden" />
-              <span className="md:text-sm text-xs font-normal">Add</span>
-            </button>
+      <div className=" flex justify-between mb-3">
+        {/* buttons */}
+        <div className=" flex gap-3">
+          <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]">
+            <Image src={plusSvg} alt="plusSvg" className=" md:block hidden" />
+            <span className="md:text-sm text-xs font-normal">Add</span>
+          </button>
 
-            <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]">
-              <Image src={editSvg} alt="editSvg" className=" md:block hidden" />
-              <span className="md:text-sm text-xs font-normal">Edit</span>
-            </button>
+          <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]">
+            <Image src={editSvg} alt="editSvg" className=" md:block hidden" />
+            <span className="md:text-sm text-xs font-normal">Edit</span>
+          </button>
 
-            <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]">
-              <Image
-                src={discardSvg}
-                alt="discardSvg"
-                className=" md:block hidden"
-              />
-              <span className="md:text-sm text-xs font-normal">Delete</span>
-            </button>
-          </div>
-        </div>
-
-        {/* TABLE AND NEWS */}
-
-        <div className=" flex gap-5">
-          {/* TABLE */}
-          <div
-            style={{
-              height: "80%",
-              width: "100%",
-              backgroundColor: "#fff",
-              border: "none",
-              borderRadius: "10px",
-            }}
-          >
-            <DataGrid
-              pagination
-              sx={{
-                border: "none",
-                "& .MuiDataGrid-columnHeaderTitle": {
-                  fontWeight: "600",
-                },
-                "& .MuiDataGrid-columnHeader": {
-                  fontSize: "14px",
-                },
-                "& .MuiDataGrid-columnHeader:focus-within, .MuiDataGrid-cell:focus":
-                  {
-                    outline: "none",
-                  },
-                // SEARCH
-                "& .MuiBox-root": {
-                  display: "flex",
-                  position: "absolute",
-                  right: -90,
-                  top: "-52px",
-                  background: "white",
-                  borderRadius: "12px",
-                  fontSize: "14px",
-                  padding: "6px 12px",
-                  width: "244px",
-                },
-                "& .css-3be3ve-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter":
-                  {
-                    paddingBottom: "0px",
-                  },
-                "& .MuiInput-underline:before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::after":
-                  {
-                    borderBottom: "none !important",
-                  },
-                // CHECK BOX
-                "& .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root": {
-                  color: "black !important",
-                },
-
-                // PAGINATION
-                "& .Mui-selected, .Mui-selected:hover": {
-                  backgroundColor: "rgba(0, 0, 0, 0.1) !important",
-                  color: "black !important",
-                },
-                "& .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar": {
-                  paddingRight: "24px",
-                },
-                "& .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon": {
-                  display: "none",
-                },
-                "& .css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input":
-                  {
-                    paddingRight: "4px",
-                  },
-                "& .css-194a1fa-MuiSelect-select-MuiInputBase-input ": {
-                  padding: "2px 4px !important",
-                  border: "1px solid",
-                  borderRadius: "6px",
-                  fontSize: "14px",
-                },
-              }}
-              rows={rows}
-              columns={columns}
-              checkboxSelection
-              hideFooterPagination={false}
-              slots={{ toolbar: SearchTable, pagination: CustomPagination }}
-              initialState={initialState}
+          <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]">
+            <Image
+              src={discardSvg}
+              alt="discardSvg"
+              className=" md:block hidden"
             />
-          </div>
-
-          {/* NEWS */}
-
-          <div className=" flex flex-col bg-[#FFFFFF] py-[14px] px-[15px] h-screen">
-            <h1 className=" text-lg font-normal text-[#000000]">News</h1>
-          </div>
+            <span className="md:text-sm text-xs font-normal">Delete</span>
+          </button>
         </div>
+      </div>
+      {/* TABLE */}
+      <div
+        style={{
+          height: "80%",
+          width: "100%",
+          backgroundColor: "#fff",
+          border: "none",
+          borderRadius: "10px",
+        }}
+      >
+        <DataGrid
+          pagination
+          sx={{
+            border: "none",
+            "& .MuiDataGrid-columnHeaderTitle": {
+              fontWeight: "600",
+            },
+            "& .MuiDataGrid-columnHeader": {
+              fontSize: "14px",
+            },
+            "& .MuiDataGrid-columnHeader:focus-within, .MuiDataGrid-cell:focus":
+              {
+                outline: "none",
+              },
+            // SEARCH
+            "& .MuiBox-root": {
+              display: "flex",
+              position: "absolute",
+              right: 0,
+              top: "-52px",
+              background: "white",
+              borderRadius: "12px",
+              fontSize: "14px",
+              padding: "6px 12px",
+              width: "244px",
+            },
+            "& .css-3be3ve-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter":
+              {
+                paddingBottom: "0px",
+              },
+            "& .MuiInput-underline:before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::after":
+              {
+                borderBottom: "none !important",
+              },
+            // CHECK BOX
+            "& .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root": {
+              color: "black !important",
+            },
+
+            // PAGINATION
+            "& .Mui-selected, .Mui-selected:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.1) !important",
+              color: "black !important",
+            },
+            "& .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar": {
+              paddingRight: "24px",
+            },
+            "& .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon": {
+              display: "none",
+            },
+            "& .css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input":
+              {
+                paddingRight: "4px",
+              },
+            "& .css-194a1fa-MuiSelect-select-MuiInputBase-input ": {
+              padding: "2px 4px !important",
+              border: "1px solid",
+              borderRadius: "6px",
+              fontSize: "14px",
+            },
+          }}
+          rows={rows}
+          columns={columns}
+          checkboxSelection
+          hideFooterPagination={false}
+          slots={{ toolbar: SearchTable, pagination: CustomPagination }}
+          initialState={initialState}
+        />
       </div>
     </>
   );
