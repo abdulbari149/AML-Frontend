@@ -58,39 +58,7 @@ const initialState = {
 const UploadFiles = () => {
   return (
     <>
-      <div className=" flex justify-between mb-3">
-        {/* buttons */}
-        <div className=" flex gap-3">
-          <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]">
-            <Image
-              src={runReportSvg}
-              alt="runreportSvg"
-              className=" md:block hidden"
-            />
-            <span className="md:text-sm text-xs font-normal">Run Report</span>
-          </button>
-          <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]">
-            <Image
-              src={resetCriteriaSvg}
-              alt="resetCriteriaSvg"
-              className=" md:block hidden"
-            />
-            <span className="md:text-sm text-xs font-normal">
-              Reset Criteria
-            </span>
-          </button>
-          <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]">
-            <Image
-              src={uploadDataSvg}
-              alt="uploadDataSvg"
-              className=" md:block hidden"
-            />
-            <span className="md:text-sm text-xs font-normal">
-              Upload new data
-            </span>
-          </button>
-        </div>
-      </div>
+      <div className=" h-10"></div>
 
       {/* TABLE */}
       <div
@@ -121,7 +89,7 @@ const UploadFiles = () => {
               display: "flex",
               position: "absolute",
               right: 0,
-              top: "-52px",
+              top: "-55px",
               background: "white",
               borderRadius: "12px",
               fontSize: "14px",

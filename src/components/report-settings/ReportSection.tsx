@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 // MUI
@@ -13,43 +13,17 @@ import uploadDataSvg from "@/assets/svgs/uploadData.svg";
 // UTILS
 import { CustomPagination } from "@/utils/CustomPagination";
 import { SearchTable } from "@/utils/SearchTable";
+import Modal from "../uploadcsv/Modal";
 
-const columns: GridColDef[] = [
-  {
-    field: "criteria",
-    headerName: "Criteria",
-    // width: 70,
-    headerAlign: "center",
-    align: "center",
-    sortable: true,
-    disableColumnMenu: true,
-  },
-  {
-    field: "narrative",
-    headerName: "Narrative",
-    width: 920,
-    sortable: false,
-    disableColumnMenu: true,
-  },
-  {
-    field: "type",
-    headerName: "Type",
-    sortable: false,
-    headerAlign: "center",
-    align: "center",
-    disableColumnMenu: true,
-  },
-  {
-    field: "amount",
-    headerName: "Amount",
-    headerAlign: "center",
-    align: "center",
-    sortable: true,
-    disableColumnMenu: true,
-  },
-];
+interface Row {
+  id: number;
+  type: string;
+  amount: string;
+  criteria: string;
+  narrative: string;
+}
 
-const rows = [
+const rows: Row[] = [
   {
     id: 1,
     criteria: "A",
@@ -133,12 +107,58 @@ const rows = [
   },
 ];
 
+function calculateColumnWidth(columnName: keyof Row) {
+  // Finding the maximum length of content in the specified column
+  const maxLength = Math.max(
+    ...rows.map((row) => String(row[columnName]).length)
+  );
+  // Adding some extra padding for better readability
+  return maxLength * 7; // Adjust this factor as needed
+}
+
+const columns: GridColDef[] = [
+  {
+    field: "criteria",
+    headerName: "Criteria",
+    // width: 70,
+    headerAlign: "center",
+    align: "center",
+    sortable: true,
+    disableColumnMenu: true,
+  },
+  {
+    field: "narrative",
+    headerName: "Narrative",
+    width: calculateColumnWidth("narrative"),
+    sortable: true,
+    disableColumnMenu: true,
+  },
+  {
+    field: "type",
+    headerName: "Type",
+    sortable: true,
+    headerAlign: "center",
+    align: "center",
+    disableColumnMenu: true,
+  },
+  {
+    field: "amount",
+    headerName: "Amount",
+    headerAlign: "center",
+    align: "center",
+    sortable: true,
+    disableColumnMenu: true,
+  },
+];
+
 const initialState = {
   pagination: { paginationModel: { pageSize: 25 } },
   rows: rows,
 };
 
 const ReportSection = () => {
+  const [open, setOpen] = useState(false);
+  const cancelButtonRef = useRef(null);
   return (
     <>
       <div className=" flex justify-between mb-3">
@@ -162,7 +182,12 @@ const ReportSection = () => {
               Reset Criteria
             </span>
           </button>
-          <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]">
+          <button
+            className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]"
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
             <Image
               src={uploadDataSvg}
               alt="uploadDataSvg"
@@ -204,7 +229,7 @@ const ReportSection = () => {
               display: "flex",
               position: "absolute",
               right: 0,
-              top: "-52px",
+              top: "-55px",
               background: "white",
               borderRadius: "12px",
               fontSize: "14px",
@@ -248,6 +273,7 @@ const ReportSection = () => {
           initialState={initialState}
         />
       </div>
+      <Modal setOpen={setOpen} open={open} cancelButtonRef={cancelButtonRef} />
     </>
   );
 };

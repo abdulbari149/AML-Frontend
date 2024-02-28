@@ -14,90 +14,21 @@ import searchSvg from "@/assets/svgs/search.svg";
 import { CustomPagination } from "@/utils/CustomPagination";
 import { SearchTable } from "@/utils/SearchTable";
 
-const columns: GridColDef[] = [
-  {
-    field: "ac_no",
-    headerName: "A/C No",
-    width: 110,
-    headerAlign: "center",
-    align: "center",
-    sortable: true,
-    disableColumnMenu: true,
-  },
-  {
-    field: "trs_no",
-    headerName: "Trs No",
-    width: 88,
-    sortable: false,
-    disableColumnMenu: true,
-  },
-  {
-    field: "date",
-    headerName: "Date",
-    sortable: false,
-    headerAlign: "center",
-    align: "center",
-    disableColumnMenu: true,
-  },
-  {
-    field: "type",
-    headerName: "Type",
-    headerAlign: "center",
-    align: "center",
-    width: 102,
-    sortable: true,
-    disableColumnMenu: true,
-  },
-  {
-    field: "amount",
-    headerName: "Amount",
-    headerAlign: "center",
-    align: "center",
-    sortable: true,
-    disableColumnMenu: true,
-  },
-  {
-    field: "criteria",
-    headerName: "Criteria",
-    headerAlign: "center",
-    align: "center",
-    sortable: true,
-    disableColumnMenu: true,
-  },
-  {
-    field: "narrative",
-    headerName: "Narrative",
-    width: 400,
-    sortable: false,
-    disableColumnMenu: true,
-  },
-  {
-    field: "customer1",
-    headerName: "Customer",
-    headerAlign: "center",
-    align: "center",
-    sortable: true,
-    disableColumnMenu: true,
-  },
-  {
-    field: "customer2",
-    headerName: "Customer",
-    headerAlign: "center",
-    align: "center",
-    sortable: true,
-    disableColumnMenu: true,
-  },
-  {
-    field: "customer3",
-    headerName: "Customer",
-    headerAlign: "center",
-    align: "center",
-    sortable: true,
-    disableColumnMenu: true,
-  },
-];
+interface Row {
+  id: number;
+  ac_no: string;
+  trs_no: string;
+  date: string;
+  type: string;
+  amount: string;
+  criteria: string;
+  narrative: string;
+  customer1: string;
+  customer2: string;
+  customer3: string;
+}
 
-const rows = [
+const rows: Row[] = [
   {
     id: 1,
     ac_no: "651535",
@@ -128,6 +59,98 @@ const rows = [
   },
 ];
 
+function calculateColumnWidth(columnName: keyof Row) {
+  // Finding the maximum length of content in the specified column
+  const maxLength = Math.max(
+    ...rows.map((row) => String(row[columnName]).length)
+  );
+  // Adding some extra padding for better readability
+  return maxLength * 8; // Adjust this factor as needed
+}
+
+const columns: GridColDef[] = [
+  {
+    field: "ac_no",
+    headerName: "A/C No",
+    // width: 110,
+    headerAlign: "center",
+    align: "center",
+    sortable: true,
+    disableColumnMenu: true,
+  },
+  {
+    field: "trs_no",
+    headerName: "Trs No",
+    // width: 88,
+    sortable: true,
+    disableColumnMenu: true,
+  },
+  {
+    field: "date",
+    headerName: "Date",
+    sortable: true,
+    // headerAlign: "center",
+    align: "center",
+    disableColumnMenu: true,
+  },
+  {
+    field: "type",
+    headerName: "Type",
+    headerAlign: "center",
+    align: "center",
+    // width: 102,
+    sortable: true,
+    disableColumnMenu: true,
+  },
+  {
+    field: "amount",
+    headerName: "Amount",
+    headerAlign: "center",
+    align: "center",
+    sortable: true,
+    disableColumnMenu: true,
+  },
+  {
+    field: "criteria",
+    headerName: "Criteria",
+    headerAlign: "center",
+    align: "center",
+    sortable: true,
+    disableColumnMenu: true,
+  },
+  {
+    field: "narrative",
+    headerName: "Narrative",
+    width: calculateColumnWidth("narrative"),
+    sortable: true,
+    disableColumnMenu: true,
+  },
+  {
+    field: "customer1",
+    headerName: "Customer",
+    headerAlign: "center",
+    align: "center",
+    sortable: true,
+    disableColumnMenu: true,
+  },
+  {
+    field: "customer2",
+    headerName: "Customer",
+    headerAlign: "center",
+    align: "center",
+    sortable: true,
+    disableColumnMenu: true,
+  },
+  {
+    field: "customer3",
+    headerName: "Customer",
+    headerAlign: "center",
+    align: "center",
+    sortable: true,
+    disableColumnMenu: true,
+  },
+];
+
 const initialState = {
   pagination: { paginationModel: { pageSize: 25 } },
   rows: rows,
@@ -137,7 +160,7 @@ const MonthlyReport = () => {
   return (
     <>
       {/* btn and saerch bar */}
-      <div className=" flex justify-between mb-5">
+      <div className=" flex justify-between mb-3">
         {/* buttons */}
         <div className=" flex gap-3">
           <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-[14px] md:py-3 py-[10px]">
@@ -191,6 +214,7 @@ const MonthlyReport = () => {
           backgroundColor: "#fff",
           border: "none",
           borderRadius: "10px",
+          // overflowX:'scroll'
         }}
       >
         <DataGrid
@@ -212,7 +236,7 @@ const MonthlyReport = () => {
               display: "flex",
               position: "absolute",
               right: 0,
-              top: "-52px",
+              top: "-55px",
               background: "white",
               borderRadius: "12px",
               fontSize: "14px",

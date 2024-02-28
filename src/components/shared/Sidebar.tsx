@@ -49,6 +49,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
   }),
   overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 1px)`,
+  zIndex:10000000,
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
@@ -300,6 +301,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
             p: 3,
             backgroundColor: "#f9f9f9",
             height: "100vh",
+            width: open ? "80%" : "90%",
           }}
         >
           <DrawerHeader />
