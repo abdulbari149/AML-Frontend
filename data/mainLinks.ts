@@ -22,7 +22,7 @@ export const mainLinks: PagesRouteType[] = [
     id: 2,
     title: "Upload Files",
     icon: uploadFileSvg,
-    path: "#",
+    path: "/upload-files",
     type: "upload",
   },
   {

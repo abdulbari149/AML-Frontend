@@ -30,7 +30,6 @@ import Link from "next/link";
 // DATA
 import { mainLinks, subLinks } from "../../../data/mainLinks";
 import { usePathname } from "next/navigation";
-import Modal from "../uploadcsv/Modal";
 
 const drawerWidth = 240;
 
@@ -125,10 +124,6 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
     console.log(filterPathData);
   }, []);
 
-  // UPLOAD FILES MODAL
-  const [openModal, setOpenModal] = React.useState(false);
-  const cancelButtonRef = React.useRef(null);
-
   const handleDrawer = () => {
     setOpen((prev) => !prev);
   };
@@ -216,9 +211,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                   disablePadding
                   sx={{ display: "block" }}
                   onClick={() => {
-                    item.type === "upload"
-                      ? (setOpenModal(true), setCurrentPage(currentPage))
-                      : setCurrentPage(item);
+                    setCurrentPage(item);
                   }}
                 >
                   <ListItemButton
@@ -313,11 +306,6 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
           {children}
         </Box>
       </Box>
-      <Modal
-        setOpen={setOpenModal}
-        open={openModal}
-        cancelButtonRef={cancelButtonRef}
-      />
     </>
   );
 }
