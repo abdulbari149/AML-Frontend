@@ -228,6 +228,10 @@ const CurrentAccounts = () => {
                 {
                   paddingBottom: "0px",
                 },
+                "& .css-68pk0f":
+              {
+                padding: "0px",
+              },
               "& .MuiInput-underline:before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::after, .css-jcincl::after":
                 {
                   borderBottom: "none !important",

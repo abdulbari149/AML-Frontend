@@ -58,7 +58,7 @@ const initialState = {
 const UploadFiles = () => {
   return (
     <>
-      <div className=" h-10"></div>
+      <div className=" h-12"></div>
 
       {/* TABLE */}
       <div
@@ -99,6 +99,10 @@ const UploadFiles = () => {
             "& .css-3be3ve-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter":
               {
                 paddingBottom: "0px",
+              },
+            "& .css-68pk0f":
+              {
+                padding: "0px",
               },
             "& .MuiInput-underline:before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::after, .css-jcincl::after":
               {
