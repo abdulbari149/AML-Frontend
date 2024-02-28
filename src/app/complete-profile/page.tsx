@@ -35,7 +35,7 @@ const CompleteProfile = () => {
             <h2 className=" md:text-3xl text-2xl font-semibold">
               Complete Your Profile
             </h2>
-            <p className="md:text-sm text-[10px] w-5/6 font-normal text-[#000000BF]">
+            <p className="md:text-sm text-[10px] w-[300px]  font-normal text-[#000000BF]">
               You are few steps away from experiencing the best platform,
             </p>
           </div>
