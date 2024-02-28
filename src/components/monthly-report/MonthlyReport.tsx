@@ -10,6 +10,10 @@ import discardSvg from "@/assets/svgs/Discard.svg";
 import saveCopySvg from "@/assets/svgs/saveCopy.svg";
 import searchSvg from "@/assets/svgs/search.svg";
 
+// UTILS
+import { CustomPagination } from "@/utils/CustomPagination";
+import { SearchTable } from "@/utils/SearchTable";
+
 const columns: GridColDef[] = [
   {
     field: "ac_no",
@@ -124,6 +128,11 @@ const rows = [
   },
 ];
 
+const initialState = {
+  pagination: { paginationModel: { pageSize: 25 } },
+  rows: rows,
+};
+
 const MonthlyReport = () => {
   return (
     <>
@@ -172,25 +181,9 @@ const MonthlyReport = () => {
             <span className="md:text-sm text-xs font-normal">Save Copy</span>
           </button>
         </div>
-
-        {/* search bar */}
-        <div className=" relative md:block hidden">
-          <Image
-            src={searchSvg}
-            alt="notificationSvg"
-            className=" absolute top-[10px] left-4 w-5"
-          />
-          <input
-            type="text"
-            name="search"
-            id="search"
-            placeholder=" Search In Table"
-            className=" w-56 bg-white py-[10px] pl-10 pr-2 mr-2 rounded-xl text-[##00000080] md:text-sm text-xs focus:outline-none"
-          />
-        </div>
       </div>
 
-      {/* table */}
+      {/* TABLE */}
       <div
         style={{
           height: "80%",
@@ -201,10 +194,10 @@ const MonthlyReport = () => {
         }}
       >
         <DataGrid
+          pagination
           sx={{
             border: "none",
             "& .MuiDataGrid-columnHeaderTitle": {
-              fontSize: "13px",
               fontWeight: "600",
             },
             "& .MuiDataGrid-columnHeader": {
@@ -214,14 +207,53 @@ const MonthlyReport = () => {
               {
                 outline: "none",
               },
-            "& .MuiDataGrid-row": {
-              fontSize: "13px",
-              fontWeight: "400",
+            // SEARCH
+            "& .MuiBox-root": {
+              display: "flex",
+              position: "absolute",
+              right: 0,
+              top: "-52px",
+              background: "white",
+              borderRadius: "12px",
+              fontSize: "14px",
+              padding: "6px 12px",
+              width: "244px",
+            },
+            "& .css-3be3ve-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter":
+              {
+                paddingBottom: "0px",
+              },
+            "& .MuiInput-underline:before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::after":
+              {
+                borderBottom: "none !important",
+              },
+            // PAGINATION
+            "& .Mui-selected, .Mui-selected:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.1) !important",
+              color: "black !important",
+            },
+            "& .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar": {
+              paddingRight: "24px",
+            },
+            "& .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon": {
+              display: "none",
+            },
+            "& .css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input":
+              {
+                paddingRight: "4px",
+              },
+            "& .css-194a1fa-MuiSelect-select-MuiInputBase-input ": {
+              padding: "2px 4px !important",
+              border: "1px solid",
+              borderRadius: "6px",
+              fontSize: "14px",
             },
           }}
           rows={rows}
           columns={columns}
-          hideFooterPagination={true}
+          hideFooterPagination={false}
+          slots={{ toolbar: SearchTable, pagination: CustomPagination }}
+          initialState={initialState}
         />
       </div>
     </>
