@@ -8,7 +8,7 @@ import imagePlusSvg from "@/assets/svgs/imagePlus.svg";
 // HELPERS
 import { errorToastify, succesToastify } from "@/helpers/toast";
 
-const LogoForm = ({ setStep }: { setStep: any }) => {
+const LogoForm = ({ setNextform }: { setNextform: any }) => {
   const [file, setFile] = useState();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -20,7 +20,7 @@ const LogoForm = ({ setStep }: { setStep: any }) => {
     e.preventDefault();
     if (!file) {
       console.log(file);
-      setStep(1);
+      setNextform((prev: boolean) => !prev);
     } else {
       errorToastify("Invalid file!");
     }
@@ -28,11 +28,17 @@ const LogoForm = ({ setStep }: { setStep: any }) => {
 
   return (
     <form className=" w-full flex flex-col gap-3" onSubmit={handleSubmit}>
-      <div className="flex flex-col justify-center items-center gap-1">
+      <div
+        className="flex flex-col justify-center items-center gap-1"
+        onClick={() => {
+          document.getElementById("logo")?.click();
+        }}
+      >
         <input
           className="hidden"
           type="file"
           name="file"
+          id="logo"
           onChange={handleFileChange}
         />
         <Image src={imagePlusSvg} alt="imagePlusSvg" />
