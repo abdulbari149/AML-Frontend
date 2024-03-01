@@ -5,19 +5,60 @@ import Image from "next/image";
 // IMAGES
 import logo from "@/assets/images/shared/logo/logo.png";
 import backSvg from "@/assets/svgs/Back.svg";
+
 // FORMS
 import LogoForm from "@/components/complete-profile/LogoForm";
 import InfoForm from "@/components/complete-profile/InfoForm";
 
+// TOSTIFY
+import { errorToastify, succesToastify } from "@/helpers/toast";
+
 const CompleteProfile = () => {
-  const [nextForm, setNextform] = useState<boolean>(false);
+  const [nextForm, setNextForm] = useState<boolean>(false);
+
+  const [formData, setFormData] = useState<CompleteProfileType>({
+    branch: "",
+    address: "",
+    country: "",
+    file: null,
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, files } = e.target;
+    if (files) {
+      setFormData((prevState) => ({
+        ...prevState,
+        file: files[0],
+      }));
+    }
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (formData) {
+      console.log(formData);
+      succesToastify("Successfuly Completed Profile");
+      setFormData({
+        branch: "",
+        address: "",
+        country: "",
+        file: null,
+      });
+    } else {
+      errorToastify("Invalid details!");
+    }
+  };
   return (
     <>
       {nextForm && (
         <div
           className=" flex justify-start gap-1 items-center cursor-pointer w-fit"
           onClick={() => {
-            setNextform((prev) => !prev);
+            setNextForm((prev) => !prev);
           }}
         >
           <Image src={backSvg} alt="logo" quality={100} className="-ml-1" />
@@ -34,7 +75,15 @@ const CompleteProfile = () => {
             You are few steps away from experiencing the best platform,
           </p>
         </div>
-        {!nextForm ? <LogoForm setNextform={setNextform} /> : <InfoForm />}
+        {!nextForm ? (
+          <LogoForm handleChange={handleChange} setNextForm={setNextForm} />
+        ) : (
+          <InfoForm
+            formData={formData}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+          />
+        )}
       </div>
     </>
   );

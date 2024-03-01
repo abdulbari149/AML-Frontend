@@ -8,26 +8,14 @@ import imagePlusSvg from "@/assets/svgs/imagePlus.svg";
 // HELPERS
 import { errorToastify, succesToastify } from "@/helpers/toast";
 
-const LogoForm = ({ setNextform }: { setNextform: any }) => {
-  const [file, setFile] = useState();
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFile(e.target.files[0] as any);
-    }
-  };
+interface LogoFormData {
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setNextForm: any;
+}
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!file) {
-      console.log(file);
-      setNextform((prev: boolean) => !prev);
-    } else {
-      errorToastify("Invalid file!");
-    }
-  };
-
+const LogoForm = ({ handleChange, setNextForm }: LogoFormData) => {
   return (
-    <form className=" w-full flex flex-col gap-3" onSubmit={handleSubmit}>
+    <form className=" w-full flex flex-col gap-3">
       <div
         className="flex flex-col justify-center items-center gap-1"
         onClick={() => {
@@ -39,7 +27,7 @@ const LogoForm = ({ setNextform }: { setNextform: any }) => {
           type="file"
           name="file"
           id="logo"
-          onChange={handleFileChange}
+          onChange={handleChange}
         />
         <Image src={imagePlusSvg} alt="imagePlusSvg" />
         <p className=" text-sm font-semibold text-[#000000BF]">Your Logo</p>
@@ -47,6 +35,7 @@ const LogoForm = ({ setNextform }: { setNextform: any }) => {
       <button
         type="submit"
         className=" w-fit mx-auto md:text-base text-sm bg-[#C4B454] text-[#fff] font-medium rounded-md mt-4 py-2 px-10"
+        onClick={() => setNextForm((prev: boolean) => !prev)}
       >
         Next
       </button>

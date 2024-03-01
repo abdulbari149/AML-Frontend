@@ -6,37 +6,13 @@ import { useRouter } from "next/navigation";
 // HELPERS
 import { errorToastify, succesToastify } from "@/helpers/toast";
 
-const InfoForm = () => {
-  const router = useRouter();
-  const [lnfoData, setInfoData] = useState<CompleteProfileType>({
-    branch: "",
-    address: "",
-    country: "",
-  });
+interface InfoFormData {
+  formData: CompleteProfileType;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+}
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setInfoData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (lnfoData) {
-      console.log(lnfoData);
-      succesToastify("Successfuly Completed Profile");
-      setInfoData({
-        branch: "",
-        address: "",
-        country: "",
-      });
-    } else {
-      errorToastify("Invalid details!");
-    }
-  };
-
+const InfoForm = ({ formData, handleChange, handleSubmit }: InfoFormData) => {
   return (
     <form className=" w-full flex flex-col gap-3" onSubmit={handleSubmit}>
       <div className=" flex flex-col gap-1">
@@ -52,7 +28,7 @@ const InfoForm = () => {
           name="branch"
           id="branch"
           placeholder="22051"
-          value={lnfoData.branch}
+          value={formData.branch}
           onChange={handleChange}
         />
       </div>
@@ -69,7 +45,7 @@ const InfoForm = () => {
           name="address"
           id="address"
           placeholder="Street No. 12, Sector 15-C, Karachi"
-          value={lnfoData.address}
+          value={formData.address}
           onChange={handleChange}
         />
       </div>
@@ -86,7 +62,7 @@ const InfoForm = () => {
           name="country"
           id="country"
           placeholder="Pakistan"
-          value={lnfoData.country}
+          value={formData.country}
           onChange={handleChange}
         />
       </div>
