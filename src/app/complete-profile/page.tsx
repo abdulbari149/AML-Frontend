@@ -15,27 +15,27 @@ const CompleteProfile = () => {
   return (
     <main className="  flex justify-center items-center w-screen  h-screen bg-[#f9f9f9]">
       <section
-        className={`bg-[#fff] rounded-[10px] pt-12 pb-10 px-10
-         ${styles.loginBoxShadow}`}
+        className={`bg-[#fff] rounded-[10px] pt-8 pb-8 px-10
+         ${styles.loginBoxShadow} md:w-[420px] w-full`}
       >
         {step === 1 && (
           <div
-            className=" flex justify-start items-center cursor-pointer"
+            className=" flex justify-start gap-1 items-center cursor-pointer w-fit"
             onClick={() => {
               setStep(0);
             }}
           >
-            <Image src={backSvg} alt="logo" quality={100} />
+            <Image src={backSvg} alt="logo" quality={100} className="-ml-1" />
             <span className=" text-base font-normal">back</span>
           </div>
         )}
         <div className="flex flex-col gap-5 justify-center items-center">
           <Image src={logo} alt="logo" quality={100} />
-          <div className=" flex flex-col gap-2 w-full">
+          <div className=" flex flex-col md:items-start items-center gap-2 w-full">
             <h2 className=" md:text-3xl text-2xl font-semibold">
               Complete Your Profile
             </h2>
-            <p className="md:text-sm text-[10px] w-[300px]  font-normal text-[#000000BF]">
+            <p className="md:text-sm text-[10px]  font-normal text-[#000000BF]">
               You are few steps away from experiencing the best platform,
             </p>
           </div>

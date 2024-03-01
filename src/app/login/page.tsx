@@ -9,10 +9,10 @@ import Form from "@/components/login/Form";
 
 const page = () => {
   return (
-    <main className="  flex justify-center items-center w-screen h-screen bg=[#f9f9f9]">
+    <main className="  flex justify-center items-center w-screen h-screen bg-[#f9f9f9]">
       <section
         className={` flex flex-col gap-5 justify-center items-center bg-[#fff] rounded-[10px] pt-12 pb-10 px-10
-         ${styles.loginBoxShadow}`}
+         ${styles.loginBoxShadow} md:w-[420px] w-full`}
       >
         <Image src={logo} alt="logo" quality={100} />
         <div className=" flex flex-col gap-2 w-full">
