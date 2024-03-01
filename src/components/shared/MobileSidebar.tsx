@@ -33,7 +33,7 @@ import { CgMenuLeft } from "react-icons/cg";
 import sampleUser from "@/assets/images/shared/user/sampleUser.png";
 import { usePathname } from "next/navigation";
 
-const drawerWidth = 240;
+const drawerWidth = 260;
 
 interface Props {
   /**
@@ -56,7 +56,12 @@ export default function MobileSidebar(
 
   React.useEffect(() => {
     const filterPathData = mainLinks.find((item) => item.path === pathname);
+    const filterPathSubData = subLinks.find((item) => item.path === pathname);
     setCurrentPage(filterPathData);
+    if (!filterPathData) {
+      setCurrentPage(filterPathSubData);
+    }
+    console.log(filterPathData);
   }, []);
 
   const handleDrawerClose = () => {
@@ -75,91 +80,96 @@ export default function MobileSidebar(
   };
 
   const drawer = (
-    <div>
+    <div className=" flex flex-col justify-between h-screen">
       <Toolbar />
       <List sx={{ height: "100%" }}>
         {mainLinks.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={{
-                minHeight: 45,
-                paddingTop: "0px",
-                paddingBottom: "0px",
-                justifyContent: "start",
-                px: 2.5,
+          <Link key={index} href={item.path}>
+            <ListItem
+              key={index}
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={() => {
+                setCurrentPage(item), handleDrawerToggle();
               }}
             >
-              <Link
-                className=" flex gap-1"
-                href={item.path}
-                onClick={() => {
-                  setCurrentPage(item), handleDrawerToggle();
+              <ListItemButton
+                sx={{
+                  minHeight: 45,
+                  paddingTop: "0px",
+                  paddingBottom: "0px",
+                  justifyContent: "start",
+                  px: 2.5,
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: 3,
-                    justifyContent: "center",
-                  }}
-                >
-                  <Image alt="icon" src={item.icon} />
-                </ListItemIcon>
-                <p
-                  className={` ${
-                    item.path === currentPage?.path
-                      ? "text-base font-bold"
-                      : "text-[15px] font-normal"
-                  } `}
-                >
-                  {item.title}
-                </p>
-              </Link>
-            </ListItemButton>
-          </ListItem>
+                <div className=" flex gap-1">
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: 3,
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Image alt="icon" src={item.icon} />
+                  </ListItemIcon>
+                  <p
+                    className={` ${
+                      item.path === currentPage?.path
+                        ? "text-base font-bold"
+                        : "text-[15px] font-normal"
+                    } `}
+                  >
+                    {item.title}
+                  </p>
+                </div>
+              </ListItemButton>
+            </ListItem>
+          </Link>
         ))}
       </List>
       <List sx={{ height: "110px" }}>
         {subLinks.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={{
-                minHeight: 45,
-                paddingTop: "0px",
-                paddingBottom: "0px",
-                justifyContent: "start",
-                px: 2.5,
+          <Link key={index} href={item.path}>
+            <ListItem
+              key={index}
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={() => {
+                setCurrentPage(item), handleDrawerToggle();
               }}
             >
-              <Link
-                className=" flex gap-1"
-                href={item.path}
-                onClick={() => {
-                  setCurrentPage(item), handleDrawerToggle();
+              <ListItemButton
+                sx={{
+                  minHeight: 45,
+                  paddingTop: "0px",
+                  paddingBottom: "0px",
+                  justifyContent: "start",
+                  px: 2.5,
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: 3,
-                    justifyContent: "center",
-                  }}
-                >
-                  <Image alt="icon" src={item.icon} />
-                </ListItemIcon>
-                <p
-                  className={` ${
-                    item.path === currentPage?.path
-                      ? "text-base font-bold"
-                      : "text-[15px] font-normal"
-                  } `}
-                  style={{ display: "block" }}
-                >
-                  {item.title}
-                </p>
-              </Link>
-            </ListItemButton>
-          </ListItem>
+                <div className=" flex gap-1">
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: 3,
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Image alt="icon" src={item.icon} />
+                  </ListItemIcon>
+                  <p
+                    className={` ${
+                      item.path === currentPage?.path
+                        ? "text-base font-bold"
+                        : "text-[15px] font-normal"
+                    } `}
+                  >
+                    {item.title}
+                  </p>
+                </div>
+              </ListItemButton>
+            </ListItem>
+          </Link>
         ))}
       </List>
     </div>
@@ -178,7 +188,6 @@ export default function MobileSidebar(
           boxShadow: "none",
           backgroundColor: "transparent",
           width: "100%",
-          padding: "0 10px",
           ml: { sm: `${drawerWidth}px` },
         }}
         className="bg-[#f9f9f9]"
@@ -188,16 +197,19 @@ export default function MobileSidebar(
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            padding: "0px",
+            width: "90%",
+            margin: "0 auto",
           }}
         >
-          <div className=" flex gap-2 items-center">
+          <div className=" flex gap-1 items-center">
             <IconButton
               color="inherit"
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
             >
-              <CgMenuLeft className=" text-black text-3xl" />
+              <CgMenuLeft className=" text-black text-[28px]" />
             </IconButton>
             <Image
               src={logoImg}
@@ -208,11 +220,11 @@ export default function MobileSidebar(
             <Image
               src={logoName}
               alt="logoName"
-              className=" w-36 h-6"
+              className=" w-32 h-6"
               quality={100}
             />
           </div>
-          <div className=" flex gap-2 items-center">
+          <div className=" flex gap-1 items-center">
             <Image
               src={sampleUser}
               alt="sampleUser"
@@ -272,7 +284,7 @@ export default function MobileSidebar(
             name="search"
             id="search"
             placeholder=" Search"
-            className=" w-full bg-white py-[10px] pl-9 pr-2 mr-2 rounded-md text-[##00000080] md:text-sm text-xs focus:outline-none"
+            className=" w-full bg-[#F1F1F1] py-3 pl-9 pr-2 mr-2 rounded-md text-[#00000080] placeholder:text-[#000000] md:text-sm text-xs focus:outline-none"
           />
         </div>
         <h3 className=" text-4xl font-bold mt-2 mb-4"> {currentPage?.title}</h3>
