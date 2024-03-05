@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-amplify/ui-react": "^6.1.5",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.18",
@@ -17,6 +18,7 @@
     "@mui/x-data-grid": "^6.19.4",
     "@mui/x-data-grid-generator": "^6.19.5",
     "@table-library/react-table-library": "^4.1.7",
+    "aws-amplify": "^6.0.18",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",

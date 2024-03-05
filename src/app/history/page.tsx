@@ -1,9 +1,8 @@
 import React from 'react'
+import AllPerviousMonthlyReports from "@/components/history/AllPerviousMonthlyReports";
 
 const page = () => {
-  return (
-    <div>page</div>
-  )
+  return <AllPerviousMonthlyReports />;
 }
 
 export default page

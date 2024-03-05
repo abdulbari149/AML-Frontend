@@ -18,13 +18,13 @@ export const mainLinks: PagesRouteType[] = [
     path: "/",
     type: "route",
   },
-  {
-    id: 2,
-    title: "Upload Files",
-    icon: uploadFileSvg,
-    path: "/upload-files",
-    type: "upload",
-  },
+  // {
+  //   id: 2,
+  //   title: "Upload Files",
+  //   icon: uploadFileSvg,
+  //   path: "/upload-files",
+  //   type: "upload",
+  // },
   {
     id: 3,
     title: "Monthly Reports",
@@ -32,13 +32,13 @@ export const mainLinks: PagesRouteType[] = [
     path: "/monthly-reports",
     type: "route",
   },
-  {
-    id: 4,
-    title: "General Reports",
-    icon: generalReportSvg,
-    path: "/general-reports",
-    type: "route",
-  },
+  // {
+  //   id: 4,
+  //   title: "General Reports",
+  //   icon: generalReportSvg,
+  //   path: "/general-reports",
+  //   type: "route",
+  // },
   {
     id: 5,
     title: "Report Settings",
@@ -46,20 +46,20 @@ export const mainLinks: PagesRouteType[] = [
     path: "/report-settings",
     type: "route",
   },
-  {
-    id: 6,
-    title: "Account Enquiry",
-    icon: accountEnquirySvg,
-    path: "/account-equiry",
-    type: "route",
-  },
-  {
-    id: 7,
-    title: "Current Accounts",
-    icon: currentAccountsSvg,
-    path: "/current-accounts",
-    type: "route",
-  },
+  // {
+  //   id: 6,
+  //   title: "Account Enquiry",
+  //   icon: accountEnquirySvg,
+  //   path: "/account-equiry",
+  //   type: "route",
+  // },
+  // {
+  //   id: 7,
+  //   title: "Current Accounts",
+  //   icon: currentAccountsSvg,
+  //   path: "/current-accounts",
+  //   type: "route",
+  // },
   {
     id: 8,
     title: "History",
@@ -70,16 +70,16 @@ export const mainLinks: PagesRouteType[] = [
 ];
 
 export const subLinks: PagesRouteType[] = [
-  {
-    id: 1,
-    title: "Profile",
-    icon: profileSvg,
-    path: "/profile",
-    type: "route",
-  },
+  // {
+  //   id: 1,
+  //   title: "Profile",
+  //   icon: profileSvg,
+  //   path: "/profile",
+  //   type: "route",
+  // },
   {
     id: 2,
-    title: "Settings",
+    title: "My Account",
     icon: settingsSvg,
     path: "/settings",
     type: "route",

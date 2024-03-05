@@ -17,8 +17,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 // SVGS
 import profileSvg from "@/assets/svgs/Profile.svg";
 import settingsSvg from "@/assets/svgs/Settings.svg";
-import notificationSvg from "@/assets/svgs/notification.svg";
-import searchSvg from "@/assets/svgs/search.svg";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 // IMAGES
@@ -31,6 +29,8 @@ import Link from "next/link";
 import { mainLinks, subLinks } from "../../../data/mainLinks";
 import { usePathname } from "next/navigation";
 
+// Component
+import UserProfileSettingMenu from "./sub-component/UserProfileSettingMenu";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -49,7 +49,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
   }),
   overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 1px)`,
-  zIndex:10000000,
+  zIndex: 10000000,
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
@@ -138,33 +138,12 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
           <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
             <h3 className=" text-4xl font-bold"> {currentPage?.title}</h3>
             <div className=" flex gap-2 items-center">
-              <div className=" relative">
-                <Image
-                  src={searchSvg}
-                  alt="notificationSvg"
-                  className=" absolute top-[10px] left-2 w-5"
-                />
-                <input
-                  type="text"
-                  name="search"
-                  id="search"
-                  placeholder=" Search"
-                  className=" w-52 bg-white py-[10px] pl-9 pr-2 mr-2 rounded-md text-[##00000080] md:text-sm text-xs focus:outline-none"
-                />
-              </div>
-              <div className=" rounded-md p-[10px] bg-white">
-                <Image src={profileSvg} alt="profileSvg" />
-              </div>
-              <div className=" rounded-md p-[10px] bg-white">
-                <Image src={notificationSvg} alt="notificationSvg" />
-              </div>
-              <div className=" rounded-md p-[10px] bg-white">
-                <Image src={settingsSvg} alt="settingsSvg" />
-              </div>
+              <UserProfileSettingMenu/>
+
               <Image
                 src={sampleUser}
                 alt="sampleUser"
-                className=" rounded-[50%] w-10 h-10 ml-2"
+                className="w-10 h-10 ml-2"
               />
             </div>
           </Toolbar>

@@ -18,9 +18,7 @@ const AccountSettings = () => {
           <PasswordForm />
         </div>
 
-        <button className=" w-fit text-[15px] font-semibold text-center text-[#EE5B5B] px-5 py-3 rounded-md border-2 border-[#000000] mb-5">
-          Delete Account
-        </button>
+        
       </div>
     </>
   );

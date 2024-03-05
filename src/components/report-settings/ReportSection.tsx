@@ -1,9 +1,28 @@
+// 
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 // MUI
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import {
+  GridRowsProp,
+  GridRowModesModel,
+  GridRowModes,
+  DataGrid,
+  GridColDef,
+  GridToolbarContainer,
+  GridActionsCellItem,
+  GridEventListener,
+  GridRowId,
+  GridRowModel,
+  GridRowEditStopReasons,
+} from "@mui/x-data-grid";
+
+//ICONS
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Close";
 
 // COMPONENTS
 import runReportSvg from "@/assets/svgs/runReport.svg";
@@ -14,53 +33,49 @@ import uploadDataSvg from "@/assets/svgs/uploadData.svg";
 import { CustomPagination } from "@/utils/CustomPagination";
 import { SearchTable } from "@/utils/SearchTable";
 import Modal from "../uploadcsv/Modal";
+import { Button } from "@mui/material";
 
 interface Row {
   id: number;
   type: string;
   amount: string;
   criteria: string;
-  narrative: string;
+  description: string;
 }
 
-const rows: Row[] = [
+const initialRows: Row[] = [
   {
     id: 1,
     criteria: "A",
-    narrative:
-      "Phasellus accumsan imperdiet tempor. Cras tincidunt, arcu nec eleifend porttitor, orci est vehicula ",
+    description: "High-risk transaction",
     type: "SRC",
     amount: "$3500",
   },
   {
     id: 2,
     criteria: "B",
-    narrative:
-      "Integer id augue iaculis, iaculis orci ut, blandit quam. Donec in elit auctor, finibus quam in, phar",
+    description: "National from a high-risk jurisdiction ",
     type: "SRC",
     amount: "$4200",
   },
   {
     id: 3,
     criteria: "C",
-    narrative:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam rhoncus augue id massa aliquam, at posuere arcu mattis.",
+    description: "Cash Lodgements",
     type: "DST",
     amount: "$2800",
   },
   {
     id: 4,
     criteria: "D",
-    narrative:
-      "Fusce dapibus justo nec lectus rhoncus, eget euismod velit tristique. Vestibulum suscipit, eros sit amet aliquet fringilla, odio metus sollicitudin eros, id condimentum nulla leo ac nulla.",
+    description: "EFT Lodgements ",
     type: "DST",
     amount: "$3800",
   },
   {
     id: 5,
     criteria: "E",
-    narrative:
-      "Vestibulum nec elit eu mauris aliquam ultricies. Ut maximus ante non libero tincidunt, quis vestibulum libero tempor.",
+    description: "Minor Account Lodgements",
     type: "SRC",
     amount: "$5000",
   },
@@ -68,97 +83,307 @@ const rows: Row[] = [
   {
     id: 6,
     criteria: "F",
-    narrative:
-      "Suspendisse potenti. Vivamus mattis tincidunt dolor, in facilisis nunc pharetra ac. Integer vitae enim eget purus venenatis sollicitudin. ",
+    description: "Sub-office Lodgements",
     type: "DST",
     amount: "$3100",
   },
   {
     id: 7,
     criteria: "G",
-    narrative:
-      "Nulla facilisi. Donec auctor dapibus sapien. Vestibulum malesuada suscipit enim, in hendrerit quam lacinia vel. ",
+    description: "Counter New Member Lodgements ",
     type: "SRC",
     amount: "$4500",
   },
   {
     id: 8,
     criteria: "H",
-    narrative:
-      "Pellentesque convallis tortor id imperdiet aliquet. Vestibulum dapibus, nunc ut fermentum lacinia, libero felis vestibulum erat, nec rhoncus est nunc id urna. ",
+    description: "Online New Member Lodgements",
     type: "DST",
     amount: "$2700",
   },
   {
     id: 9,
     criteria: "I",
-    narrative:
-      "Cras auctor sagittis libero, eget gravida enim varius quis. Nunc ac vestibulum justo, nec aliquet lorem. ",
+    description: "Self Employed Lodgements",
     type: "SRC",
     amount: "$3800",
   },
   {
     id: 10,
     criteria: "J",
-    narrative:
-      "Proin auctor, sapien at finibus ultricies, lectus risus dapibus ipsum, non finibus ex arcu eu enim. ",
+    description: "Unemployed Lodgements",
     type: "DST",
     amount: "$4200",
   },
+  {
+    id: 11,
+    criteria: "K",
+    description: "Large Cash Withdrawals",
+    type: "DST",
+    amount: "$5000",
+  },
+  {
+    id: 12,
+    criteria: "L",
+    description: "Multiple Large Cash Transactions",
+    type: "DST",
+    amount: "$6000",
+  },
+  {
+    id: 13,
+    criteria: "M",
+    description: "High-Value Wire Transfers",
+    type: "DST",
+    amount: "$10000",
+  },
+  {
+    id: 14,
+    criteria: "N",
+    description: "Foreign Exchange Transactions",
+    type: "SRC",
+    amount: "$8000",
+  },
+  {
+    id: 15,
+    criteria: "O",
+    description: "High-Frequency Trading Activity",
+    type: "SRC",
+    amount: "$7000",
+  },
+  {
+    id: 16,
+    criteria: "P",
+    description: "Third-Party Payments",
+    type: "DST",
+    amount: "$4500",
+  },
+  {
+    id: 17,
+    criteria: "Q",
+    description: "Large Inbound Transactions",
+    type: "SRC",
+    amount: "$9000",
+  },
+  {
+    id: 18,
+    criteria: "R",
+    description: "Non-Profit Organization Deposits",
+    type: "SRC",
+    amount: "$5500",
+  },
+  {
+    id: 19,
+    criteria: "S",
+    description: "Corporate Account Deposits",
+    type: "SRC",
+    amount: "$7500",
+  },
+  {
+    id: 20,
+    criteria: "T",
+    description: "Trust Account Transactions",
+    type: "DST",
+    amount: "$6800",
+  },
+  {
+    id: 21,
+    criteria: "U",
+    description: "Government Grants or Subsidies",
+    type: "SRC",
+    amount: "$8200",
+  },
+  {
+    id: 22,
+    criteria: "V",
+    description: "Large Cash Transactions with No Apparent Purpose",
+    type: "DST",
+    amount: "$5300",
+  },
+  {
+    id: 23,
+    criteria: "W",
+    description: "Suspicious Activity Patterns",
+    type: "SRC",
+    amount: "$6700",
+  },
+  {
+    id: 24,
+    criteria: "X",
+    description: "Unusually Large ATM Withdrawals",
+    type: "DST",
+    amount: "$4900",
+  },
+  {
+    id: 25,
+    criteria: "Y",
+    description: "Overseas Transactions from High-Risk Countries",
+    type: "SRC",
+    amount: "$8800",
+  },
+  {
+    id: 26,
+    criteria: "Z",
+    description: "Politically Exposed Person (PEP) Transactions",
+    type: "DST",
+    amount: "$10000",
+  },
+
 ];
 
 function calculateColumnWidth(columnName: keyof Row) {
   // Finding the maximum length of content in the specified column
   const maxLength = Math.max(
-    ...rows.map((row) => String(row[columnName]).length)
+    ...initialRows.map((row) => String(row[columnName]).length)
   );
   // Adding some extra padding for better readability
   return maxLength * 7; // Adjust this factor as needed
 }
 
-const columns: GridColDef[] = [
-  {
-    field: "criteria",
-    headerName: "Criteria",
-    // width: 70,
-    headerAlign: "center",
-    align: "center",
-    sortable: true,
-    disableColumnMenu: true,
-  },
-  {
-    field: "narrative",
-    headerName: "Narrative",
-    width: calculateColumnWidth("narrative"),
-    sortable: true,
-    disableColumnMenu: true,
-  },
-  {
-    field: "type",
-    headerName: "Type",
-    sortable: true,
-    headerAlign: "center",
-    align: "center",
-    disableColumnMenu: true,
-  },
-  {
-    field: "amount",
-    headerName: "Amount",
-    headerAlign: "center",
-    align: "center",
-    sortable: true,
-    disableColumnMenu: true,
-  },
-];
-
-const initialState = {
-  pagination: { paginationModel: { pageSize: 25 } },
-  rows: rows,
-};
 
 const ReportSection = () => {
   const [open, setOpen] = useState(false);
   const cancelButtonRef = useRef(null);
+  const [rows, setRows] = React.useState(initialRows);
+  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
+    {}
+  );
+
+  const handleRowEditStop: GridEventListener<"rowEditStop"> = (
+    params,
+    event
+  ) => {
+    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+      event.defaultMuiPrevented = true;
+    }
+  };
+
+  const handleEditClick = (id: GridRowId) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+  };
+
+  const handleSaveClick = (id: GridRowId) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  };
+
+  const handleCancelClick = (id: GridRowId) => () => {
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+    });
+
+    const editedRow = rows.find((row) => row.id === id);
+    // @ts-ignore
+    if (editedRow!.isNew) {
+      setRows(rows.filter((row) => row.id !== id));
+    }
+  };
+
+  const handleProcessRowUpdateError=()=>{
+    console.log('error')
+  }
+  const processRowUpdate = (newRow: GridRowModel) => {
+     // @ts-ignore
+    console.log('this is updatedRow',updatedRow)
+
+    const updatedRow = { ...newRow, isNew: false };
+       // @ts-ignore
+    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+    return updatedRow;
+  };
+
+  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
+    setRowModesModel(newRowModesModel);
+  };
+  const columns: GridColDef[] = [
+    {
+      field: "criteria",
+      headerName: "Criteria",
+      // width: 70,
+      headerAlign: "center",
+      align: "center",
+      sortable: true,
+      disableColumnMenu: true,
+      editable: false,
+    },
+
+    {
+      field: "type",
+      headerName: "Type",
+      sortable: true,
+      headerAlign: "center",
+      align: "center",
+      disableColumnMenu: true,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: ['SRC','DST','OTH'],
+      width: 200,
+    },
+    {
+      field: "amount",
+      headerName: "Amount",
+      headerAlign: "center",
+      align: "center",
+      sortable: true,
+      editable: true,
+      disableColumnMenu: true,
+    },
+    {
+      field: "description",
+      headerName: "Description",
+      width: calculateColumnWidth("description"),
+      sortable: true,
+      disableColumnMenu: true,
+      editable: false,
+    },
+    {
+      field: "actions",
+      type: "actions",
+      headerName: "Actions",
+      width: 100,
+      cellClassName: "actions",
+      getActions: ({ id }) => {
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+
+        if (isInEditMode) {
+          return [
+            <GridActionsCellItem
+              icon={<SaveIcon />}
+              label="Save"
+              key={id}
+              sx={{
+                color: "primary.main",
+              }}
+              onClick={handleSaveClick(id)}
+            />,
+            <GridActionsCellItem
+              icon={<CancelIcon />}
+              label="Cancel"
+              className="textPrimary"
+              onClick={handleCancelClick(id)}
+              color="inherit"
+              key={id}
+            />,
+          ];
+        }
+
+        return [
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            className="textPrimary"
+            onClick={handleEditClick(id)}
+            color="inherit"
+            key={id}
+          />,
+        ];
+      },
+    },
+  ];
+
+  const initialState = {
+    pagination: { paginationModel: { pageSize: 25 } },
+    rows: rows,
+  };
   return (
     <>
       <div className=" flex justify-between mb-3">
@@ -240,10 +465,9 @@ const ReportSection = () => {
               {
                 paddingBottom: "0px",
               },
-              "& .css-68pk0f":
-              {
-                padding: "0px",
-              },
+            "& .css-68pk0f": {
+              padding: "0px",
+            },
             "& .MuiInput-underline:before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::after, .css-jcincl::after":
               {
                 borderBottom: "none !important",
@@ -273,8 +497,24 @@ const ReportSection = () => {
           rows={rows}
           columns={columns}
           hideFooterPagination={false}
-          slots={{ toolbar: SearchTable, pagination: CustomPagination }}
+          slots={{ toolbar: SearchTable, 
+            pagination: CustomPagination ,
+            
+          
+          }}
           initialState={initialState}
+          editMode="row"
+          rowModesModel={rowModesModel}
+          onRowModesModelChange={handleRowModesModelChange}
+          onRowEditStop={handleRowEditStop}
+          processRowUpdate={
+            (updatedRow, originalRow) =>
+            processRowUpdate(updatedRow)
+            }
+          onProcessRowUpdateError={handleProcessRowUpdateError}
+          slotProps={{
+            toolbar: { setRows, setRowModesModel },
+          }}
         />
       </div>
       <Modal setOpen={setOpen} open={open} cancelButtonRef={cancelButtonRef} />
