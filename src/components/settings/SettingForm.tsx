@@ -1,11 +1,7 @@
 'use client'
 import React, { useState } from "react";
-import { generateClient } from "aws-amplify/api";
-import { createBankInformation } from "@/graphql/mutations";
 import InputFieldSetting from "./InputFieldSetting";
-import currentAuthenticatedUser from "@/utils/UserInfo";
 
-const client = generateClient();
 
 const SettingForm = () => {
   const [bankName, setBankName] = useState("");
@@ -14,43 +10,12 @@ const SettingForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const signInDetails = currentAuthenticatedUser;
-  console.log('signInDetails',signInDetails)
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    try {
-      // Call the GraphQL mutation to create bank information
-      const newBankInformation = await client.graphql({
-        query: createBankInformation,
-        variables: {
-          input: {
-            BankName: bankName,
-            Email: email,
-            PhoneNo: phone,
-            Logo:"",
-          },
-        },
-      });
-
-      console.log("New bank information created:", newBankInformation);
-      // Reset form fields
-      setBankName("");
-      setEmail("");
-      setPhone("");
-    } catch (err) {
-      console.error("Error creating bank information:", err);
-      setError("Error creating bank information. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  
+  
 
   return (
     <>
-      <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+      <form className="flex flex-col gap-3">
         {/* main form */}
         <div className="flex flex-col-reverse md:flex-row gap-10 md:gap-32">
           <div className="w-full md:w-2/4 flex flex-col gap-2">
