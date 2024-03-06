@@ -5,3 +5,11 @@
 body {
   background-color: #f9f9f9;
 }
+
+
+[data-amplify-authenticator]{
+height: 100vh !important;
+}
+.amplify-button--primary:hover {
+  background-color: #C4B454 !important;
+}
