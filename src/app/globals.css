@@ -13,3 +13,7 @@ height: 100vh !important;
 .amplify-button--primary:hover {
   background-color: #C4B454 !important;
 }
+
+.amplify-field__show-password{
+  background-color: #C4B454 !important;
+}

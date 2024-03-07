@@ -4,11 +4,39 @@ import React, { useEffect } from "react";
 // MUI
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
-
-
 // UTILS
 import { CustomPagination } from "@/utils/CustomPagination";
 import { SearchTable } from "@/utils/SearchTable";
+
+// ICONS
+import { FaDownload } from "react-icons/fa6";
+
+interface Row {
+  id: number;
+  date: string;
+  file_name: string;
+  month: string;
+  file_type: string;
+}
+
+const rows = [
+  {
+    id: 1,
+    date: "23/02/23",
+    file_name: "example.png",
+    month: "December",
+    file_type: "PNG",
+  },
+];
+
+function calculateColumnWidth(columnName: keyof Row) {
+  // Finding the maximum length of content in the specified column
+  const maxLength = Math.max(
+    ...rows.map((row) => String(row[columnName]).length)
+  );
+  // Adding some extra padding for better readability
+  return maxLength * 10; // Adjust this factor as needed
+}
 
 const columns: GridColDef[] = [
   {
@@ -23,26 +51,50 @@ const columns: GridColDef[] = [
   {
     field: "file_name",
     headerName: "File Name",
-    width: 700,
-    sortable: false,
+    width: calculateColumnWidth("file_name"),
+    headerAlign: "center",
+    align: "center",
+    sortable: true,
     disableColumnMenu: true,
+  },
+  {
+    field: "month",
+    headerName: "Month",
+    // width: ,
+    headerAlign: "center",
+    align: "center",
+    sortable: true,
+    disableColumnMenu: true,
+  },
+  {
+    field: "download",
+    headerName: "Download",
+    // sortable: true,
+    headerAlign: "center",
+    align: "center",
+    disableColumnMenu: true,
+    renderCell: (params) => (
+      <button>
+        <FaDownload className=" text-base" />
+      </button>
+    ),
   },
   {
     field: "file_type",
     headerName: "File Type",
-    sortable: false,
+    sortable: true,
     headerAlign: "center",
     align: "center",
     disableColumnMenu: true,
   },
-];
-
-const rows = [
   {
-    id: 1,
-    date: "23/02/23",
-    file_name: "example.png",
-    file_type: "PNG",
+    field: "view",
+    headerName: "View",
+    // sortable: true,
+    headerAlign: "center",
+    align: "center",
+    disableColumnMenu: true,
+    renderCell: (params) => <button>View</button>,
   },
 ];
 
@@ -96,10 +148,9 @@ const AllPerviousMonthlyReports = () => {
               {
                 paddingBottom: "0px",
               },
-            "& .css-68pk0f":
-              {
-                padding: "0px",
-              },
+            "& .css-68pk0f": {
+              padding: "0px",
+            },
             "& .MuiInput-underline:before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::after, .css-jcincl::after":
               {
                 borderBottom: "none !important",
