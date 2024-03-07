@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -7,8 +7,10 @@ import StepLabel from "@mui/material/StepLabel";
 import Typography from "@mui/material/Typography";
 import UserInformation from "./UserInformation";
 import MuleAge from "./MuleAge";
+import CodeNotUse from "./CodeNotUse";
+import SubOfficeTellerCode from "./SubOfficeTellerCode";
 
-const steps = [
+let initialSteps: string[] = [
   "User Information",
   "Mule Age",
   "Codes Not To Use",
@@ -18,6 +20,12 @@ const steps = [
 
 export default function SetUserSection() {
   const [activeStep, setActiveStep] = useState(0);
+
+  const [formData, setFormData] = useState<any>({
+    selectPlatform: "",
+    selectUserEmail: "",
+  });
+
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -25,6 +33,16 @@ export default function SetUserSection() {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+
+  const [steps, setSteps] = useState<string[]>(initialSteps);
+
+  useEffect(() => {
+    if (formData.selectPlatform === "Scion") {
+      setSteps((prevSteps) => [...prevSteps, "High Risk Categories", "Minor"]);
+    } else {
+      setSteps(initialSteps);
+    }
+  }, [formData.selectPlatform]);
 
   return (
     <Box sx={{ width: "100%", height: "75%" }}>
@@ -61,8 +79,12 @@ export default function SetUserSection() {
         </>
       ) : (
         <div className=" flex flex-col justify-between h-full w-full bg-white border-none rounded-[10px] pt-5 px-6 mt-5 overflow-y-auto">
-          {activeStep + 1 === 1 && <UserInformation />}
+          {activeStep + 1 === 1 && (
+            <UserInformation formData={formData} setFormData={setFormData} />
+          )}
           {activeStep + 1 === 2 && <MuleAge />}
+          {activeStep + 1 === 3 && <CodeNotUse />}
+          {activeStep + 1 === 4 && <SubOfficeTellerCode />}
           <div className=" flex w-full pt-2 sticky bottom-0 z-[100000] pb-5 bg-white">
             <button
               color="inherit"

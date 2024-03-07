@@ -11,9 +11,12 @@ const userEmails = [
   { id: 6, email: "daniyalsaleem@gmail.com" },
 ];
 
-const UserInformation = () => {
-  const [selectPlatform, setSelectPlatform] = useState<string>("");
-  const [selectUserEmail, setSelectUserEmail] = useState<string>("");
+interface UserInfoType {
+  formData: any;
+  setFormData: (value: any) => void;
+}
+
+const UserInformation = ({ formData, setFormData }: UserInfoType) => {
   const [openDropDown, setOpenDropDown] = useState<boolean[]>([false, false]);
   const handleDropDownClick = (index: number) => {
     let newOpenDropDown: boolean[] = [];
@@ -33,7 +36,9 @@ const UserInformation = () => {
           onClick={() => handleDropDownClick(0)}
         >
           <span>
-            {selectPlatform ? selectPlatform : "Select Platform Database"}
+            {formData.selectPlatform
+              ? formData.selectPlatform
+              : "Select Platform Database"}
           </span>
           {openDropDown[0] ? (
             <IoIosArrowUp className=" absolute right-[14px] top-[15px] text-lg cursor-pointer" />
@@ -51,7 +56,7 @@ const UserInformation = () => {
               key={i}
               className=" py-2 px-3 capitalize font-medium text-[13px] hover:bg-[#d9d9d9] cursor-pointer "
               onClick={() => {
-                setSelectPlatform(item);
+                setFormData({ ...formData, selectPlatform: item });
                 handleDropDownClick(0);
               }}
             >
@@ -66,7 +71,11 @@ const UserInformation = () => {
           className=" relative flex justify-between text-left rounded-lg bg-[#d9d9d9] text-sm font-medium py-[15px] px-4 w-full"
           onClick={() => handleDropDownClick(1)}
         >
-          <span>{selectUserEmail ? selectUserEmail : "Select User Email"}</span>
+          <span>
+            {formData.selectUserEmail
+              ? formData.selectUserEmail
+              : "Select User Email"}
+          </span>
           {openDropDown[1] ? (
             <IoIosArrowUp className=" absolute right-[14px] top-[15px] text-lg cursor-pointer" />
           ) : (
@@ -83,7 +92,7 @@ const UserInformation = () => {
               key={i}
               className=" py-2 px-3 font-medium text-[13px] hover:bg-[#d9d9d9] cursor-pointer "
               onClick={() => {
-                setSelectUserEmail(item.email);
+                setFormData({ ...formData, selectUserEmail: item.email });
                 handleDropDownClick(1);
               }}
             >
