@@ -165,36 +165,6 @@ const MonthlyReport = () => {
         <div className=" flex gap-3">
           <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-[14px] md:py-3 py-[10px]">
             <Image
-              src={updateSvg}
-              alt="updateSvg"
-              className=" md:block hidden"
-              width={18}
-              height={18}
-            />
-            <span className="md:text-sm text-xs font-normal">Update</span>
-          </button>
-          <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-[14px] md:py-3 py-[10px]">
-            <Image
-              src={saveSvg}
-              alt="saveSvg"
-              className=" md:block hidden"
-              width={18}
-              height={18}
-            />
-            <span className="md:text-sm text-xs font-normal">Save</span>
-          </button>
-          <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-[14px] md:py-3 py-[10px]">
-            <Image
-              src={discardSvg}
-              alt="discardSvg"
-              className=" md:block hidden"
-              width={18}
-              height={18}
-            />
-            <span className="md:text-sm text-xs font-normal">Discard</span>
-          </button>
-          <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-[14px] md:py-3 py-[10px]">
-            <Image
               src={saveCopySvg}
               alt="saveCopySvg"
               className=" md:block hidden"

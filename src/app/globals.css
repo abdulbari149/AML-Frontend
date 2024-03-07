@@ -6,14 +6,34 @@ body {
   background-color: #f9f9f9;
 }
 
+/* AMPLIFY */
 
-[data-amplify-authenticator]{
-height: 100vh !important;
+[data-amplify-authenticator] {
+  height: 100vh !important;
 }
 .amplify-button--primary:hover {
-  background-color: #C4B454 !important;
+  background-color: #c4b454 !important;
 }
 
-.amplify-field__show-password{
-  background-color: #C4B454 !important;
+.amplify-field__show-password {
+  background-color: #c4b454 !important;
+}
+
+/* SET USER PAGE */
+
+.scroll-userinfo-dropdown {
+  overflow-y: scroll;
+}
+
+.scroll-userinfo-dropdown::-webkit-scrollbar {
+  width: 3px;
+}
+
+.scroll-userinfo-dropdown::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 6px;
+}
+
+.scroll-userinfo-dropdown::-webkit-scrollbar-track {
+  background-color: none;
 }
