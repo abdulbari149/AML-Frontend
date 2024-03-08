@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import DropDown from "./common/DropDown";
 
 const platformDatabase = ["Progress", "Scion"];
 const userEmails = [
@@ -29,7 +30,7 @@ const UserInformation = ({ formData, setFormData }: UserInfoType) => {
   return (
     <div className=" flex flex-col gap-5">
       <h3 className=" text-2xl font-semibold">User Information</h3>
-      <div className=" flex flex-col gap-3 w-[270px] ">
+      {/* <div className=" flex flex-col gap-3 w-[270px] ">
         <span className=" text-base font-medium">Select Platform</span>
         <button
           className=" relative flex justify-between text-left rounded-lg bg-[#d9d9d9] text-sm font-medium py-[15px] px-4 w-full"
@@ -64,8 +65,30 @@ const UserInformation = ({ formData, setFormData }: UserInfoType) => {
             </p>
           ))}
         </div>
-      </div>
-      <div className=" flex flex-col gap-3 w-[270px] ">
+      </div> */}
+
+      <DropDown
+        label={"Select Platform Database"}
+        formData={formData}
+        setFormData={setFormData}
+        Data={platformDatabase}
+        type={"selectPlatform"}
+        onClick={() => handleDropDownClick(0)}
+        openDropDown={openDropDown[0]}
+      />
+
+      <DropDown
+        label={"Select User Email"}
+        formData={formData}
+        setFormData={setFormData}
+        Data={userEmails}
+        type={"selectUserEmail"}
+        objectProp={"email"}
+        onClick={() => handleDropDownClick(1)}
+        openDropDown={openDropDown[1]}
+      />
+
+      {/* <div className=" flex flex-col gap-3 w-[270px] ">
         <span className=" text-base font-medium">Select User Email</span>
         <button
           className=" relative flex justify-between text-left rounded-lg bg-[#d9d9d9] text-sm font-medium py-[15px] px-4 w-full"
@@ -100,7 +123,7 @@ const UserInformation = ({ formData, setFormData }: UserInfoType) => {
             </p>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

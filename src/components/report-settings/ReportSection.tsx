@@ -1,4 +1,4 @@
-// 
+//
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
@@ -17,6 +17,7 @@ import {
   GridRowModel,
   GridRowEditStopReasons,
 } from "@mui/x-data-grid";
+import Switch from "@mui/material/Switch";
 
 //ICONS
 import AddIcon from "@mui/icons-material/Add";
@@ -227,7 +228,6 @@ const initialRows: Row[] = [
     type: "DST",
     amount: "$10000",
   },
-
 ];
 
 function calculateColumnWidth(columnName: keyof Row) {
@@ -238,7 +238,6 @@ function calculateColumnWidth(columnName: keyof Row) {
   // Adding some extra padding for better readability
   return maxLength * 7; // Adjust this factor as needed
 }
-
 
 const ReportSection = () => {
   const [open, setOpen] = useState(false);
@@ -278,15 +277,15 @@ const ReportSection = () => {
     }
   };
 
-  const handleProcessRowUpdateError=()=>{
-    console.log('error')
-  }
+  const handleProcessRowUpdateError = () => {
+    console.log("error");
+  };
   const processRowUpdate = (newRow: GridRowModel) => {
-     // @ts-ignore
-    console.log('this is updatedRow',updatedRow)
+    // @ts-ignore
+    console.log("this is updatedRow", updatedRow);
 
     const updatedRow = { ...newRow, isNew: false };
-       // @ts-ignore
+    // @ts-ignore
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
@@ -308,15 +307,16 @@ const ReportSection = () => {
 
     {
       field: "type",
-      headerName: "Type",
+      headerName: "Is this criteria included?",
       sortable: true,
       headerAlign: "center",
       align: "center",
       disableColumnMenu: true,
-      editable: true,
-      type: "singleSelect",
-      valueOptions: ['SRC','DST','OTH'],
+      // editable: true,
+      // type: "singleSelect",
+      // valueOptions: ['SRC','DST','OTH'],
       width: 200,
+      renderCell: () => <Switch inputProps={{ "aria-label": "Switch demo" }} />,
     },
     {
       field: "amount",
@@ -497,20 +497,15 @@ const ReportSection = () => {
           rows={rows}
           columns={columns}
           hideFooterPagination={false}
-          slots={{ toolbar: SearchTable, 
-            pagination: CustomPagination ,
-            
-          
-          }}
+          slots={{ toolbar: SearchTable, pagination: CustomPagination }}
           initialState={initialState}
           editMode="row"
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
           onRowEditStop={handleRowEditStop}
-          processRowUpdate={
-            (updatedRow, originalRow) =>
+          processRowUpdate={(updatedRow, originalRow) =>
             processRowUpdate(updatedRow)
-            }
+          }
           onProcessRowUpdateError={handleProcessRowUpdateError}
           slotProps={{
             toolbar: { setRows, setRowModesModel },
