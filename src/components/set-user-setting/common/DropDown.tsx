@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const DropDown = ({
@@ -11,7 +11,6 @@ const DropDown = ({
   objectProp,
   openDropDown,
 }: any) => {
-  console.log(formData);
   return (
     <>
       <div className="flex flex-col gap-3 w-[270px]">
@@ -20,9 +19,7 @@ const DropDown = ({
           className="relative flex justify-between text-left rounded-lg bg-[#d9d9d9] text-sm font-medium py-[15px] px-4 w-full"
           onClick={onClick}
         >
-          <span>
-            {formData[type] ? formData[type] : label}
-          </span>
+          <span>{formData[type] ? formData[type] : label}</span>
           {openDropDown ? (
             <IoIosArrowUp className="absolute right-[14px] top-[15px] text-lg cursor-pointer" />
           ) : (

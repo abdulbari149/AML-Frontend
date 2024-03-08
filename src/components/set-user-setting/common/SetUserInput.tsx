@@ -20,6 +20,7 @@ const SetUserInput = ({
         type={type}
         placeholder={placeholder}
         name={name}
+        value={value}
         onChange={onChange}
       />
     </div>

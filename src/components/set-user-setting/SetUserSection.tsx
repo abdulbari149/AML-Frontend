@@ -18,7 +18,6 @@ let initialSteps: string[] = [
   "Mule Age",
   "Codes Not To Use",
   "Sub Office Teller Code",
-  "Criteria",
 ];
 
 export default function SetUserSection() {
@@ -88,9 +87,8 @@ export default function SetUserSection() {
           {activeStep + 1 === 2 && <MuleAge />}
           {activeStep + 1 === 3 && <CodeNotUse />}
           {activeStep + 1 === 4 && <SubOfficeTellerCode />}
-          {activeStep + 1 === 5 && <Criteria />}
-          {activeStep + 1 === 6 && <HighRisk />}
-          {activeStep + 1 === 7 && <Minor />}
+          {activeStep + 1 === 5 && <HighRisk />}
+          {activeStep + 1 === 6 && <Minor />}
           <div className=" flex w-full pt-2 sticky bottom-0 z-[100000] pb-5 bg-white">
             <button
               color="inherit"

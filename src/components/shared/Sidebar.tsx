@@ -113,7 +113,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = React.useState(false);
 
   // PAGES LINK
-  const [currentPage, setCurrentPage] = React.useState<PagesRouteType>();
+  const [currentPage, setCurrentPage] = React.useState<PagesRouteType | null>();
 
   React.useEffect(() => {
     const filterPathData = mainLinks.find((item) => item.path === pathname);
@@ -122,8 +122,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
     if (!filterPathData) {
       setCurrentPage(filterPathSubData);
     }
-    console.log(filterPathData);
-  }, []);
+  }, [pathname]);
 
   const handleDrawer = () => {
     setOpen((prev) => !prev);
@@ -135,10 +134,17 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
       <Box className={"md:flex hidden"}>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
-          <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-            <h3 className=" text-4xl font-bold"> {currentPage?.title}</h3>
+          <Toolbar
+            sx={{
+              display: "flex",
+              justifyContent: currentPage ? "space-between" : "flex-end",
+            }}
+          >
+            {currentPage && (
+              <h3 className=" text-4xl font-bold"> {currentPage?.title}</h3>
+            )}
             <div className=" flex gap-2 items-center">
-              <UserProfileSettingMenu/>
+              <UserProfileSettingMenu />
 
               <Image
                 src={sampleUser}
@@ -184,50 +190,53 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
             </div>
           </DrawerHeader>
           <List sx={{ height: "100%" }}>
-            {mainLinks.map((item, index) => (
-              <Link key={index} href={item.path}>
-                <ListItem
-                  key={index}
-                  disablePadding
-                  sx={{ display: "block" }}
-                  onClick={() => {
-                    setCurrentPage(item);
-                  }}
-                >
-                  <ListItemButton
-                    sx={{
-                      minHeight: 45,
-                      paddingTop: "0px",
-                      paddingBottom: "0px",
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                  >
-                    <div className=" flex gap-1">
-                      <ListItemIcon
+            {mainLinks.map(
+              (item, index) =>
+                item.type === "route" && (
+                  <Link key={index} href={item.path}>
+                    <ListItem
+                      key={index}
+                      disablePadding
+                      sx={{ display: "block" }}
+                      onClick={() => {
+                        setCurrentPage(item);
+                      }}
+                    >
+                      <ListItemButton
                         sx={{
-                          minWidth: 0,
-                          mr: open ? 3 : "auto",
-                          justifyContent: "center",
+                          minHeight: 45,
+                          paddingTop: "0px",
+                          paddingBottom: "0px",
+                          justifyContent: open ? "initial" : "center",
+                          px: 2.5,
                         }}
                       >
-                        <Image alt="icon" src={item.icon} />
-                      </ListItemIcon>
-                      <p
-                        className={` ${
-                          item.path === currentPage?.path
-                            ? "text-base font-bold"
-                            : "text-[15px] font-normal"
-                        } `}
-                        style={{ display: open ? "block" : "none" }}
-                      >
-                        {item.title}
-                      </p>
-                    </div>
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-            ))}
+                        <div className=" flex gap-1">
+                          <ListItemIcon
+                            sx={{
+                              minWidth: 0,
+                              mr: open ? 3 : "auto",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Image alt="icon" src={item.icon} />
+                          </ListItemIcon>
+                          <p
+                            className={` ${
+                              item.path === currentPage?.path
+                                ? "text-base font-bold"
+                                : "text-[15px] font-normal"
+                            } `}
+                            style={{ display: open ? "block" : "none" }}
+                          >
+                            {item.title}
+                          </p>
+                        </div>
+                      </ListItemButton>
+                    </ListItem>
+                  </Link>
+                )
+            )}
           </List>
           <List sx={{ height: "100px" }}>
             {subLinks.map((item, index) => (

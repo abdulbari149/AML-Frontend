@@ -74,6 +74,19 @@ export const mainLinks: PagesRouteType[] = [
     path: "/set-user-setting",
     type: "route",
   },
+  {
+    id: 11,
+    title: "Users Report Setting",
+    icon: historySvg,
+    path: "/view-users-report-setting",
+    type: "route",
+  },
+  {
+    id: 12,
+    icon: historySvg,
+    path: "/view-user-report-setting/:id",
+    type: "view-user-report-setting",
+  },
 ];
 
 export const subLinks: PagesRouteType[] = [
