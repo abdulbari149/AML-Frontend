@@ -9,6 +9,9 @@ import UserInformation from "./UserInformation";
 import MuleAge from "./MuleAge";
 import CodeNotUse from "./CodeNotUse";
 import SubOfficeTellerCode from "./SubOfficeTellerCode";
+import Criteria from "./Criteria";
+import HighRisk from "./HighRisk";
+import Minor from "./Minor";
 
 let initialSteps: string[] = [
   "User Information",
@@ -85,6 +88,9 @@ export default function SetUserSection() {
           {activeStep + 1 === 2 && <MuleAge />}
           {activeStep + 1 === 3 && <CodeNotUse />}
           {activeStep + 1 === 4 && <SubOfficeTellerCode />}
+          {activeStep + 1 === 5 && <Criteria />}
+          {activeStep + 1 === 6 && <HighRisk />}
+          {activeStep + 1 === 7 && <Minor />}
           <div className=" flex w-full pt-2 sticky bottom-0 z-[100000] pb-5 bg-white">
             <button
               color="inherit"

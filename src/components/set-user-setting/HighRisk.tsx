@@ -3,21 +3,19 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { MdDelete, MdEdit } from "react-icons/md";
 
 interface FormData {
-  code: string;
-  description: string;
+  highRiskCode: string;
   value: string;
 }
 
-const SubOfficeTellerCode = () => {
+const HighRisk = () => {
   const [selectValue, setSelectValue] = useState<string>("");
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<FormData>({
-    code: "",
-    description: "",
+    highRiskCode: "",
     value: "",
   });
-  const [officeTellerCodes, setOfficeTellerCodes] = useState<FormData[]>([]);
+  const [highRiskCodes, setHighRiskCodes] = useState<FormData[]>([]);
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -27,49 +25,32 @@ const SubOfficeTellerCode = () => {
   };
 
   const handleAddCode = (): void => {
-    if (formData.code.trim() === "") return;
-    setOfficeTellerCodes([...officeTellerCodes, formData]);
-    setFormData({ code: "", description: "", value: "" });
+    if (formData.highRiskCode.trim() === "") return;
+    setHighRiskCodes([...highRiskCodes, formData]);
+    setFormData({ highRiskCode: "", value: "" });
     setSelectValue("");
   };
 
   return (
     <div className=" flex flex-col gap-5">
       <h3 className=" text-2xl font-semibold capitalize">
-        Sub Office Teller Code
+        High Risk Categories
       </h3>
       <div className="flex gap-12">
         <div className=" flex flex-col gap-2 items-start">
-            <div className=" flex items-center gap-4">
-
           <div className=" w-[300px] flex flex-col gap-2 justify-center">
-            <label htmlFor={"code"} className=" text-base font-medium">
-              {"Code"}
+            <label htmlFor={"highRiskCode"} className=" text-base font-medium">
+              {"Category"}
             </label>
             <input
               className=" rounded-md p-[10px] bg-[#F1F1F1] text-[15px] font-normal placeholder:text-sm placeholder:font-light focus:outline-none"
               type="number"
               placeholder={"e.g. 2148"}
-              name={"code"}
-              value={formData.code}
+              name={"highRiskCode"}
+              value={formData.highRiskCode}
               onChange={handleFormChange}
             />
           </div>
-          <div className=" w-[300px] flex flex-col gap-2 justify-center">
-            <label htmlFor={"description"} className=" text-base font-medium">
-              {"Description"}
-            </label>
-            <input
-              className=" rounded-md p-[10px] bg-[#F1F1F1] text-[15px] font-normal placeholder:text-sm placeholder:font-light focus:outline-none"
-              type="text"
-              placeholder={"e.g. text"}
-              name={"description"}
-              value={formData.description}
-              onChange={handleFormChange}
-            />
-          </div>
-          </div>
-
           <div className="flex flex-col gap-2 w-[300px] ">
             <span className=" text-base font-medium">Value</span>
             <div className="relative flex flex-col gap-2 w-[300px]">
@@ -112,23 +93,21 @@ const SubOfficeTellerCode = () => {
             {"Add"}
           </button>
         </div>
-        {officeTellerCodes.length > 0 && (
+        {highRiskCodes.length > 0 && (
           <div className=" rounded-md h-[260px] w-[40%] bg-[#F1F1F1]">
             <div className="flex items-center rounded-tl-md rounded-tr-md py-2 text-white font-medium bg-[#47474761] sticky top-0">
-              <h4 className="flex-1 text-center">Code</h4>
-              <h4 className="flex-1 text-center">Description</h4>
+              <h4 className="flex-1 text-center">High Risk Codes</h4>
               <h4 className="flex-1 text-center">Value</h4>
               <h4 className="flex-1 text-center">Actions</h4>
             </div>
 
             <div className=" divide-y overflow-y-auto h-full">
-              {officeTellerCodes.map((item, i) => (
+              {highRiskCodes.map((item, i) => (
                 <div
                   key={i}
                   className="flex justify-around items-center text-sm font-medium py-[6px] bg-[#f9f9f9] "
                 >
-                  <p className="flex-1 text-center">{item.code}</p>
-                  <p className="flex-1 text-center">{item.description}</p>
+                  <p className="flex-1 text-center">{item.highRiskCode}</p>
                   <p className="flex-1 text-center">{item.value}</p>
                   <div className=" flex-1 justify-center flex gap-6">
                     <MdEdit className=" text-[17px] cursor-pointer" />
@@ -144,4 +123,4 @@ const SubOfficeTellerCode = () => {
   );
 };
 
-export default SubOfficeTellerCode;
+export default HighRisk;
