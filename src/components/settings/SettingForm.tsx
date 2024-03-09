@@ -57,7 +57,7 @@ const SettingForm = () => {
             className="flex flex-col justify-center items-center border-2 border-dashed border-[#000000] rounded-lg w-36 h-44 cursor-pointer"
             onClick={() => document.getElementById("account-logo")?.click()}
           >
-            <input type="file" className="hidden" id="account-logo" />
+            <input type="file" className="items-start flex w-full" id="account-logo" />
             <button className="text-xs font-semibold text-center text-[#F9F9F9] px-2 py-1 rounded-sm bg-[#000000]">
               Add Logo
             </button>

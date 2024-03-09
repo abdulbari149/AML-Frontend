@@ -87,6 +87,13 @@ export const mainLinks: PagesRouteType[] = [
     path: "/view-user-report-setting/:id",
     type: "view-user-report-setting",
   },
+  {
+    id: 9,
+    title: "User Management",
+    icon: historySvg,
+    path: "/add-user",
+    type: "route",
+  },
 ];
 
 export const subLinks: PagesRouteType[] = [

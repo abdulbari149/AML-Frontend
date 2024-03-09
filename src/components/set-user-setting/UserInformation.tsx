@@ -1,16 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import DropDown from "./common/DropDown";
+import { listUsers } from "@/api/user";
 
 const platformDatabase = ["Progress", "Scion"];
-const userEmails = [
-  { id: 1, email: "daniyalshiekh166@gmail.com" },
-  { id: 2, email: "daniyalshiekh@gmail.com" },
-  { id: 3, email: "daniyal@gmail.com" },
-  { id: 4, email: "daniyal123@gmail.com" },
-  { id: 5, email: "daniy@gmail.com" },
-  { id: 6, email: "daniyalsaleem@gmail.com" },
-];
 
 interface UserInfoType {
   formData: any;
@@ -19,6 +12,11 @@ interface UserInfoType {
 
 const UserInformation = ({ formData, setFormData }: UserInfoType) => {
   const [openDropDown, setOpenDropDown] = useState<boolean[]>([false, false]);
+
+  const [userEmails, setUserEmails] = useState<{ id: string; email: string }[]>(
+    []
+  );
+
   const handleDropDownClick = (index: number) => {
     let newOpenDropDown: boolean[] = [];
     newOpenDropDown = openDropDown.map((item, i) => {
@@ -26,6 +24,21 @@ const UserInformation = ({ formData, setFormData }: UserInfoType) => {
     });
     setOpenDropDown(newOpenDropDown);
   };
+
+  useEffect(() => {
+    listUsers()
+      .then((data) => {
+        setUserEmails(() =>
+          data.map((item: any) => {
+            return {
+              id: item.id,
+              email: item.email,
+            };
+          })
+        );
+      })
+      .catch(console.log);
+  }, []);
 
   return (
     <div className=" flex flex-col gap-5">

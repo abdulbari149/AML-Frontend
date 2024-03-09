@@ -125,7 +125,7 @@ const columns: GridColDef[] = [
     headerName: "Serial No",
     // width: 70,
     headerAlign: "left",
-    align: "left",
+    align: "left",  
     sortable: true,
     disableColumnMenu: true,
   },

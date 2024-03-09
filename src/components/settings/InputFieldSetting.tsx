@@ -1,20 +1,28 @@
 import React from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 
-interface IntputFieldSettingType {
+interface IntputFieldSettingProps<TValue extends string | number >{
   label: string;
   type: string;
-  placeholder: string;
   name: string;
-  onChange?: any;
-  value?: any;
+
+  placeholder: string;
+  error?: string;
+  onChange: (text: TValue) => void;
+  value: TValue;
 }
 
-const InputFieldSetting = ({
-  label,
-  type,
-  placeholder,
-  name,
-}: IntputFieldSettingType) => {
+function InputFieldSetting<TValue extends string | number>(props: IntputFieldSettingProps<TValue>) {
+  const {
+    label,
+    type,
+    placeholder,
+    error,
+    name,
+    onChange,
+    value
+  } = props
+
   return (
     <div className=" w-full flex flex-col gap-1 justify-center">
       <label htmlFor={name} className=" text-sm font-medium">
@@ -25,7 +33,12 @@ const InputFieldSetting = ({
         type={type}
         placeholder={placeholder}
         name={name}
+        value={value}
+        onChange={(e) => {
+          onChange(e.target.value as TValue)
+        }}
       />
+      {error && <p className=" text-[12px] pt-1 text-red-500">{error}</p>}
     </div>
   );
 };
