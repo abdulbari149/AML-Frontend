@@ -16,7 +16,6 @@ const Form = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (otp) {
-      console.log(otp);
       succesToastify("OTP verified successfully.");
     } else {
       errorToastify("Invalid OTP");

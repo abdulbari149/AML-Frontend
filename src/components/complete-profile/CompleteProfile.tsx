@@ -40,7 +40,6 @@ const CompleteProfile = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (formData) {
-      console.log(formData);
       succesToastify("Successfuly Completed Profile");
       setFormData({
         branch: "",

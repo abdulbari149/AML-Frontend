@@ -10,18 +10,6 @@
       "StackName": "amplify-amlfrontend-staging-175002",
       "StackId": "arn:aws:cloudformation:eu-west-1:767397742563:stack/amplify-amlfrontend-staging-175002/780a6510-d4cf-11ee-ae03-0a213025c553",
       "AmplifyAppId": "d3w34t4rp9vxrc"
-    },
-    "categories": {
-      "auth": {
-        "AMLFrontend": {}
-      },
-      "storage": {
-        "s3amldatafilestorage": {},
-        "amlfrontende3c4e44c": {
-          "bucketName": "alm-platform-bucket",
-          "region": "eu-west-1"
-        }
-      }
     }
   }
 }

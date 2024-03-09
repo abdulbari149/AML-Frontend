@@ -11,11 +11,13 @@ interface FormData {
   value: string;
 }
 
-const SubOfficeTellerCode = () => {
-  const [selectValue, setSelectValue] = useState<string>("");
+const SubOfficeTellerCode = ({
+  formData,
+  setFormData,
+}: SetUserReportFormType) => {
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
 
-  const [formData, setFormData] = useState<FormData>({
+  const [officeTellerData, setOfficeTellerData] = useState<FormData>({
     code: "",
     description: "",
     value: "",
@@ -26,14 +28,18 @@ const SubOfficeTellerCode = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ): void => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const newValue = name === "description" ? value : parseInt(value);
+    setOfficeTellerData({ ...officeTellerData, [name]: newValue });
   };
 
   const handleAddCode = (): void => {
-    if (formData.code.trim() === "") return;
-    setOfficeTellerCodes([...officeTellerCodes, formData]);
-    setFormData({ code: "", description: "", value: "" });
-    setSelectValue("");
+    if (officeTellerData.code === null) return;
+    setOfficeTellerCodes([...officeTellerCodes, officeTellerData]);
+    setFormData((prevFormData: any) => ({
+      ...prevFormData,
+      ["subOfficeTellerCode"]: [...officeTellerCodes, officeTellerData],
+    }));
+    setOfficeTellerData({ code: "", description: "", value: "" });
   };
 
   return (
@@ -49,27 +55,27 @@ const SubOfficeTellerCode = () => {
               type={"number"}
               placeholder={"e.g. 2148"}
               name={"code"}
-              value={formData.code}
+              value={officeTellerData.code}
               onChange={handleFormChange}
-              required={false}
+              fieldType={"subOfficeTellerCode"}
             />
             <SetUserInput
               label={"Description"}
               type={"text"}
               placeholder={"e.g. text"}
               name={"description"}
-              value={formData.description}
+              value={officeTellerData.description}
               onChange={handleFormChange}
-              required={false}
+              fieldType={"subOfficeTellerCode"}
             />
           </div>
 
           <DropDown
             label={"Value"}
-            formData={formData}
-            setFormData={setFormData}
-            Data={["Yes", "No"]}
             type={"value"}
+            Data={["Yes", "No"]}
+            formData={officeTellerData}
+            setFormData={setOfficeTellerData}
             onClick={() => setOpenDropDown((prev) => !prev)}
             openDropDown={openDropDown}
           />

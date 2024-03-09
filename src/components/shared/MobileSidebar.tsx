@@ -61,7 +61,6 @@ export default function MobileSidebar(
     if (!filterPathData) {
       setCurrentPage(filterPathSubData);
     }
-    console.log(filterPathData);
   }, []);
 
   const handleDrawerClose = () => {

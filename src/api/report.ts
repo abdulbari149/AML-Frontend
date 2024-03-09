@@ -7,7 +7,7 @@ export const createReportSettings = async (body: ReportSettings) => {
       ...body,
     });
 
-    return response.data.data
+    return response.data
   } catch (error) {
     console.log(error);
   }

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 // UTILS
@@ -8,19 +8,40 @@ import { SearchTable } from "@/utils/SearchTable";
 import { MdEdit } from "react-icons/md";
 import { FaRegListAlt } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { listUsers } from "@/api/user";
 
 interface Row {
-  id: number;
+  id: string;
   email: string;
 }
 
 const ViewUsersReportSetting = () => {
   const router = useRouter();
 
+  const [userEmails, setUserEmails] = useState<{ id: string; email: string }[]>(
+    []
+  );
+
+  useEffect(() => {
+    listUsers()
+      .then((data) => {
+        setUserEmails(() =>
+          data.map((item: any) => {
+            return {
+              id: item.id,
+              email: item.email,
+            };
+          })
+        );
+      })
+      .catch(console.log);
+  }, []);
+
   const handleSingleUserReport = (rowData: Row) => {
     router.push(`/view-user-report-setting/${rowData.id}`);
   };
 
+  // const rows = userEmails && userEmails;
   const rows = [
     { id: 1, email: "daniyalshiekh166@gmail.com" },
     { id: 2, email: "daniyal123@gmail.com" },
@@ -79,83 +100,84 @@ const ViewUsersReportSetting = () => {
   return (
     <>
       <div className=" h-12"></div>
-
       {/* TABLE */}
-      <div
-        style={{
-          height: "80%",
-          width: "100%",
-          backgroundColor: "#fff",
-          border: "none",
-          borderRadius: "10px",
-        }}
-      >
-        <DataGrid
-          pagination
-          sx={{
+      {userEmails.length > 0 && (
+        <div
+          style={{
+            height: "80%",
+            width: "100%",
+            backgroundColor: "#fff",
             border: "none",
-            "& .MuiDataGrid-columnHeaderTitle": {
-              fontWeight: "600",
-            },
-            "& .MuiDataGrid-columnHeader": {
-              fontSize: "14px",
-            },
-            "& .MuiDataGrid-columnHeader:focus-within, .MuiDataGrid-cell:focus":
-              {
-                outline: "none",
-              },
-            // SEARCH
-            "& .MuiBox-root": {
-              display: "flex",
-              position: "absolute",
-              right: 0,
-              top: "-55px",
-              background: "white",
-              borderRadius: "12px",
-              fontSize: "14px",
-              padding: "6px 12px",
-              width: "244px",
-            },
-            "& .css-3be3ve-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter":
-              {
-                paddingBottom: "0px",
-              },
-            "& .css-68pk0f": {
-              padding: "0px",
-            },
-            "& .MuiInput-underline:before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::after, .css-jcincl::after":
-              {
-                borderBottom: "none !important",
-              },
-            // PAGINATION
-            "& .Mui-selected, .Mui-selected:hover": {
-              backgroundColor: "rgba(0, 0, 0, 0.1) !important",
-              color: "black !important",
-            },
-            "& .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar": {
-              paddingRight: "24px",
-            },
-            "& .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon": {
-              display: "none",
-            },
-            "& .css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input":
-              {
-                paddingRight: "4px",
-              },
-            "& .css-194a1fa-MuiSelect-select-MuiInputBase-input ": {
-              padding: "2px 4px !important",
-              border: "1px solid",
-              borderRadius: "6px",
-              fontSize: "14px",
-            },
+            borderRadius: "10px",
           }}
-          rows={rows}
-          columns={columns}
-          hideFooterPagination={false}
-          slots={{ toolbar: SearchTable, pagination: CustomPagination }}
-          initialState={initialState}
-        />
-      </div>
+        >
+          <DataGrid
+            pagination
+            sx={{
+              border: "none",
+              "& .MuiDataGrid-columnHeaderTitle": {
+                fontWeight: "600",
+              },
+              "& .MuiDataGrid-columnHeader": {
+                fontSize: "14px",
+              },
+              "& .MuiDataGrid-columnHeader:focus-within, .MuiDataGrid-cell:focus":
+                {
+                  outline: "none",
+                },
+              // SEARCH
+              "& .MuiBox-root": {
+                display: "flex",
+                position: "absolute",
+                right: 0,
+                top: "-55px",
+                background: "white",
+                borderRadius: "12px",
+                fontSize: "14px",
+                padding: "6px 12px",
+                width: "244px",
+              },
+              "& .css-3be3ve-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter":
+                {
+                  paddingBottom: "0px",
+                },
+              "& .css-68pk0f": {
+                padding: "0px",
+              },
+              "& .MuiInput-underline:before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::after, .css-jcincl::after":
+                {
+                  borderBottom: "none !important",
+                },
+              // PAGINATION
+              "& .Mui-selected, .Mui-selected:hover": {
+                backgroundColor: "rgba(0, 0, 0, 0.1) !important",
+                color: "black !important",
+              },
+              "& .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar": {
+                paddingRight: "24px",
+              },
+              "& .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon": {
+                display: "none",
+              },
+              "& .css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input.css-194a1fa-MuiSelect-select-MuiInputBase-input":
+                {
+                  paddingRight: "4px",
+                },
+              "& .css-194a1fa-MuiSelect-select-MuiInputBase-input ": {
+                padding: "2px 4px !important",
+                border: "1px solid",
+                borderRadius: "6px",
+                fontSize: "14px",
+              },
+            }}
+            rows={rows}
+            columns={columns}
+            hideFooterPagination={false}
+            slots={{ toolbar: SearchTable, pagination: CustomPagination }}
+            initialState={initialState}
+          />
+        </div>
+      )}
     </>
   );
 };

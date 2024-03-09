@@ -29,7 +29,6 @@ const Form = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (loginData) {
-      console.log(loginData);
       succesToastify("Successfuly Logged In");
       setLoginData({
         email: "",

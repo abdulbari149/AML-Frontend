@@ -1,7 +1,6 @@
 import React from "react";
 
 const CardView = ({ label, data }: any) => {
-  console.log(data);
 
   return (
     <section className="flex flex-col gap-3">

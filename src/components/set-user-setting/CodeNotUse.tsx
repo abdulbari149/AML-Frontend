@@ -6,32 +6,32 @@ import DropDown from "./common/DropDown";
 import SetUserInput from "./common/SetUserInput";
 
 interface FormData {
-  code: string;
+  code: string | null;
   value: string;
 }
 
-const CodeNotUse = () => {
-  const [selectValue, setSelectValue] = useState<string>("");
+const CodeNotUse = ({ formData, setFormData }: SetUserReportFormType) => {
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
 
-  const [formData, setFormData] = useState<FormData>({
+  const [codeNotUseData, setCodeNotUseData] = useState<FormData>({
     code: "",
     value: "",
   });
   const [codes, setCodes] = useState<FormData[]>([]);
 
-  const handleFormChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ): void => {
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setCodeNotUseData({ ...codeNotUseData, [name]: parseInt(value) });
   };
 
   const handleAddCode = (): void => {
-    if (formData.code.trim() === "") return;
-    setCodes([...codes, formData]);
-    setFormData({ code: "", value: "" });
-    setSelectValue("");
+    if (codeNotUseData.code === null) return;
+    setCodes([...codes, codeNotUseData]);
+    setFormData((prevFormData: any) => ({
+      ...prevFormData,
+      ["codeNotToUse"]: [...codes, codeNotUseData],
+    }));
+    setCodeNotUseData({ code: "", value: "" });
   };
 
   return (
@@ -42,18 +42,19 @@ const CodeNotUse = () => {
           <SetUserInput
             label={"Code"}
             type={"number"}
-            placeholder={"e.g. 2148"}
             name={"code"}
-            value={formData.code}
+            placeholder={"e.g. 2148"}
+            value={codeNotUseData.code}
             onChange={handleFormChange}
-            required={false}
+            fieldType={"codeNotToUse"}
           />
           <DropDown
             label={"Value"}
-            formData={formData}
-            setFormData={setFormData}
-            Data={["Yes", "No"]}
             type={"value"}
+            objectProp={"value"}
+            Data={["Yes", "No"]}
+            formData={codeNotUseData}
+            setFormData={setCodeNotUseData}
             onClick={() => setOpenDropDown((prev) => !prev)}
             openDropDown={openDropDown}
           />

@@ -8,7 +8,28 @@ const SetUserInput = ({
   placeholder,
   onChange,
   required,
+  formData,
+  setFormData,
+  fieldType,
 }: any) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ): void => {
+    const { name, value } = e.target;
+    fieldType
+      ? setFormData((prevFormData: any) => ({
+          ...prevFormData,
+          [fieldType]: {
+            ...prevFormData[fieldType],
+            [name]: parseInt(value),
+          },
+        }))
+      : setFormData((prevFormData: any) => ({
+          ...prevFormData,
+          [name]: parseInt(value),
+        }));
+  };
+
   return (
     <div className=" w-[270px] flex flex-col gap-2 justify-center">
       <label htmlFor={name} className=" text-base font-medium">
@@ -21,7 +42,7 @@ const SetUserInput = ({
         placeholder={placeholder}
         name={name}
         value={value}
-        onChange={onChange}
+        onChange={onChange ? onChange : handleChange}
       />
     </div>
   );

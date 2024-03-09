@@ -6,16 +6,15 @@ import DropDown from "./common/DropDown";
 import SetUserInput from "./common/SetUserInput";
 
 interface FormData {
-  highRiskCode: string;
+  code: string;
   value: string;
 }
 
-const HighRisk = () => {
-  const [selectValue, setSelectValue] = useState<string>("");
+const HighRisk = ({ formData, setFormData }: SetUserReportFormType) => {
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
 
-  const [formData, setFormData] = useState<FormData>({
-    highRiskCode: "",
+  const [highRiskData, setHighRiskData] = useState<FormData>({
+    code: "",
     value: "",
   });
   const [highRiskCodes, setHighRiskCodes] = useState<FormData[]>([]);
@@ -24,14 +23,17 @@ const HighRisk = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ): void => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setHighRiskData({ ...highRiskData, [name]: parseInt(value) });
   };
 
   const handleAddCode = (): void => {
-    if (formData.highRiskCode.trim() === "") return;
-    setHighRiskCodes([...highRiskCodes, formData]);
-    setFormData({ highRiskCode: "", value: "" });
-    setSelectValue("");
+    if (highRiskData.code === null) return;
+    setHighRiskCodes([...highRiskCodes, highRiskData]);
+    setFormData((prevFormData: any) => ({
+      ...prevFormData,
+      ["highRiskCategories"]: [...highRiskCodes, highRiskData],
+    }));
+    setHighRiskData({ code: "", value: "" });
   };
 
   return (
@@ -42,18 +44,18 @@ const HighRisk = () => {
       <div className="flex gap-12">
         <div className=" flex flex-col gap-2 items-start">
           <SetUserInput
-            label={"Category"}
+            label={"Code"}
             type={"number"}
             placeholder={"e.g. 2148"}
-            name={"highRiskCode"}
-            value={formData.highRiskCode}
+            name={"code"}
+            value={highRiskData.code}
             onChange={handleFormChange}
-            required={false}
+            fieldType={"highRiskCategories"}
           />
           <DropDown
             label={"Value"}
-            formData={formData}
-            setFormData={setFormData}
+            formData={highRiskData}
+            setFormData={setHighRiskData}
             Data={["Yes", "No"]}
             type={"value"}
             onClick={() => setOpenDropDown((prev) => !prev)}
@@ -75,7 +77,7 @@ const HighRisk = () => {
                   key={i}
                   className="flex justify-around items-center text-sm font-medium py-[6px] bg-[#f9f9f9] "
                 >
-                  <p className="flex-1 text-center">{item.highRiskCode}</p>
+                  <p className="flex-1 text-center">{item.code}</p>
                   <p className="flex-1 text-center">{item.value}</p>
                   <div className=" flex-1 justify-center flex gap-6">
                     <MdEdit className=" text-[17px] cursor-pointer" />
