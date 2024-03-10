@@ -4,6 +4,8 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import DropDown from "./common/DropDown";
 import AddButton from "./common/AddButton";
 import SetUserInput from "./common/SetUserInput";
+import { handleEditField } from "./actions/edit";
+import { handleDeleteField } from "./actions/delete";
 
 interface FormData {
   code: string;
@@ -100,8 +102,31 @@ const SubOfficeTellerCode = ({
                   <p className="flex-1 text-center">{item.description}</p>
                   <p className="flex-1 text-center">{item.value}</p>
                   <div className=" flex-1 justify-center flex gap-6">
-                    <MdEdit className=" text-[17px] cursor-pointer" />
-                    <MdDelete className=" text-[17px] cursor-pointer text-[#d11a2a]" />
+                    <MdEdit
+                      className=" text-[17px] cursor-pointer"
+                      onClick={() =>
+                        handleEditField(
+                          item,
+                          setOfficeTellerData,
+                          officeTellerCodes,
+                          setOfficeTellerCodes,
+                          setFormData,
+                          "subOfficeTellerCode"
+                        )
+                      }
+                    />
+                    <MdDelete
+                      className=" text-[17px] cursor-pointer text-[#d11a2a]"
+                      onClick={() =>
+                        handleDeleteField(
+                          i,
+                          officeTellerCodes,
+                          setOfficeTellerCodes,
+                          setFormData,
+                          "subOfficeTellerCode"
+                        )
+                      }
+                    />
                   </div>
                 </div>
               ))}

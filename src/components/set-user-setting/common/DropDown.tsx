@@ -15,7 +15,7 @@ const DropDown = ({
   const [selectedEmail, setSelectedEmail] = useState(label);
   return (
     <>
-      <div className="flex flex-col gap-3 w-[270px]">
+      <div className="relative flex flex-col gap-3 w-[270px]">
         <span className="text-base font-medium">{label}</span>
         <button
           className="relative flex justify-between text-left rounded-lg bg-[#d9d9d9] text-sm font-medium py-[15px] px-4 w-full"
@@ -37,7 +37,7 @@ const DropDown = ({
         <div
           className={`${
             openDropDown ? "block" : "hidden"
-          } top-14 rounded-lg z-50 w-[270px] h-fit py-[6px] bg-[#f9f9f9]  overflow-y-auto scroll-userinfo-dropdown`}
+          } absolute top-24 rounded-lg z-50 w-[270px] max-h-40 py-[6px] bg-[#f9f9f9]  overflow-y-auto scroll-userinfo-dropdown`}
         >
           {Data.map((item: any, i: number) => (
             <p

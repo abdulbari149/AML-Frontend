@@ -14,7 +14,7 @@ import HighRisk from "./HighRisk";
 import Minor from "./Minor";
 import axios from "axios";
 import { createReportSettings } from "@/api/report";
-import { succesToastify } from "@/helpers/toast";
+import { errorToastify, succesToastify } from "@/helpers/toast";
 
 let initialSteps: string[] = [
   "User Information",
@@ -24,7 +24,7 @@ let initialSteps: string[] = [
 ];
 
 export default function SetUserSection() {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const [steps, setSteps] = useState<string[]>(initialSteps);
 
   const [formData, setFormData] = useState<ReportSettings>({
@@ -41,21 +41,77 @@ export default function SetUserSection() {
   });
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setActiveStep((prevActiveStep) =>
+      prevActiveStep === 1 ? prevActiveStep : prevActiveStep - 1
+    );
   };
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    switch (activeStep) {
+      case 1: {
+        console.log(activeStep);
+        formData.platform && formData.userId
+          ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
+          : errorToastify("Required All fields");
+        return;
+      }
+      case 2: {
+        formData.muleAge.greaterThan && formData.muleAge.lessThan
+          ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
+          : errorToastify("Required All fields");
+        return;
+      }
+      case 3: {
+        formData.codeNotToUse.length > 0
+          ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
+          : errorToastify("Required All fields");
+        return;
+      }
+      case 4: {
+        formData.subOfficeTellerCode.length > 0
+          ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
+          : errorToastify("Required All fields");
+        return;
+      }
+      case 5: {
+        formData.highRiskCategories && formData.highRiskCategories?.length > 0
+          ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
+          : errorToastify("Required All fields");
+        return;
+      }
+      case 6: {
+        formData.minorLessThan
+          ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
+          : errorToastify("Required All fields");
+        return;
+      }
+    }
   };
 
-  const handleSubmit = async () => {
-    console.log(formData);
+  const handlePostApi = async () => {
     const submitData = await createReportSettings(formData);
     if (submitData) {
       succesToastify(submitData?.message as string);
       setActiveStep(1);
+      console.log("submit: ", submitData);
     }
-    console.log("submit: ", submitData);
+  };
+
+  const handleSubmit = async () => {
+    switch (activeStep) {
+      case 4: {
+        formData.subOfficeTellerCode.length > 0
+          ? handlePostApi()
+          : errorToastify("Required All fields");
+        return;
+      }
+      case 6: {
+        formData.minorLessThan
+          ? handlePostApi()
+          : errorToastify("Required All fields");
+        return;
+      }
+    }
   };
 
   useEffect(() => {
@@ -68,7 +124,7 @@ export default function SetUserSection() {
 
   return (
     <Box sx={{ width: "100%", height: "75%" }}>
-      <Stepper activeStep={activeStep} alternativeLabel>
+      <Stepper activeStep={activeStep - 1} alternativeLabel>
         {steps.map((label, index) => {
           return (
             <Step
@@ -93,56 +149,43 @@ export default function SetUserSection() {
           );
         })}
       </Stepper>
-      {activeStep === steps.length ? (
-        <>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
-          </Typography>
-        </>
-      ) : (
-        <div className=" flex flex-col justify-between h-full w-full bg-white border-none rounded-[10px] pt-5 px-6 mt-5 overflow-y-auto">
-          {activeStep + 1 === 1 && (
-            <UserInformation formData={formData} setFormData={setFormData} />
-          )}
-          {activeStep + 1 === 2 && (
-            <MuleAge formData={formData} setFormData={setFormData} />
-          )}
-          {activeStep + 1 === 3 && (
-            <CodeNotUse formData={formData} setFormData={setFormData} />
-          )}
-          {activeStep + 1 === 4 && (
-            <SubOfficeTellerCode
-              formData={formData}
-              setFormData={setFormData}
-            />
-          )}
-          {activeStep + 1 === 5 && (
-            <HighRisk formData={formData} setFormData={setFormData} />
-          )}
-          {activeStep + 1 === 6 && (
-            <Minor formData={formData} setFormData={setFormData} />
-          )}
-          <div className=" flex w-full pt-2 sticky bottom-0 z-[100000] pb-5 bg-white">
-            <button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              className=" bg-[#00000061] text-white px-4 py-2 rounded-md"
-            >
-              Back
-            </button>
-            <Box sx={{ flex: "1 1 auto" }} />
-            <button
-              onClick={
-                activeStep === steps.length - 1 ? handleSubmit : handleNext
-              }
-              className=" bg-[#C4B454] text-white px-4 py-2 rounded-md "
-            >
-              {activeStep === steps.length - 1 ? "Submit" : "Next"}
-            </button>
-          </div>
+      <div className=" flex flex-col justify-between h-full w-full bg-white border-none rounded-[10px] pt-5 px-6 mt-5 overflow-y-auto">
+        {activeStep === 1 && (
+          <UserInformation formData={formData} setFormData={setFormData} />
+        )}
+        {activeStep === 2 && (
+          <MuleAge formData={formData} setFormData={setFormData} />
+        )}
+        {activeStep === 3 && (
+          <CodeNotUse formData={formData} setFormData={setFormData} />
+        )}
+        {activeStep === 4 && (
+          <SubOfficeTellerCode formData={formData} setFormData={setFormData} />
+        )}
+        {activeStep === 5 && (
+          <HighRisk formData={formData} setFormData={setFormData} />
+        )}
+        {activeStep === 6 && (
+          <Minor formData={formData} setFormData={setFormData} />
+        )}
+        <div className=" flex w-full pt-2 sticky bottom-0 z-[100000] pb-5 bg-white">
+          <button
+            color="inherit"
+            disabled={activeStep === 1}
+            onClick={handleBack}
+            className=" bg-[#00000061] text-white px-4 py-2 rounded-md"
+          >
+            Back
+          </button>
+          <Box sx={{ flex: "1 1 auto" }} />
+          <button
+            onClick={activeStep === steps.length ? handleSubmit : handleNext}
+            className=" bg-[#C4B454] text-white px-4 py-2 rounded-md "
+          >
+            {activeStep === steps.length ? "Submit" : "Next"}
+          </button>
         </div>
-      )}
+      </div>
     </Box>
   );
 }

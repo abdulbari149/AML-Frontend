@@ -68,6 +68,13 @@ export const mainLinks: PagesRouteType[] = [
     type: "route",
   },
   {
+    id: 9,
+    title: "User Management",
+    icon: historySvg,
+    path: "/add-user",
+    type: "route",
+  },
+  {
     id: 10,
     title: "Set User Setting",
     icon: historySvg,
@@ -83,16 +90,16 @@ export const mainLinks: PagesRouteType[] = [
   },
   {
     id: 12,
+    title: "Transaction Types",
+    icon: historySvg,
+    path: "/transaction-types",
+    type: "route",
+  },
+  {
+    id: 13,
     icon: historySvg,
     path: "/view-user-report-setting/:id",
     type: "view-user-report-setting",
-  },
-  {
-    id: 9,
-    title: "User Management",
-    icon: historySvg,
-    path: "/add-user",
-    type: "route",
   },
 ];
 

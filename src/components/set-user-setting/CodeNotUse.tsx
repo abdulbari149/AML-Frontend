@@ -4,6 +4,8 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import AddButton from "./common/AddButton";
 import DropDown from "./common/DropDown";
 import SetUserInput from "./common/SetUserInput";
+import { handleEditField } from "./actions/edit";
+import { handleDeleteField } from "./actions/delete";
 
 interface FormData {
   code: string | null;
@@ -77,8 +79,31 @@ const CodeNotUse = ({ formData, setFormData }: SetUserReportFormType) => {
                   <p className="flex-1 text-center">{item.code}</p>
                   <p className="flex-1 text-center">{item.value}</p>
                   <div className=" flex-1 justify-center flex gap-6">
-                    <MdEdit className=" text-[17px] cursor-pointer" />
-                    <MdDelete className=" text-[17px] cursor-pointer text-[#d11a2a]" />
+                    <MdEdit
+                      className=" text-[17px] cursor-pointer"
+                      onClick={() =>
+                        handleEditField(
+                          item,
+                          setCodeNotUseData,
+                          codes,
+                          setCodes,
+                          setFormData,
+                          "codeNotToUse"
+                        )
+                      }
+                    />
+                    <MdDelete
+                      className=" text-[17px] cursor-pointer text-[#d11a2a]"
+                      onClick={() =>
+                        handleDeleteField(
+                          i,
+                          codes,
+                          setCodes,
+                          setFormData,
+                          "codeNotToUse"
+                        )
+                      }
+                    />
                   </div>
                 </div>
               ))}
