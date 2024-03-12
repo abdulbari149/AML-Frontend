@@ -26,11 +26,17 @@ import logoName from "@/assets/images/shared/logo/logoName.png";
 import Link from "next/link";
 
 // DATA
-import { mainLinks, subLinks } from "../../../data/mainLinks";
+import {
+  banksRoute,
+  mainLinks,
+  reportSettingsRoute,
+  subLinks,
+} from "../../../data/mainLinks";
 import { usePathname } from "next/navigation";
 
 // Component
 import UserProfileSettingMenu from "./sub-component/UserProfileSettingMenu";
+import { IoIosArrowBack, IoIosArrowDown } from "react-icons/io";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -118,15 +124,48 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     const filterPathData = mainLinks.find((item) => item.path === pathname);
     const filterPathSubData = subLinks.find((item) => item.path === pathname);
-    setCurrentPage(filterPathData);
-    if (!filterPathData) {
+    const filterPathBankRoute = banksRoute.find(
+      (item) => item.path === pathname
+    );
+    const filterPathReportRoute = reportSettingsRoute.find(
+      (item) => item.path === pathname
+    );
+    if (filterPathData) {
+      setCurrentPage(filterPathData);
+    } else if (filterPathSubData) {
       setCurrentPage(filterPathSubData);
+    } else if (filterPathBankRoute) {
+      setCurrentPage(filterPathBankRoute);
+    } else if (filterPathReportRoute) {
+      console.log("data");
+      setCurrentPage(filterPathReportRoute);
     }
   }, [pathname]);
 
   const handleDrawer = () => {
     setOpen((prev) => !prev);
+    if (!open) {
+      setDropDown([true, true]);
+    } else {
+      setDropDown([false, false]);
+    }
   };
+
+  const [dropDown, setDropDown] = React.useState<boolean[]>([false, false]);
+
+  const handleDropdownClick = (index: number | null) => {
+    if (index !== null) {
+      const newDropDown = [...dropDown]; // Create a copy of the current state
+      // Toggle the state of the clicked index
+      newDropDown[index] = !newDropDown[index];
+
+      setDropDown(newDropDown); // Update the state
+    }
+  };
+
+  React.useEffect(() => {
+    console.log(dropDown);
+  }, [dropDown]);
 
   return (
     <>
@@ -189,56 +228,239 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
               )}
             </div>
           </DrawerHeader>
-          <List sx={{ height: "100%" }}>
-            {mainLinks.map(
-              (item, index) =>
-                item.type === "route" && (
-                  <Link key={index} href={item.path}>
-                    <ListItem
-                      key={index}
-                      disablePadding
-                      sx={{ display: "block" }}
-                      onClick={() => {
-                        setCurrentPage(item);
-                      }}
-                    >
-                      <ListItemButton
-                        sx={{
-                          minHeight: 45,
-                          paddingTop: "0px",
-                          paddingBottom: "0px",
-                          justifyContent: open ? "initial" : "center",
-                          px: 2.5,
+          <div className=" h-full">
+            <List sx={{ py: 0 }}>
+              {mainLinks.map(
+                (item, index) =>
+                  item.type === "route" && (
+                    <Link key={index} href={item.path}>
+                      <ListItem
+                        key={index}
+                        disablePadding
+                        sx={{ display: "block" }}
+                        onClick={() => {
+                          setCurrentPage(item);
                         }}
                       >
-                        <div className=" flex gap-1">
-                          <ListItemIcon
-                            sx={{
-                              minWidth: 0,
-                              mr: open ? 3 : "auto",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <Image alt="icon" src={item.icon} />
-                          </ListItemIcon>
-                          <p
-                            className={` ${
-                              item.path === currentPage?.path
-                                ? "text-base font-bold"
-                                : "text-[15px] font-normal"
-                            } `}
-                            style={{ display: open ? "block" : "none" }}
-                          >
-                            {item.title}
-                          </p>
-                        </div>
-                      </ListItemButton>
-                    </ListItem>
-                  </Link>
-                )
-            )}
-          </List>
-          <List sx={{ height: "100px" }}>
+                        <ListItemButton
+                          sx={{
+                            minHeight: 40,
+                            paddingTop: "0px",
+                            paddingBottom: "0px",
+                            justifyContent: open ? "initial" : "center",
+                            px: 2.5,
+                          }}
+                        >
+                          <div className=" flex gap-1">
+                            <ListItemIcon
+                              sx={{
+                                minWidth: 0,
+                                mr: open ? 3 : "auto",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <Image alt="icon" src={item.icon} />
+                            </ListItemIcon>
+                            <p
+                              className={` ${
+                                item.path === currentPage?.path
+                                  ? "text-base font-bold"
+                                  : "text-[15px] font-normal"
+                              } `}
+                              style={{ display: open ? "block" : "none" }}
+                            >
+                              {item.title}
+                            </p>
+                          </div>
+                        </ListItemButton>
+                      </ListItem>
+                    </Link>
+                  )
+              )}
+            </List>
+            <List sx={{ py: 0 }}>
+              <ListItem
+                disablePadding
+                sx={{ display: "block" }}
+                onClick={() => handleDropdownClick(0)}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 40,
+                    paddingTop: "0px",
+                    paddingBottom: "0px",
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                    width: "100%",
+                  }}
+                >
+                  <div className=" flex justify-between items-center w-full">
+                    <div className=" flex gap-1">
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Image alt="icon" src={settingsSvg} />
+                      </ListItemIcon>
+                      <p
+                        className={` ${
+                          dropDown[0] || currentPage?.type === "bank-route"
+                            ? "text-base font-bold"
+                            : "text-[15px] font-normal"
+                        } `}
+                        style={{ display: open ? "block" : "none" }}
+                      >
+                        Bank
+                      </p>
+                    </div>
+                    {dropDown[0] ? (
+                      <IoIosArrowDown className="text-base" />
+                    ) : (
+                      <IoIosArrowBack className="text-base" />
+                    )}
+                  </div>
+                </ListItemButton>
+              </ListItem>
+              {dropDown[0] && (
+                <>
+                  <ListItem disablePadding sx={{ display: "block" }}>
+                    {banksRoute.map(
+                      (item, index) =>
+                        item.type === "bank-route" && (
+                          <Link key={index} href={item.path}>
+                            <ListItem
+                              key={index}
+                              disablePadding
+                              sx={{ display: "block" }}
+                              onClick={() => {
+                                setCurrentPage(item);
+                              }}
+                            >
+                              <ListItemButton
+                                sx={{
+                                  minHeight: 40,
+                                  paddingTop: "0px",
+                                  paddingBottom: "0px",
+                                  justifyContent: open ? "initial" : "center",
+                                  px: 2.5,
+                                  pl: 12,
+                                }}
+                              >
+                                <p
+                                  className={` ${
+                                    item.path === currentPage?.path
+                                      ? "text-base font-bold"
+                                      : "text-[15px] font-normal"
+                                  } `}
+                                  style={{ display: open ? "block" : "none" }}
+                                >
+                                  {item.heading}
+                                </p>
+                              </ListItemButton>
+                            </ListItem>
+                          </Link>
+                        )
+                    )}
+                  </ListItem>
+                </>
+              )}
+            </List>
+            <List sx={{ py: 0 }}>
+              <ListItem
+                disablePadding
+                sx={{ display: "block" }}
+                onClick={() => handleDropdownClick(1)}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 40,
+                    paddingTop: "0px",
+                    paddingBottom: "0px",
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                    width: "100%",
+                  }}
+                >
+                  <div className=" flex justify-between items-center w-full">
+                    <div className=" flex gap-1">
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Image alt="icon" src={settingsSvg} />
+                      </ListItemIcon>
+                      <p
+                        className={` ${
+                          dropDown[1] || currentPage?.type === "report-route"
+                            ? "text-base font-bold"
+                            : "text-[15px] font-normal"
+                        } `}
+                        style={{ display: open ? "block" : "none" }}
+                      >
+                        Report Settings
+                      </p>
+                    </div>
+                    {dropDown[1] ? (
+                      <IoIosArrowDown className="text-base" />
+                    ) : (
+                      <IoIosArrowBack className="text-base" />
+                    )}
+                  </div>
+                </ListItemButton>
+              </ListItem>
+              {dropDown[1] && (
+                <>
+                  <ListItem disablePadding sx={{ display: "block" }}>
+                    {reportSettingsRoute.map(
+                      (item, index) =>
+                        item.type === "report-route" && (
+                          <Link key={index} href={item.path}>
+                            <ListItem
+                              key={index}
+                              disablePadding
+                              sx={{ display: "block" }}
+                              onClick={() => {
+                                setCurrentPage(item);
+                              }}
+                            >
+                              <ListItemButton
+                                sx={{
+                                  minHeight: 40,
+                                  paddingTop: "0px",
+                                  paddingBottom: "0px",
+                                  justifyContent: open ? "initial" : "center",
+                                  px: 2.5,
+                                  pl: 12,
+                                }}
+                              >
+                                <p
+                                  className={` ${
+                                    item.path === currentPage?.path
+                                      ? "text-base font-bold"
+                                      : "text-[15px] font-normal"
+                                  } `}
+                                  style={{ display: open ? "block" : "none" }}
+                                >
+                                  {item.heading}
+                                </p>
+                              </ListItemButton>
+                            </ListItem>
+                          </Link>
+                        )
+                    )}
+                  </ListItem>
+                </>
+              )}
+            </List>
+          </div>
+          {/* SETTINGS */}
+          <List sx={{ height: "fit-content" }}>
             {subLinks.map((item, index) => (
               <Link key={index} href={item.path}>
                 <ListItem

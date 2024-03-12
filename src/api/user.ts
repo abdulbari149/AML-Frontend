@@ -5,6 +5,8 @@ import { getAuthAccessToken } from "@/utils/token";
 
 export async function listUsers() {
   const token = await getAuthAccessToken();
+  console.log(token);
+  
   let apiName = "AdminQueries";
   let path = "/listUsersInGroup";
   let options = {
