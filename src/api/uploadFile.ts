@@ -2,15 +2,15 @@ import { REPORT_BASE_URL } from "@/config";
 import { getAuthAccessToken, getAuthIdToken } from "@/utils/token";
 import axios from "axios";
 
-export const createReportSettings = async (body: ReportSettings) => {
+export const uploadFiles = async (body: string[]) => {
   const token = await getAuthIdToken();
   console.log(token);
 
   try {
     const response = await axios.post(
-      `${REPORT_BASE_URL}/report-settings`,
+      `${REPORT_BASE_URL}/report`,
       {
-        ...body,
+        files: body,
       },
       {
         headers: {

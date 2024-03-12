@@ -1,10 +1,10 @@
 "use client";
 import { fetchAuthSession } from "aws-amplify/auth";
 import { get, post } from "aws-amplify/api";
-import { getAuthToken } from "@/utils/token";
+import { getAuthAccessToken } from "@/utils/token";
 
 export async function listUsers() {
-  const token = await getAuthToken();
+  const token = await getAuthAccessToken();
   let apiName = "AdminQueries";
   let path = "/listUsersInGroup";
   let options = {
@@ -41,7 +41,7 @@ type UserData = {
 };
 
 export async function addUser(data: UserData) {
-  const token = await getAuthToken();
+  const token = await getAuthAccessToken();
 
   console.log(token);
 

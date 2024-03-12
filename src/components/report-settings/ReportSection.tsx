@@ -1,4 +1,3 @@
-//
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
@@ -20,21 +19,17 @@ import {
 import Switch from "@mui/material/Switch";
 
 //ICONS
-import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 
 // COMPONENTS
-import runReportSvg from "@/assets/svgs/runReport.svg";
 import resetCriteriaSvg from "@/assets/svgs/resetCriteria.svg";
-import uploadDataSvg from "@/assets/svgs/uploadData.svg";
 
 // UTILS
 import { CustomPagination } from "@/utils/CustomPagination";
 import { SearchTable } from "@/utils/SearchTable";
 import Modal from "../uploadcsv/Modal";
-import { Button } from "@mui/material";
 
 interface Row {
   id: number;
@@ -213,8 +208,6 @@ function calculateColumnWidth(columnName: keyof Row) {
 }
 
 const ReportSection = () => {
-  const [open, setOpen] = useState(false);
-  const cancelButtonRef = useRef(null);
   const [rows, setRows] = React.useState(initialRows);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
@@ -363,35 +356,12 @@ const ReportSection = () => {
         <div className=" flex gap-3">
           <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]">
             <Image
-              src={runReportSvg}
-              alt="runreportSvg"
-              className=" md:block hidden"
-            />
-            <span className="md:text-sm text-xs font-normal">Run Report</span>
-          </button>
-          <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]">
-            <Image
               src={resetCriteriaSvg}
               alt="resetCriteriaSvg"
               className=" md:block hidden"
             />
             <span className="md:text-sm text-xs font-normal">
               Reset Criteria
-            </span>
-          </button>
-          <button
-            className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]"
-            onClick={() => {
-              setOpen(true);
-            }}
-          >
-            <Image
-              src={uploadDataSvg}
-              alt="uploadDataSvg"
-              className=" md:block hidden"
-            />
-            <span className="md:text-sm text-xs font-normal">
-              Upload new data
             </span>
           </button>
         </div>
@@ -484,7 +454,6 @@ const ReportSection = () => {
           }}
         />
       </div>
-      <Modal setOpen={setOpen} open={open} cancelButtonRef={cancelButtonRef} />
     </>
   );
 };

@@ -9,6 +9,7 @@ import { MdEdit } from "react-icons/md";
 import { FaRegListAlt } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { listUsers } from "@/api/user";
+import { getReportSetting } from "@/api/listReportSetting";
 
 interface Row {
   id: string;
@@ -37,17 +38,15 @@ const ViewUsersReportSetting = () => {
       .catch(console.log);
   }, []);
 
-  const handleSingleUserReport = (rowData: Row) => {
-    router.push(`/view-user-report-setting/${rowData.id}`);
+  const handleSingleUserReport = async (rowData: Row) => {
+    console.log(rowData.id);
+    const data= await getReportSetting({ user: rowData.id })
+    console.log('data',data);
+
+    // router.push(`/view-user-report-setting/${rowData.id}`);
   };
 
-  // const rows = userEmails && userEmails;
-  const rows = [
-    { id: 1, email: "daniyalshiekh166@gmail.com" },
-    { id: 2, email: "daniyal123@gmail.com" },
-    { id: 3, email: "daniy@gmail.com" },
-    { id: 4, email: "daniyalsaleem@gmail.com" },
-  ];
+  const rows = userEmails && userEmails;
 
   function calculateColumnWidth(columnName: keyof Row) {
     // Finding the maximum length of content in the specified column

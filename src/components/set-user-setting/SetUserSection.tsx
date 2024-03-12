@@ -40,6 +40,9 @@ export default function SetUserSection() {
     minorLessThan: null,
   });
 
+  useEffect(()=>{console.log(formData);
+  },[formData])
+
   const handleBack = () => {
     setActiveStep((prevActiveStep) =>
       prevActiveStep === 1 ? prevActiveStep : prevActiveStep - 1
