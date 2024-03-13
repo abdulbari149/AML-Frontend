@@ -9,18 +9,19 @@ import UserInformation from "./UserInformation";
 import MuleAge from "./MuleAge";
 import CodeNotUse from "./CodeNotUse";
 import SubOfficeTellerCode from "./SubOfficeTellerCode";
-import Criteria from "./Criteria";
 import HighRisk from "./HighRisk";
 import Minor from "./Minor";
 import axios from "axios";
 import { createReportSettings } from "@/api/report";
 import { errorToastify, succesToastify } from "@/helpers/toast";
+import SetCritera from "./SetCriteria";
 
 let initialSteps: string[] = [
   "User Information",
   "Mule Age",
   "Codes Not To Use",
   "Sub Office Teller Code",
+  "Set Critera",
 ];
 
 export default function SetUserSection() {
@@ -38,10 +39,12 @@ export default function SetUserSection() {
     subOfficeTellerCode: [],
     highRiskCategories: [],
     minorLessThan: null,
+    Criteria: null,
   });
 
-  useEffect(()=>{console.log(formData);
-  },[formData])
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) =>
@@ -77,12 +80,22 @@ export default function SetUserSection() {
         return;
       }
       case 5: {
-        formData.highRiskCategories && formData.highRiskCategories?.length > 0
+        // formData.highRiskCategories && formData.highRiskCategories?.length > 0
+        //   ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
+        //   : errorToastify("Required All fields");
+        // return;
+        formData.Criteria && formData.Criteria
           ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
           : errorToastify("Required All fields");
         return;
       }
       case 6: {
+        formData.highRiskCategories && formData.highRiskCategories?.length > 0
+          ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
+          : errorToastify("Required All fields");
+        return;
+      }
+      case 7: {
         formData.minorLessThan
           ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
           : errorToastify("Required All fields");
@@ -101,14 +114,17 @@ export default function SetUserSection() {
   };
 
   const handleSubmit = async () => {
+    console.log("hhh");
+    console.log(activeStep);
+
     switch (activeStep) {
-      case 4: {
-        formData.subOfficeTellerCode.length > 0
+      case 5: {
+        formData.Criteria && formData.Criteria
           ? handlePostApi()
           : errorToastify("Required All fields");
         return;
       }
-      case 6: {
+      case 7: {
         formData.minorLessThan
           ? handlePostApi()
           : errorToastify("Required All fields");
@@ -126,7 +142,7 @@ export default function SetUserSection() {
   }, [formData.platform]);
 
   return (
-    <Box sx={{ width: "100%", height: "75%" }}>
+    <Box sx={{ width: "100%", height: "73%" }}>
       <Stepper activeStep={activeStep - 1} alternativeLabel>
         {steps.map((label, index) => {
           return (
@@ -166,9 +182,12 @@ export default function SetUserSection() {
           <SubOfficeTellerCode formData={formData} setFormData={setFormData} />
         )}
         {activeStep === 5 && (
-          <HighRisk formData={formData} setFormData={setFormData} />
+          <SetCritera formData={formData} setFormData={setFormData} />
         )}
         {activeStep === 6 && (
+          <HighRisk formData={formData} setFormData={setFormData} />
+        )}
+        {activeStep === 7 && (
           <Minor formData={formData} setFormData={setFormData} />
         )}
         <div className=" flex w-full pt-2 sticky bottom-0 z-[100000] pb-5 bg-white">

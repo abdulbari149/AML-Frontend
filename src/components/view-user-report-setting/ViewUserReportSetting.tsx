@@ -2,18 +2,22 @@
 import React, { useEffect, useState } from "react";
 import FieldView from "./FieldView";
 import CardView from "./CardView";
-import { useParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { usersReportSetting } from "../../../data/userReportSetting";
+import { getReportSetting } from "@/api/listReportSetting";
 
 const ViewUserReportSetting = () => {
-  const { id } = useParams();
+  const params = useSearchParams();
+  const pathname = usePathname();
   const [userReportData, setUserReportData] = useState<any>(null);
+  console.log(pathname);
 
   useEffect(() => {
-    const filterData = usersReportSetting.find(
-      (item) => item.id.toString() === id
-    );
-    setUserReportData(filterData as any);
+    (async () => {
+      const data = await getReportSetting({ user: params.get("user") });
+      console.log(data);
+      // setUserReportData(data[0] as any);
+    })();
   }, []);
 
   return (
@@ -25,7 +29,7 @@ const ViewUserReportSetting = () => {
       } `}
     >
       <h3 className=" absolute top-[14px] z-[99999] text-4xl font-bold">
-        Bank Report Setting
+        {pathname === "/report-settings/view" ? "Bank Report Setting" : ""}
       </h3>
       <div
         className={`grid ${

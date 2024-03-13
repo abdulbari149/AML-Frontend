@@ -39,11 +39,7 @@ const ViewUsersReportSetting = () => {
   }, []);
 
   const handleSingleUserReport = async (rowData: Row) => {
-    console.log(rowData.id);
-    const data= await getReportSetting({ user: rowData.id })
-    console.log('data',data);
-
-    // router.push(`/view-user-report-setting/${rowData.id}`);
+    router.push(`/report-settings/view?user=${rowData.id}`);
   };
 
   const rows = userEmails && userEmails;

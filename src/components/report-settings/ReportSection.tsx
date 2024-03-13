@@ -208,7 +208,7 @@ function calculateColumnWidth(columnName: keyof Row) {
 }
 
 const ReportSection = () => {
-  const [rows, setRows] = React.useState(initialRows);
+  const [rows, setRows] = React.useState<Row[]>(initialRows);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );

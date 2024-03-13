@@ -137,8 +137,9 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
     } else if (filterPathBankRoute) {
       setCurrentPage(filterPathBankRoute);
     } else if (filterPathReportRoute) {
-      console.log("data");
       setCurrentPage(filterPathReportRoute);
+    }else {
+      setCurrentPage(null)
     }
   }, [pathname]);
 
