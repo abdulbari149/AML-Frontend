@@ -10,13 +10,12 @@ const ViewUserReportSetting = () => {
   const params = useSearchParams();
   const pathname = usePathname();
   const [userReportData, setUserReportData] = useState<any>(null);
-  console.log(pathname);
 
   useEffect(() => {
     (async () => {
       const data = await getReportSetting({ user: params.get("user") });
       console.log(data);
-      // setUserReportData(data[0] as any);
+      setUserReportData(data[0] as any);
     })();
   }, []);
 
@@ -28,9 +27,9 @@ const ViewUserReportSetting = () => {
           : "w-[75%]"
       } `}
     >
-      <h3 className=" absolute top-[14px] z-[99999] text-4xl font-bold">
+      {/* <h3 className=" absolute top-[14px] z-[99999] text-4xl font-bold">
         {pathname === "/report-settings/view" ? "Bank Report Setting" : ""}
-      </h3>
+      </h3> */}
       <div
         className={`grid ${
           userReportData?.platform.toLowerCase() === "scion"
@@ -40,8 +39,8 @@ const ViewUserReportSetting = () => {
       >
         <FieldView label={"Platform"} value={userReportData?.platform} />
         <FieldView label={"Mule Age"} value={userReportData?.muleAge} />
-        {userReportData?.minor && (
-          <FieldView label={"Minor"} value={userReportData?.minor} />
+        {userReportData?.minorLessThan && (
+          <FieldView label={"Minor"} value={userReportData?.minorLessThan} />
         )}
         <CardView
           label={"Code Not To Use"}
@@ -51,7 +50,7 @@ const ViewUserReportSetting = () => {
           label={"Sub Office Teller Code"}
           data={userReportData?.subOfficeTellerCode}
         />
-        {userReportData?.highRiskCategories && (
+        {userReportData?.highRiskCategories.length > 0 && (
           <CardView
             label={"High Risk Categories"}
             data={userReportData?.highRiskCategories}

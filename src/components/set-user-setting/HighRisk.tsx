@@ -19,7 +19,7 @@ const HighRisk = ({ formData, setFormData }: SetUserReportFormType) => {
     code: "",
     value: "",
   });
-  const [highRiskCodes, setHighRiskCodes] = useState<FormData[]>([]);
+  const [highRiskCodes, setHighRiskCodes] = useState<FormData[]>(formData.highRiskCategories);
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>

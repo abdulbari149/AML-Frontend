@@ -215,28 +215,43 @@ interface CriteriaData {
 }
 
 const SetCritera = ({ formData, setFormData }: SetUserReportFormType) => {
-  const [rows, setRows] = useState<Row[]>(initialRows);
+  const [rows, setRows] = useState<Row[]>([]);
   const [criteriaData, setCriteriaData] = useState<CriteriaData>({});
   const [switchStates, setSwitchStates] = useState<{ [key: string]: boolean }>(
     {}
   );
 
   useEffect(() => {
-    console.log("criteriaData", criteriaData);
-    setFormData((prevFormData: any) => ({
-        ...prevFormData,
-        ["Criteria"]: criteriaData,
-      }));
-  }, [criteriaData]);
+    if (formData.Criteria) {
+      const changeToInitialRows = Object.keys(formData.Criteria).map(
+        (key, index) => ({
+          id: `${index + 1}`,
+          criteria: key,
+          description: formData.Criteria[key].description,
+          amount: formData.Criteria[key].amount,
+          isIncluded: formData.Criteria[key].isIncluded ? true : false,
+        })
+      );
+      setRows(changeToInitialRows);
+    } else {
+      setRows(initialRows);
+    }
+  }, []);
 
+  useEffect(() => {
+    setFormData((prevFormData: any) => ({
+      ...prevFormData,
+      ["Criteria"]: criteriaData,
+    }));
+  }, [criteriaData]);
 
   useEffect(() => {
     // Transform rows data into criteria data format
     const updatedCriteriaData: CriteriaData = rows.reduce(
       (acc: any, row: any) => {
         acc[row.criteria] = {
-          amount: row.amount,
-          isincluded: row.isIncluded,
+          amount: parseInt(row.amount),
+          isIncluded: row.isIncluded,
           description: row.description,
         };
         return acc;
@@ -246,16 +261,14 @@ const SetCritera = ({ formData, setFormData }: SetUserReportFormType) => {
     setCriteriaData(updatedCriteriaData);
   }, [rows]);
 
-  // Initialize switch states based on row data when component mounts
   useEffect(() => {
-    // Assuming rows is your array of data
     rows.forEach((row) => {
       setSwitchStates((prevState) => ({
         ...prevState,
         [row.id]: row.isIncluded,
       }));
     });
-  }, []);
+  }, [rows]);
 
   const handleSwitchChange =
     (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {

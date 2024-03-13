@@ -24,7 +24,7 @@ const SubOfficeTellerCode = ({
     description: "",
     value: "",
   });
-  const [officeTellerCodes, setOfficeTellerCodes] = useState<FormData[]>([]);
+  const [officeTellerCodes, setOfficeTellerCodes] = useState<FormData[]>(formData.subOfficeTellerCode);
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>

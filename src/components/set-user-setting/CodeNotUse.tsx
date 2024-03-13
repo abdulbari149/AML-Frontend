@@ -19,7 +19,7 @@ const CodeNotUse = ({ formData, setFormData }: SetUserReportFormType) => {
     code: "",
     value: "",
   });
-  const [codes, setCodes] = useState<FormData[]>([]);
+  const [codes, setCodes] = useState<FormData[]>(formData.codeNotToUse);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

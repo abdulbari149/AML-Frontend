@@ -12,9 +12,11 @@ import SubOfficeTellerCode from "./SubOfficeTellerCode";
 import HighRisk from "./HighRisk";
 import Minor from "./Minor";
 import axios from "axios";
-import { createReportSettings } from "@/api/report";
+import { createReportSettings, editReportSettings } from "@/api/report";
 import { errorToastify, succesToastify } from "@/helpers/toast";
 import SetCritera from "./SetCriteria";
+import { useRouter, useSearchParams } from "next/navigation";
+import { getReportSetting } from "@/api/listReportSetting";
 
 let initialSteps: string[] = [
   "User Information",
@@ -25,6 +27,9 @@ let initialSteps: string[] = [
 ];
 
 export default function SetUserSection() {
+  const params = useSearchParams();
+  const router = useRouter();
+  const userId = params.get("user");
   const [activeStep, setActiveStep] = useState(1);
   const [steps, setSteps] = useState<string[]>(initialSteps);
 
@@ -43,8 +48,18 @@ export default function SetUserSection() {
   });
 
   useEffect(() => {
-    console.log(formData);
+    console.log("formData", formData);
   }, [formData]);
+
+  useEffect(() => {
+    (async () => {
+      if (userId) {
+        const data = await getReportSetting({ user: userId });
+        console.log("edit", data);
+        setFormData(data[0]);
+      }
+    })();
+  }, []);
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) =>
@@ -80,10 +95,6 @@ export default function SetUserSection() {
         return;
       }
       case 5: {
-        // formData.highRiskCategories && formData.highRiskCategories?.length > 0
-        //   ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
-        //   : errorToastify("Required All fields");
-        // return;
         formData.Criteria && formData.Criteria
           ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
           : errorToastify("Required All fields");
@@ -113,20 +124,31 @@ export default function SetUserSection() {
     }
   };
 
-  const handleSubmit = async () => {
-    console.log("hhh");
-    console.log(activeStep);
+  const handleEditApi = async (id: any) => {
+    delete formData.Id;
+    const submitData = await editReportSettings(formData, id);
+    if (submitData) {
+      succesToastify("Report Settings Updated");
+      router.push("/bank/view-users-report-setting");
+      console.log("submit: ", submitData);
+    }
+  };
 
+  const handleSubmit = async () => {
     switch (activeStep) {
       case 5: {
         formData.Criteria && formData.Criteria
-          ? handlePostApi()
+          ? userId
+            ? handleEditApi(formData?.Id)
+            : handlePostApi()
           : errorToastify("Required All fields");
         return;
       }
       case 7: {
         formData.minorLessThan
-          ? handlePostApi()
+          ? userId
+            ? handleEditApi(formData?.Id)
+            : handlePostApi()
           : errorToastify("Required All fields");
         return;
       }

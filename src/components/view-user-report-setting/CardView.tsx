@@ -1,7 +1,6 @@
 import React from "react";
 
 const CardView = ({ label, data }: any) => {
-
   return (
     <section className="flex flex-col gap-3">
       <h4 className=" text-lg font-semibold capitalize">{label}</h4>
@@ -21,13 +20,7 @@ const CardView = ({ label, data }: any) => {
               key={i}
               className="flex justify-around items-center text-sm font-medium py-[6px] bg-[#f9f9f9] "
             >
-              {label.trim().toLowerCase() ===
-              "High Risk Categories".trim().toLowerCase() ? (
-                <p className="flex-1 text-center">{item.category}</p>
-              ) : (
-                <p className="flex-1 text-center">{item.code}</p>
-              )}
-
+              <p className="flex-1 text-center">{item.code}</p>
               {label.trim().toLowerCase() ===
                 "Sub Office Teller Code".trim().toLowerCase() && (
                 <p className="flex-1 text-center">{item.description}</p>

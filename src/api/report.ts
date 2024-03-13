@@ -25,3 +25,28 @@ export const createReportSettings = async (body: ReportSettings) => {
     console.log(error);
   }
 };
+
+export const editReportSettings = async (body: ReportSettings,id: any) => {
+  const token = await getAuthIdToken();
+  console.log(token);
+
+  try {
+    const response = await axios.put(
+      `${REPORT_BASE_URL}/report-settings/${id}`,
+      {
+        ...body,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+

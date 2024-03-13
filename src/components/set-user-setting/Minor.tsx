@@ -12,6 +12,7 @@ const Minor = ({ formData, setFormData }: SetUserReportFormType) => {
           name={"minorLessThan"}
           placeholder={"e.g. 25"}
           formData={formData}
+          value={formData.minorLessThan}
           setFormData={setFormData}
           required={true}
         />

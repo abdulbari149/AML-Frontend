@@ -13,6 +13,7 @@ const MuleAge = ({ formData, setFormData }: SetUserReportFormType) => {
           placeholder={"e.g. 17"}
           required={true}
           formData={formData}
+          value={formData.muleAge.greaterThan}
           setFormData={setFormData}
           fieldType={"muleAge"}
           />
@@ -23,6 +24,7 @@ const MuleAge = ({ formData, setFormData }: SetUserReportFormType) => {
           placeholder={"e.g. 25"}
           required={true}
           formData={formData}
+          value={formData.muleAge.lessThan}
           setFormData={setFormData}
           fieldType={"muleAge"}
         />

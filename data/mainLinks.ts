@@ -71,8 +71,11 @@ export const reportSettingsRoute = [
   },
   {
     id: 6,
-    path: "/report-setting/view",
-    type: "view-user-report-setting",
+    heading: "View",
+    title: "Bank Report Setting",
+    path: "/report-settings/view",
+    // type: "view-user-report-setting",
+    type: "report-route",
   },
 ];
 

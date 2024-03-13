@@ -24,6 +24,12 @@ const ViewUsersReportSetting = () => {
   );
 
   useEffect(() => {
+   console.log(userEmails);
+   
+  }, [userEmails])
+  
+
+  useEffect(() => {
     listUsers()
       .then((data) => {
         setUserEmails(() =>
@@ -38,8 +44,11 @@ const ViewUsersReportSetting = () => {
       .catch(console.log);
   }, []);
 
-  const handleSingleUserReport = async (rowData: Row) => {
+  const handleViewUserReport = async (rowData: Row) => {
     router.push(`/report-settings/view?user=${rowData.id}`);
+  };
+  const handleEditUserReport = async (rowData: Row) => {
+    router.push(`/report-settings/create?user=${rowData.id}`);
   };
 
   const rows = userEmails && userEmails;
@@ -70,7 +79,7 @@ const ViewUsersReportSetting = () => {
       disableColumnMenu: true,
       renderCell: (params) => (
         <FaRegListAlt
-          onClick={() => handleSingleUserReport(params.row as Row)}
+          onClick={() => handleViewUserReport(params.row as Row)}
           className=" text-[18px] cursor-pointer"
         />
       ),
@@ -83,7 +92,10 @@ const ViewUsersReportSetting = () => {
       align: "center",
       disableColumnMenu: true,
       renderCell: (params) => (
-        <MdEdit className=" text-[18px] cursor-pointer" />
+        <MdEdit
+          onClick={() => handleEditUserReport(params.row as Row)}
+          className=" text-[18px] cursor-pointer"
+        />
       ),
     },
   ];
