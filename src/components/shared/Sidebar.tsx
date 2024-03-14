@@ -37,6 +37,7 @@ import { usePathname } from "next/navigation";
 // Component
 import UserProfileSettingMenu from "./sub-component/UserProfileSettingMenu";
 import { IoIosArrowBack, IoIosArrowDown } from "react-icons/io";
+import { useAuth } from "@/utils/useAuth";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -117,7 +118,14 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
   const theme = useTheme();
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
-  
+  const [isAuth, setIsAuth] = React.useState<string | null>();
+
+  React.useEffect(() => {
+    (async () => {
+      const authRole = await useAuth();
+      setIsAuth(authRole);
+    })();
+  }, []);
 
   // PAGES LINK
   const [currentPage, setCurrentPage] = React.useState<PagesRouteType | null>();
@@ -139,8 +147,8 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
       setCurrentPage(filterPathBankRoute);
     } else if (filterPathReportRoute) {
       setCurrentPage(filterPathReportRoute);
-    }else {
-      setCurrentPage(null)
+    } else {
+      setCurrentPage(null);
     }
   }, [pathname]);
 

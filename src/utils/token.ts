@@ -16,7 +16,6 @@ export const getAuthIdToken = async () => {
   if (!authSession || !authSession?.tokens?.accessToken?.payload) {
     throw new Error("No valid session");
   }
-  console.log(authSession.tokens);
-  
+
   return authSession.tokens.idToken?.toString();
 };

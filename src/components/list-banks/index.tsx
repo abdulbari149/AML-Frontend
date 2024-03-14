@@ -7,6 +7,7 @@ import { CustomPagination } from "@/utils/CustomPagination";
 import { SearchTable } from "@/utils/SearchTable";
 import { MdEdit } from "react-icons/md";
 import { FaRegListAlt } from "react-icons/fa";
+import { FaHistory } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { listUsers } from "@/api/user";
 import { getReportSetting } from "@/api/listReportSetting";
@@ -76,31 +77,34 @@ const ListBanks = () => {
       width: calculateColumnWidth("email"),
     },
     {
-      field: "view",
-      headerName: "View",
+      field: "actions",
+      headerName: "Actions",
       sortable: false,
       headerAlign: "center",
       align: "center",
       disableColumnMenu: true,
       renderCell: (params) => (
-        <FaRegListAlt
-          onClick={() => handleViewUserReport(params.row as Row)}
-          className=" text-[18px] cursor-pointer"
-        />
+        <div className=" flex gap-8">
+          <FaRegListAlt
+            onClick={() => handleViewUserReport(params.row as Row)}
+            className=" text-[18px] cursor-pointer"
+          />
+          <MdEdit
+            onClick={() => handleEditUserReport(params.row as Row)}
+            className=" text-[18px] cursor-pointer"
+          />
+        </div>
       ),
     },
     {
-      field: "edit",
-      headerName: "Edit",
+      field: "history",
+      headerName: "History",
       sortable: false,
       headerAlign: "center",
       align: "center",
       disableColumnMenu: true,
       renderCell: (params) => (
-        <MdEdit
-          onClick={() => handleEditUserReport(params.row as Row)}
-          className=" text-[18px] cursor-pointer"
-        />
+        <FaHistory className=" text-[18px] cursor-pointer" />
       ),
     },
   ];

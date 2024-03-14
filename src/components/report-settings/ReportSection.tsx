@@ -3,20 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 // MUI
-import {
-  GridRowsProp,
-  GridRowModesModel,
-  GridRowModes,
-  DataGrid,
-  GridColDef,
-  GridToolbarContainer,
-  GridActionsCellItem,
-  GridEventListener,
-  GridRowId,
-  GridRowModel,
-  GridRowEditStopReasons,
-} from "@mui/x-data-grid";
-import Switch from "@mui/material/Switch";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { Switch } from "@mui/material";
+import { MdEdit } from "react-icons/md";
 
 //ICONS
 import EditIcon from "@mui/icons-material/Edit";
@@ -28,173 +17,205 @@ import resetCriteriaSvg from "@/assets/svgs/resetCriteria.svg";
 
 // UTILS
 import { CustomPagination } from "@/utils/CustomPagination";
-import { SearchTable } from "@/utils/SearchTable";
-import Modal from "../uploadcsv/Modal";
 
 interface Row {
-  id: number;
-  amount: string;
+  id: string;
+  amount: number;
   criteria: string;
   description: string;
+  isIncluded: boolean;
+}
+
+interface CriteriaData {
+  [key: string]: {
+    amount: number;
+    isincluded: boolean;
+    description: string;
+  };
 }
 
 const initialRows: Row[] = [
   {
-    id: 1,
+    id: "1",
     criteria: "A",
     description: "High-risk transaction",
-    amount: "$3500",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 2,
+    id: "2",
     criteria: "B",
     description: "National from a high-risk jurisdiction ",
-    amount: "$4200",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 3,
+    id: "3",
     criteria: "C",
     description: "Cash Lodgements",
-    amount: "$2800",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 4,
+    id: "4",
     criteria: "D",
     description: "EFT Lodgements ",
-    amount: "$3800",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 5,
+    id: "5",
     criteria: "E",
     description: "Minor Account Lodgements",
-    amount: "$5000",
+    amount: 0,
+    isIncluded: false,
   },
-  // Additional data with unique IDs
   {
-    id: 6,
+    id: "6",
     criteria: "F",
     description: "Sub-office Lodgements",
-    amount: "$3100",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 7,
+    id: "7",
     criteria: "G",
     description: "Counter New Member Lodgements ",
-    amount: "$4500",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 8,
+    id: "8",
     criteria: "H",
     description: "Online New Member Lodgements",
-    amount: "$2700",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 9,
+    id: "9",
     criteria: "I",
     description: "Self Employed Lodgements",
-    amount: "$3800",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 10,
+    id: "10",
     criteria: "J",
     description: "Unemployed Lodgements",
-    amount: "$4200",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 11,
+    id: "11",
     criteria: "K",
     description: "Large Cash Withdrawals",
-    amount: "$5000",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 12,
+    id: "12",
     criteria: "L",
     description: "Multiple Large Cash Transactions",
-    amount: "$6000",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 13,
+    id: "13",
     criteria: "M",
     description: "High-Value Wire Transfers",
-    amount: "$10000",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 14,
+    id: "14",
     criteria: "N",
     description: "Foreign Exchange Transactions",
-    amount: "$8000",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 15,
+    id: "15",
     criteria: "O",
     description: "High-Frequency Trading Activity",
-    amount: "$7000",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 16,
+    id: "16",
     criteria: "P",
     description: "Third-Party Payments",
-    amount: "$4500",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 17,
+    id: "17",
     criteria: "Q",
     description: "Large Inbound Transactions",
-    amount: "$9000",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 18,
+    id: "18",
     criteria: "R",
     description: "Non-Profit Organization Deposits",
-    amount: "$5500",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 19,
+    id: "19",
     criteria: "S",
     description: "Corporate Account Deposits",
-    amount: "$7500",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 20,
+    id: "20",
     criteria: "T",
     description: "Trust Account Transactions",
-    amount: "$6800",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 21,
+    id: "21",
     criteria: "U",
     description: "Government Grants or Subsidies",
-    amount: "$8200",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 22,
+    id: "22",
     criteria: "V",
     description: "Large Cash Transactions with No Apparent Purpose",
-    amount: "$5300",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 23,
+    id: "23",
     criteria: "W",
     description: "Suspicious Activity Patterns",
-    amount: "$6700",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 24,
+    id: "24",
     criteria: "X",
     description: "Unusually Large ATM Withdrawals",
-    amount: "$4900",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 25,
+    id: "25",
     criteria: "Y",
     description: "Overseas Transactions from High-Risk Countries",
-    amount: "$8800",
+    amount: 0,
+    isIncluded: false,
   },
   {
-    id: 26,
+    id: "26",
     criteria: "Z",
     description: "Politically Exposed Person (PEP) Transactions",
-    amount: "$10000",
+    amount: 0,
+    isIncluded: false,
   },
 ];
 
@@ -209,56 +230,73 @@ function calculateColumnWidth(columnName: keyof Row) {
 
 const ReportSection = () => {
   const [rows, setRows] = React.useState<Row[]>(initialRows);
-  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
+  const [criteriaData, setCriteriaData] = useState<CriteriaData>({});
+  const [switchStates, setSwitchStates] = useState<{ [key: string]: boolean }>(
     {}
   );
 
-  const handleRowEditStop: GridEventListener<"rowEditStop"> = (
-    params,
-    event
-  ) => {
-    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultMuiPrevented = true;
-    }
-  };
+  useEffect(() => {
+    // Transform rows data into criteria data format
+    const updatedCriteriaData: CriteriaData = rows.reduce(
+      (acc: any, row: any) => {
+        acc[row.criteria] = {
+          amount: parseInt(row.amount),
+          isIncluded: row.isIncluded,
+          description: row.description,
+        };
+        return acc;
+      },
+      {}
+    );
+    setCriteriaData(updatedCriteriaData);
+  }, [rows]);
 
-  const handleEditClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-  };
-
-  const handleSaveClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  };
-
-  const handleCancelClick = (id: GridRowId) => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+  useEffect(() => {
+    rows.forEach((row) => {
+      setSwitchStates((prevState) => ({
+        ...prevState,
+        [row.id]: row.isIncluded,
+      }));
     });
+  }, [rows]);
 
-    const editedRow = rows.find((row) => row.id === id);
-    // @ts-ignore
-    if (editedRow!.isNew) {
-      setRows(rows.filter((row) => row.id !== id));
-    }
-  };
+  const handleSwitchChange =
+    (id: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { checked } = event.target;
+      setSwitchStates((prevState) => ({
+        ...prevState,
+        [id]: checked,
+      }));
 
-  const handleProcessRowUpdateError = () => {
-    console.log("error");
-  };
-  const processRowUpdate = (newRow: GridRowModel) => {
-    // @ts-ignore
-    console.log("this is updatedRow", updatedRow);
+      setRows((prevRows) =>
+        prevRows.map((row) => {
+          if (row.id === id) {
+            return { ...row, isIncluded: checked };
+          }
+          return row;
+        })
+      );
+    };
 
-    const updatedRow = { ...newRow, isNew: false };
-    // @ts-ignore
-    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+  const handleProcessRowUpdate = (updatedRow: any, originalRow: any) => {
+    // Find the index of the row that was edited
+    const rowIndex = rows.findIndex((row) => row.id === updatedRow.id);
+
+    // Replace the old row with the updated row
+    const updatedRows = [...rows];
+    updatedRows[rowIndex] = updatedRow;
+
+    // Update the state with the new rows
+    setRows(updatedRows);
+
+    // Return the updated row to update the internal state of the DataGrid
     return updatedRow;
   };
 
-  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
-    setRowModesModel(newRowModesModel);
-  };
+  useEffect(() => {
+    console.log(criteriaData);
+  }, [criteriaData]);
+
   const columns: GridColDef[] = [
     {
       field: "criteria",
@@ -276,12 +314,20 @@ const ReportSection = () => {
       headerName: "Is this criteria included?",
       headerAlign: "center",
       align: "center",
+      sortable: false,
+      editable: true,
       disableColumnMenu: true,
-      // editable: true,
-      // type: "singleSelect",
-      // valueOptions: ['SRC','DST','OTH'],
       width: 200,
-      renderCell: () => <Switch />,
+      renderCell: (params) => {
+        const { id } = params.row as Row;
+        return (
+          <Switch
+            checked={switchStates[id] || false}
+            onChange={handleSwitchChange(id)}
+            name={id}
+          />
+        );
+      },
     },
     {
       field: "amount",
@@ -301,47 +347,15 @@ const ReportSection = () => {
       editable: false,
     },
     {
-      field: "actions",
-      type: "actions",
-      headerName: "Actions",
-      width: 100,
-      cellClassName: "actions",
-      getActions: ({ id }) => {
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-
-        if (isInEditMode) {
-          return [
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              key={id}
-              sx={{
-                color: "primary.main",
-              }}
-              onClick={handleSaveClick(id)}
-            />,
-            <GridActionsCellItem
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={handleCancelClick(id)}
-              color="inherit"
-              key={id}
-            />,
-          ];
-        }
-
-        return [
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-            key={id}
-          />,
-        ];
-      },
+      field: "edit",
+      headerName: "Edit",
+      headerAlign: "center",
+      align: "center",
+      disableColumnMenu: true,
+      sortable: false,
+      renderCell: (params) => (
+        <MdEdit className=" text-[18px] cursor-pointer" />
+      ),
     },
   ];
 
@@ -391,29 +405,6 @@ const ReportSection = () => {
               {
                 outline: "none",
               },
-            // SEARCH
-            "& .MuiBox-root": {
-              display: "flex",
-              position: "absolute",
-              right: 0,
-              top: "-55px",
-              background: "white",
-              borderRadius: "12px",
-              fontSize: "14px",
-              padding: "6px 12px",
-              width: "244px",
-            },
-            "& .css-3be3ve-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter":
-              {
-                paddingBottom: "0px",
-              },
-            "& .css-68pk0f": {
-              padding: "0px",
-            },
-            "& .MuiInput-underline:before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::before, .css-1eed5fa-MuiInputBase-root-MuiInput-root::after, .css-jcincl::after":
-              {
-                borderBottom: "none !important",
-              },
             // PAGINATION
             "& .Mui-selected, .Mui-selected:hover": {
               backgroundColor: "rgba(0, 0, 0, 0.1) !important",
@@ -439,19 +430,10 @@ const ReportSection = () => {
           rows={rows}
           columns={columns}
           hideFooterPagination={false}
-          slots={{ toolbar: SearchTable, pagination: CustomPagination }}
+          slots={{ pagination: CustomPagination }}
           initialState={initialState}
           editMode="row"
-          rowModesModel={rowModesModel}
-          onRowModesModelChange={handleRowModesModelChange}
-          onRowEditStop={handleRowEditStop}
-          processRowUpdate={(updatedRow, originalRow) =>
-            processRowUpdate(updatedRow)
-          }
-          onProcessRowUpdateError={handleProcessRowUpdateError}
-          slotProps={{
-            toolbar: { setRows, setRowModesModel },
-          }}
+          processRowUpdate={handleProcessRowUpdate}
         />
       </div>
     </>

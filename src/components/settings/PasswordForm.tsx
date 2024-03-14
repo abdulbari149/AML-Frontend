@@ -1,10 +1,10 @@
-'use client';
+"use client";
 import React, { useState } from "react";
 import InputFieldSetting from "./InputFieldSetting";
 import { updatePassword, type UpdatePasswordInput } from "aws-amplify/auth";
+import { errorToastify, succesToastify } from "@/helpers/toast";
 
-
-// please check this article to do this 
+// please check this article to do this
 // https://docs.amplify.aws/javascript/build-a-backend/auth/manage-passwords/#update-password
 const PasswordForm = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -19,7 +19,7 @@ const PasswordForm = () => {
 
     // Validation checks
     if (!oldPassword || !newPassword || !confirmPassword) {
-      alert("All fields are required");
+      errorToastify("All fields are required");
       return;
     }
 
@@ -36,17 +36,18 @@ const PasswordForm = () => {
       await updatePassword({ oldPassword, newPassword });
 
       // Password updated successfully
-      alert("Password updated successfully");
+      succesToastify("Password updated successfully");
+      // alert("Password updated successfully");
 
       // Reset input fields
       setOldPassword("");
       setNewPassword("");
       setConfirmPassword("");
-
     } catch (err) {
       // Error occurred during password update
       if (err instanceof Error) {
-        alert("Error updating password:" + err.message);
+        errorToastify("Error updating password:" + err.message);
+        // alert("Error updating password:" + err.message);
       }
       setError("Error updating password. Please try again.");
     } finally {
@@ -58,7 +59,7 @@ const PasswordForm = () => {
   return (
     <>
       <form
-        className="w-full md:w-1/4 flex flex-col gap-2"
+        className="w-full md:w-1/4 flex flex-col gap-2 mb-5"
         onSubmit={(e) => {
           e.preventDefault();
           handleUpdatePassword();
@@ -91,6 +92,7 @@ const PasswordForm = () => {
         <button
           className="w-fit text-xs font-medium text-center text-[#F9F9F9] px-[14px] py-[10px] rounded-md bg-[#000000]"
           disabled={loading}
+          type="submit"
         >
           {loading ? "Changing Password..." : "Change Password"}
         </button>

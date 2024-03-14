@@ -1,7 +1,6 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import InputFieldSetting from "./InputFieldSetting";
-
 
 const SettingForm = () => {
   const [bankName, setBankName] = useState("");
@@ -9,9 +8,6 @@ const SettingForm = () => {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  
-  
 
   return (
     <>
@@ -27,7 +23,7 @@ const SettingForm = () => {
                 placeholder="ABC Bank"
                 name="bankname"
                 value={bankName}
-                onChange={(e) => setBankName(e.target.value)}
+                onChange={setBankName}
               />
             </div>
 
@@ -39,7 +35,7 @@ const SettingForm = () => {
                 placeholder="name@example.com"
                 name="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={setEmail}
               />
               <InputFieldSetting
                 label="Phone"
@@ -47,7 +43,7 @@ const SettingForm = () => {
                 placeholder="032121-85478"
                 name="phone"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={setPhone}
               />
             </div>
           </div>
@@ -57,7 +53,11 @@ const SettingForm = () => {
             className="flex flex-col justify-center items-center border-2 border-dashed border-[#000000] rounded-lg w-36 h-44 cursor-pointer"
             onClick={() => document.getElementById("account-logo")?.click()}
           >
-            <input type="file" className="items-start flex w-full" id="account-logo" />
+            <input
+              type="file"
+              className="items-start hidden w-full"
+              id="account-logo"
+            />
             <button className="text-xs font-semibold text-center text-[#F9F9F9] px-2 py-1 rounded-sm bg-[#000000]">
               Add Logo
             </button>
