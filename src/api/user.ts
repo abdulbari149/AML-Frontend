@@ -5,7 +5,6 @@ import { getAuthAccessToken } from "@/utils/token";
 
 export async function listUsers() {
   const token = await getAuthAccessToken();
-  console.log(token);
 
   let apiName = "AdminQueries";
   let path = "/listUsersInGroup";
@@ -46,7 +45,6 @@ type UserData = {
 export async function addUser(data: UserData) {
   const token = await getAuthAccessToken();
 
-  console.log(token);
 
   try {
     const apiName = "AdminQueries";

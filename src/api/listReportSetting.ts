@@ -4,6 +4,9 @@ import axios from "axios";
 
 export const getReportSetting = async (queryParams: any) => {
   const token = await getAuthIdToken();
+  console.log(token);
+  
+  
   try {
     const response = await axios.get(`${REPORT_BASE_URL}/report-settings`, {
       params: queryParams,

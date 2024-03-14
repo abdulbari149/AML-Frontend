@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 // MUI
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -17,6 +18,9 @@ import resetCriteriaSvg from "@/assets/svgs/resetCriteria.svg";
 
 // UTILS
 import { CustomPagination } from "@/utils/CustomPagination";
+import { getReportSetting } from "@/api/listReportSetting";
+import { succesToastify } from "@/helpers/toast";
+import { editCriteria, editReportSettings } from "@/api/report";
 
 interface Row {
   id: string;
@@ -234,10 +238,41 @@ const ReportSection = () => {
   const [switchStates, setSwitchStates] = useState<{ [key: string]: boolean }>(
     {}
   );
+  const [reportId, setReportId] = useState();
 
   useEffect(() => {
+    (async () => {
+      const authSession = await fetchAuthSession();
+      const userId = authSession?.tokens?.accessToken?.payload.username;
+      console.log("userID", userId);
+      if (userId) {
+        const data = await getReportSetting({ user: userId });
+        setReportId(data[0].Id);
+        const userCriteria = data[0]?.Criteria;
+        if (criteriaData) {
+          console.log("data set criteria", data[0]);
+          const changeToInitialRows = Object.keys(userCriteria).map(
+            (key, index) => ({
+              id: `${index + 1}`,
+              criteria: key,
+              description: userCriteria[key].description,
+              amount: userCriteria[key].amount,
+              isIncluded: userCriteria[key].isIncluded === true ? true : false,
+            })
+          );
+          setRows(changeToInitialRows);
+        } else {
+          // router.push("/bank/list");
+          setRows(initialRows);
+          alert("REPORT DOES'T EXISTS");
+        }
+      }
+    })();
+  }, []);
+
+  const changeToCriteriaFormat = (rowsParam: any) => {
     // Transform rows data into criteria data format
-    const updatedCriteriaData: CriteriaData = rows.reduce(
+    const updatedCriteriaData: CriteriaData = rowsParam.reduce(
       (acc: any, row: any) => {
         acc[row.criteria] = {
           amount: parseInt(row.amount),
@@ -249,6 +284,11 @@ const ReportSection = () => {
       {}
     );
     setCriteriaData(updatedCriteriaData);
+    return updatedCriteriaData;
+  };
+
+  useEffect(() => {
+    changeToCriteriaFormat(rows);
   }, [rows]);
 
   useEffect(() => {
@@ -291,6 +331,21 @@ const ReportSection = () => {
 
     // Return the updated row to update the internal state of the DataGrid
     return updatedRow;
+  };
+
+  const resetCriteria = async () => {
+    const newRows = rows.map((row) => ({
+      ...row,
+      amount: 0,
+    }));
+    setRows(newRows);
+    const updatedData = changeToCriteriaFormat(newRows);
+    if (newRows) {
+      const submitData = await editCriteria(updatedData as any, reportId);
+      if (submitData) {
+        succesToastify("Report Criteria Updated");
+      }
+    }
   };
 
   useEffect(() => {
@@ -368,7 +423,10 @@ const ReportSection = () => {
       <div className=" flex justify-between mb-3">
         {/* buttons */}
         <div className=" flex gap-3">
-          <button className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]">
+          <button
+            className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]"
+            onClick={resetCriteria}
+          >
             <Image
               src={resetCriteriaSvg}
               alt="resetCriteriaSvg"
@@ -376,6 +434,19 @@ const ReportSection = () => {
             />
             <span className="md:text-sm text-xs font-normal">
               Reset Criteria
+            </span>
+          </button>
+          <button
+            className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]"
+            onClick={() => {}}
+          >
+            <Image
+              src={resetCriteriaSvg}
+              alt="resetCriteriaSvg"
+              className=" md:block hidden"
+            />
+            <span className="md:text-sm text-xs font-normal">
+              Update Criteria
             </span>
           </button>
         </div>

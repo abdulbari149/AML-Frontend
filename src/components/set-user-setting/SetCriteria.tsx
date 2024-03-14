@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
+
 // MUI
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
@@ -209,7 +210,7 @@ const initialRows: Row[] = [
 interface CriteriaData {
   [key: string]: {
     amount: number;
-    isincluded: boolean;
+    isIncluded: boolean;
     description: string;
   };
 }
@@ -221,6 +222,11 @@ const SetCritera = ({ formData, setFormData }: SetUserReportFormType) => {
     {}
   );
 
+  useEffect(()=>{
+    console.log(rows);
+    
+  },[rows])
+
   useEffect(() => {
     if (formData.Criteria) {
       const changeToInitialRows = Object.keys(formData.Criteria).map(
@@ -229,9 +235,11 @@ const SetCritera = ({ formData, setFormData }: SetUserReportFormType) => {
           criteria: key,
           description: formData.Criteria[key].description,
           amount: formData.Criteria[key].amount,
-          isIncluded: formData.Criteria[key].isIncluded ? true : false,
+          isIncluded: formData.Criteria[key].isIncluded === true ? true : false,
         })
       );
+      console.log('change', changeToInitialRows);
+      
       setRows(changeToInitialRows);
     } else {
       setRows(initialRows);

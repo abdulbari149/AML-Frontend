@@ -26,7 +26,7 @@ type CapitalAlphabet =
   | "Y"
   | "Z";
 
-type Criteria = Record<
+ type Criteria = Record<
   CapitalAlphabet,
   {
     amount: number;

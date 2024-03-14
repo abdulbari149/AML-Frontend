@@ -26,6 +26,20 @@ let initialSteps: string[] = [
   "Set Critera",
 ];
 
+const initialValues = {
+  platform: "",
+  userId: "",
+  muleAge: {
+    greaterThan: null,
+    lessThan: null,
+  },
+  codeNotToUse: [],
+  subOfficeTellerCode: [],
+  highRiskCategories: [],
+  minorLessThan: null,
+  Criteria: null,
+};
+
 export default function SetUserSection() {
   const params = useSearchParams();
   const router = useRouter();
@@ -33,19 +47,7 @@ export default function SetUserSection() {
   const [activeStep, setActiveStep] = useState(1);
   const [steps, setSteps] = useState<string[]>(initialSteps);
 
-  const [formData, setFormData] = useState<ReportSettings>({
-    platform: "",
-    userId: "",
-    muleAge: {
-      greaterThan: null,
-      lessThan: null,
-    },
-    codeNotToUse: [],
-    subOfficeTellerCode: [],
-    highRiskCategories: [],
-    minorLessThan: null,
-    Criteria: null,
-  });
+  const [formData, setFormData] = useState<ReportSettings>(initialValues);
 
   useEffect(() => {
     console.log("formData", formData);
@@ -56,10 +58,14 @@ export default function SetUserSection() {
       if (userId) {
         const data = await getReportSetting({ user: userId });
         console.log("edit", data);
-        setFormData(data[0]);
+        if (data[0]) {
+          setFormData(data[0]);
+        } else {
+          router.push("/bank/list");
+        }
       }
     })();
-  }, []);
+  }, [userId]);
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) =>
@@ -121,6 +127,7 @@ export default function SetUserSection() {
       succesToastify(submitData?.message as string);
       setActiveStep(1);
       console.log("submit: ", submitData);
+      setFormData(initialValues);
     }
   };
 
@@ -131,6 +138,7 @@ export default function SetUserSection() {
       succesToastify("Report Settings Updated");
       router.push("/bank/view-users-report-setting");
       console.log("submit: ", submitData);
+      setFormData(initialValues);
     }
   };
 

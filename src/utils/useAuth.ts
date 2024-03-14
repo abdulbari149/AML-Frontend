@@ -8,8 +8,7 @@ export const useAuth = async () => {
     throw new Error("No valid session");
   }
 
-  console.log(authSession?.tokens?.accessToken?.payload.username);
-  
+  // console.log(authSession?.tokens?.accessToken?.payload);
 
   return authSession?.tokens?.accessToken?.payload[
     "cognito:groups"

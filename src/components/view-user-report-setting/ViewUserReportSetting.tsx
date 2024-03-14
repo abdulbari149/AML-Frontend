@@ -2,20 +2,25 @@
 import React, { useEffect, useState } from "react";
 import FieldView from "./FieldView";
 import CardView from "./CardView";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { usersReportSetting } from "../../../data/userReportSetting";
 import { getReportSetting } from "@/api/listReportSetting";
 
 const ViewUserReportSetting = () => {
   const params = useSearchParams();
+  const router = useRouter();
   const pathname = usePathname();
   const [userReportData, setUserReportData] = useState<any>(null);
 
   useEffect(() => {
     (async () => {
       const data = await getReportSetting({ user: params.get("user") });
-      console.log(data);
-      setUserReportData(data[0] as any);
+      if (data[0]) {
+        console.log(data);
+        setUserReportData(data[0] as any);
+      } else {
+        router.push("/bank/list");
+      }
     })();
   }, []);
 
