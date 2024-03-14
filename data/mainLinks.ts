@@ -83,15 +83,15 @@ export const banksRoute = [
   {
     id: 1,
     heading: "Add",
-    title: "User Management",
-    path: "/bank/add-user",
+    title: "Add Bank",
+    path: "/bank/add",
     type: "bank-route",
   },
   {
     id: 2,
     heading: "List",
-    title: "Banks Report Settings",
-    path: "/bank/view-users-report-setting",
+    title: "Banks List",
+    path: "/bank/list",
     type: "bank-route",
   },
 ];

@@ -4,9 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 
 // ICONS
 import { IoClose } from "react-icons/io5";
-import { BsCheckLg } from "react-icons/bs";
-import { Box } from "@mui/system";
-import { fetchAuthSession } from "aws-amplify/auth";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 import InputFieldSettings from "../settings/InputFieldSetting";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -25,51 +23,61 @@ type Inputs = z.infer<typeof addUserSchema>;
 
 const Form = () => {
   const [data, setData] = useState<Inputs>({
-    name: '',
-    email: '',
-    password: '',
-  })
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const [errors, setErrors] = useState<Inputs>({
-    name: '',
-    email: '',
-    password: '',
-  })
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  useEffect(() => {
+    const randomPassword = Math.random().toString(36).slice(-8);
+
+    setData((prevData) => ({
+      ...prevData,
+      password: randomPassword,
+    }));
+  }, []);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmit = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const result = addUserSchema.safeParse(data)
+      const result = addUserSchema.safeParse(data);
       if (!result.success) {
-        const fields = result.error.errors.map(err => {
+        const fields = result.error.errors.map((err) => {
           return {
             field: err.path[0] as string,
             message: err.message,
-          }
-        })
-
+          };
+        });
 
         const validationErrors = fields.reduce((cur, field) => {
           return {
             ...cur,
-            [field.field as keyof Inputs]: field.message
-          }
-        }, {} as Inputs)
+            [field.field as keyof Inputs]: field.message,
+          };
+        }, {} as Inputs);
 
-        setErrors(validationErrors)
+        setErrors(validationErrors);
       }
     } catch (error) {
-      setIsLoading(false)
-      return
+      setIsLoading(false);
+      return;
     }
 
     setErrors({
-      email: '',
-      name: '',
-      password: ''
-    })
+      email: "",
+      name: "",
+      password: "",
+    });
     try {
       const { success, message } = await addUser({
         username: data.name,
@@ -78,25 +86,25 @@ const Form = () => {
       });
 
       if (!success) {
-        throw new Error(message)
+        throw new Error(message);
       }
 
       succesToastify(message as string);
       setData({
-        name: '',
-        email: '',
-        password: ''
-      })
-      setIsLoading(false)
+        name: "",
+        email: "",
+        password: "",
+      });
+      setIsLoading(false);
     } catch (error) {
-      console.log({ error })
-      let message = (error as any)?.message ?? ''
+      console.log({ error });
+      let message = (error as any)?.message ?? "";
       if (error instanceof Error) {
-        message = error.message
+        message = error.message;
       }
-      errorToastify(message)
-      setIsLoading(false)
-      return
+      errorToastify(message);
+      setIsLoading(false);
+      return;
     }
   };
 
@@ -105,12 +113,11 @@ const Form = () => {
       setData((prevData) => {
         return {
           ...prevData,
-          [key]: value
-        }
-      })
-    }
-  }
-
+          [key]: value,
+        };
+      });
+    };
+  };
 
   return (
     <div className="items-start flex w-full">
@@ -124,7 +131,7 @@ const Form = () => {
             placeholder="John"
             name="name"
             value={data.name}
-            onChange={handleChange('name')}
+            onChange={handleChange("name")}
             error={errors.name}
           />
           <InputFieldSettings<string>
@@ -133,17 +140,31 @@ const Form = () => {
             placeholder="name@example.com"
             name="email"
             value={data.email}
-            onChange={handleChange('email')}
+            onChange={handleChange("email")}
             error={errors.email}
           />
           <InputFieldSettings<string>
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder=""
+            disabled={true}
             name="password"
             value={data.password}
             error={errors.password}
-            onChange={handleChange('password')}
+            onChange={handleChange("password")}
+            rightIcon={
+              showPassword ? (
+                <BsEye
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="cursor-pointer"
+                />
+              ) : (
+                <BsEyeSlash
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="cursor-pointer"
+                />
+              )
+            }
           />
 
           <button

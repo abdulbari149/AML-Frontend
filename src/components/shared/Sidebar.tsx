@@ -117,6 +117,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
   const theme = useTheme();
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
+  
 
   // PAGES LINK
   const [currentPage, setCurrentPage] = React.useState<PagesRouteType | null>();

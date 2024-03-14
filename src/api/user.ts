@@ -6,7 +6,7 @@ import { getAuthAccessToken } from "@/utils/token";
 export async function listUsers() {
   const token = await getAuthAccessToken();
   console.log(token);
-  
+
   let apiName = "AdminQueries";
   let path = "/listUsersInGroup";
   let options = {
@@ -21,19 +21,20 @@ export async function listUsers() {
   const { response } = await get({ apiName, path, options });
   const body = (await response).body;
   const data = await body.json();
-
-  return (data as any)['Users'].map((user: any) => {
-    return {
-      id: user.Username,
-      username: user.Username,
-      ...user.Attributes.reduce((curr: any, attr: any) => {
-        return {
-          ...curr,
-          [attr.Name]: attr.Value
-        }
-      }, {}) 
-    }
-  })
+  return (data as any)["Users"]
+    .filter((user: any) => user["UserStatus"] === "CONFIRMED")
+    .map((user: any) => {
+      return {
+        id: user.Username,
+        username: user.Username,
+        ...user.Attributes.reduce((curr: any, attr: any) => {
+          return {
+            ...curr,
+            [attr.Name]: attr.Value,
+          };
+        }, {}),
+      };
+    });
 }
 
 type UserData = {
@@ -72,8 +73,8 @@ export async function addUser(data: UserData) {
       },
     }).response;
 
-    const createUserBody = await createUserResponse.body.json()
-    console.log(createUserBody)
+    const createUserBody = await createUserResponse.body.json();
+    console.log(createUserBody);
     const addUserToGroupPath = "/addUserToGroup";
     const addUserResponse = await post({
       apiName,
@@ -86,7 +87,7 @@ export async function addUser(data: UserData) {
         },
       },
     }).response;
-    await addUserResponse.body.json()
+    await addUserResponse.body.json();
 
     return {
       success: true,
@@ -97,6 +98,6 @@ export async function addUser(data: UserData) {
     return {
       success: false,
       message: (error as Error).message,
-    }
+    };
   }
 }

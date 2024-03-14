@@ -14,20 +14,17 @@ import { getReportSetting } from "@/api/listReportSetting";
 interface Row {
   id: string;
   email: string;
+  name: string;
 }
 
-const ViewUsersReportSetting = () => {
+const ListBanks = () => {
   const router = useRouter();
 
-  const [userEmails, setUserEmails] = useState<{ id: string; email: string }[]>(
-    []
-  );
+  const [userEmails, setUserEmails] = useState<Array<Row>>([]);
 
   useEffect(() => {
-   console.log(userEmails);
-   
-  }, [userEmails])
-  
+    console.log(userEmails);
+  }, [userEmails]);
 
   useEffect(() => {
     listUsers()
@@ -37,6 +34,7 @@ const ViewUsersReportSetting = () => {
             return {
               id: item.id,
               email: item.email,
+              name: item["preferred_username"],
             };
           })
         );
@@ -63,6 +61,13 @@ const ViewUsersReportSetting = () => {
   }
 
   const columns: GridColDef[] = [
+    {
+      field: "name",
+      headerName: "Name",
+      sortable: true,
+      disableColumnMenu: true,
+      width: calculateColumnWidth("name"),
+    },
     {
       field: "email",
       headerName: "Email",
@@ -189,4 +194,4 @@ const ViewUsersReportSetting = () => {
   );
 };
 
-export default ViewUsersReportSetting;
+export default ListBanks;
