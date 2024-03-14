@@ -59,7 +59,7 @@ const PasswordForm = () => {
   return (
     <>
       <form
-        className="w-full md:w-1/4 flex flex-col gap-2 mb-5"
+        className="w-full md:w-1/4 flex flex-col gap-3 mb-5"
         onSubmit={(e) => {
           e.preventDefault();
           handleUpdatePassword();
@@ -90,7 +90,7 @@ const PasswordForm = () => {
           onChange={setConfirmPassword}
         />
         <button
-          className="w-fit text-xs font-medium text-center text-[#F9F9F9] px-[14px] py-[10px] rounded-md bg-[#000000]"
+          className="my-6 w-fit text-xs font-medium text-center text-[#F9F9F9] px-[14px] py-[10px] rounded-md bg-[#000000]"
           disabled={loading}
           type="submit"
         >

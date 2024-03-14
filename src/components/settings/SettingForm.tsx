@@ -14,7 +14,7 @@ const SettingForm = () => {
       <form className="flex flex-col gap-3">
         {/* main form */}
         <div className="flex flex-col-reverse md:flex-row gap-10 md:gap-32">
-          <div className="w-full md:w-2/4 flex flex-col gap-2">
+          <div className="w-full md:w-2/4 flex flex-col gap-3">
             {/* 1st row */}
             <div className="flex flex-col md:flex-row gap-3">
               <InputFieldSetting
