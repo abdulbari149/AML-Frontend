@@ -17,8 +17,6 @@ const AccountSettings = () => {
           <h1 className=" text-3xl font-semibold">Change Password</h1>
           <PasswordForm />
         </div>
-
-        
       </div>
     </>
   );

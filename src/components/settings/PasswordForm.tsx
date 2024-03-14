@@ -45,7 +45,9 @@ const PasswordForm = () => {
 
     } catch (err) {
       // Error occurred during password update
-      alert("Error updating password:", err);
+      if (err instanceof Error) {
+        alert("Error updating password:" + err.message);
+      }
       setError("Error updating password. Please try again.");
     } finally {
       // Reset loading state
@@ -68,7 +70,7 @@ const PasswordForm = () => {
           placeholder="*********"
           name="oldpassword"
           value={oldPassword}
-          onChange={(e) => setOldPassword(e.target.value)}
+          onChange={setOldPassword}
         />
         <InputFieldSetting
           label="New Password"
@@ -76,7 +78,7 @@ const PasswordForm = () => {
           placeholder="*********"
           name="newpassword"
           value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
+          onChange={setNewPassword}
         />
         <InputFieldSetting
           label="Re-Enter New Password"
@@ -84,7 +86,7 @@ const PasswordForm = () => {
           placeholder="*********"
           name="confirmpassword"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={setConfirmPassword}
         />
         <button
           className="w-fit text-xs font-medium text-center text-[#F9F9F9] px-[14px] py-[10px] rounded-md bg-[#000000]"
