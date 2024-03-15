@@ -42,10 +42,6 @@ const UploadFiles = () => {
     setBase64Files([...base64Files, base64File]);
   };
 
-  useEffect(() => {
-    console.log(base64Files);
-  }, [selectedFiles]);
-
   const handleSubmit = async () => {
     if (base64Files) {
       const submitData = await uploadFiles(base64Files);

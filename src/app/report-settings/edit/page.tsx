@@ -3,7 +3,7 @@ import SetUserSection from "@/components/set-user-setting/SetUserSection";
 import { useSearchParams, useRouter } from "next/navigation";
 import React from "react";
 
-const page = () => {
+const Page = () => {
   const params = useSearchParams();
   const user = params.get("user");
   const router = useRouter();
@@ -16,4 +16,4 @@ const page = () => {
   return <SetUserSection />;
 };
 
-export default page;
+export default Page;

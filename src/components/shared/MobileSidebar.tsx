@@ -61,6 +61,7 @@ export default function MobileSidebar(
     if (!filterPathData) {
       setCurrentPage(filterPathSubData);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDrawerClose = () => {

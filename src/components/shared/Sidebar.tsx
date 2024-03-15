@@ -38,7 +38,7 @@ import { usePathname } from "next/navigation";
 // Component
 import UserProfileSettingMenu from "./sub-component/UserProfileSettingMenu";
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
-import { useAuth } from "@/utils/useAuth";
+import { getUserGroups } from "@/utils/auth";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -123,13 +123,14 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     (async () => {
-      const authRole = await useAuth();
+      const authRole = await getUserGroups();
       if (Array.isArray(authRole)) {
         setIsAuth(authRole[0] as string);
       } else {
         setIsAuth(authRole as string);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // PAGES LINK

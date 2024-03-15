@@ -45,6 +45,7 @@ const DropDown = ({
         setSelectedEmail(selected[objectProp]);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData])
 
   return (

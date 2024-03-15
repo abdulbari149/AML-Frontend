@@ -54,6 +54,7 @@ const ViewUserReportSetting = () => {
       setReport(latestReport);
       setLoading(false);
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {
@@ -67,7 +68,7 @@ const ViewUserReportSetting = () => {
   if (report === null) {
     return (
       <div className="flex justify-center items-center h-[80vh]">
-        <h1 className="text-2xl font-bold">Report Doesn't Exist</h1>
+        <h1 className="text-2xl font-bold">Report Doesn&apos;t Exist</h1>
       </div>
     );
   }

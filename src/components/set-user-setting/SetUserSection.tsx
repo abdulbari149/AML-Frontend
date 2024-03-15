@@ -62,6 +62,7 @@ export default function SetUserSection() {
         }
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const handleBack = () => {

@@ -252,6 +252,7 @@ const SetCritera = ({ formData, setFormData }: SetUserReportFormType) => {
     } else {
       setRows(initialRows);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -259,6 +260,7 @@ const SetCritera = ({ formData, setFormData }: SetUserReportFormType) => {
       ...prevFormData,
       ["criteria"]: criteriaData,
     }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [criteriaData]);
 
   useEffect(() => {

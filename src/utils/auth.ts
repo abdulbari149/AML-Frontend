@@ -2,7 +2,7 @@
 
 import { fetchAuthSession } from "aws-amplify/auth";
 
-export const useAuth = async () => {
+export const getUserGroups = async () => {
   const authSession = await fetchAuthSession();
   if (!authSession || !authSession?.tokens?.accessToken?.payload) {
     throw new Error("No valid session");
