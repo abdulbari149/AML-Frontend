@@ -133,7 +133,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
   }, []);
 
   // PAGES LINK
-  const [currentPage, setCurrentPage] = React.useState<PagesRouteType | null>();
+  const [currentPage, setCurrentPage] = React.useState<PagesRouteType | null>(null);
 
   React.useEffect(() => {
     const filterPathData = mainLinks.find((item) => item.path === pathname);
@@ -144,6 +144,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
     const filterPathReportRoute = reportSettingsRoute.find(
       (item) => item.path === pathname
     );
+
     if (filterPathData) {
       setCurrentPage(filterPathData);
     } else if (filterPathSubData) {

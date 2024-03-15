@@ -258,9 +258,8 @@ const ReportSection = () => {
         return;
       }
 
-
       setReportId(data[0]?.Id);
-      const userCriteria = data[0]?.criteria;
+      const userCriteria = data[0]?.criteria ?? data[0]?.Criteria ?? {};
       if (criteriaData) {
         const changeToInitialRows = Object.keys(userCriteria).map(
           (key, index) => ({
@@ -428,6 +427,14 @@ const ReportSection = () => {
     rows: rows,
   };
 
+  const updateCriteria = async () => {
+    const updatedData = changeToCriteriaFormat(rows);
+    const submitData = await editCriteria(updatedData as any, reportId);
+    if (submitData) {
+      succesToastify("Report Criteria Updated");
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-[80vh]">
@@ -464,7 +471,7 @@ const ReportSection = () => {
           </button>
           <button
             className=" flex gap-3 justify-center items-center rounded-xl bg-[#FFFFFF] md:px-5 px-4 md:py-3 py-[10px]"
-            onClick={() => {}}
+            onClick={updateCriteria}
           >
             <Image
               src={resetCriteriaSvg}
