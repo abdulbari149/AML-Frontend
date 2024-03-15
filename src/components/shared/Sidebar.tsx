@@ -133,12 +133,17 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
   }, []);
 
   // PAGES LINK
-  const [currentPage, setCurrentPage] = React.useState<PagesRouteType | null>(null);
+  const [currentPage, setCurrentPage] = React.useState<PagesRouteType | null>(
+    null
+  );
 
   React.useEffect(() => {
     const filterPathData = mainLinks.find((item) => item.path === pathname);
     const filterPathSubData = subLinks.find((item) => item.path === pathname);
     const filterPathBankRoute = banksRoute.find(
+      (item) => item.path === pathname
+    );
+    const filterPathBankReportRoute = bankReportSettingRoute.find(
       (item) => item.path === pathname
     );
     const filterPathReportRoute = reportSettingsRoute.find(
@@ -153,6 +158,8 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
       setCurrentPage(filterPathBankRoute);
     } else if (filterPathReportRoute) {
       setCurrentPage(filterPathReportRoute);
+    } else if (filterPathBankReportRoute) {
+      setCurrentPage(filterPathBankReportRoute);
     } else {
       setCurrentPage(null);
     }
