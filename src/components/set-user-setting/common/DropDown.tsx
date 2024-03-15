@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
@@ -11,8 +12,41 @@ const DropDown = ({
   objectProp,
   objectPropUserId,
   openDropDown,
+  disable
 }: any) => {
-  const [selectedEmail, setSelectedEmail] = useState(label);
+  const [selectedEmail, setSelectedEmail] = useState(() => {
+    if (formData[type]) {
+      let selected = Data.find((item: any) => {
+        if (typeof item === "object") {
+          return item[objectPropUserId] === formData[type];
+        } else {
+          return item === formData[type];
+        }
+      });
+      if (selected) {
+        return selected[objectProp];
+      }
+    }
+    
+    return label;
+  });
+
+
+  useEffect(() => {
+    if (disable && formData[type]) {
+      let selected = Data.find((item: any) => {
+        if (typeof item === "object") {
+          return item[objectPropUserId] === formData[type];
+        } else {
+          return item === formData[type];
+        }
+      });
+      if (selected) {
+        setSelectedEmail(selected[objectProp]);
+      }
+    }
+  }, [formData])
+
   return (
     <>
       <div className="relative flex flex-col gap-3 w-[270px]">
@@ -20,6 +54,7 @@ const DropDown = ({
         <button
           className="relative flex justify-between text-left rounded-lg bg-[#d9d9d9] text-sm font-medium py-[15px] px-4 w-full"
           onClick={onClick}
+          disabled={disable}
         >
           <span>
             {objectPropUserId

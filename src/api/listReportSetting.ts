@@ -1,11 +1,9 @@
 import { REPORT_BASE_URL } from "@/config";
-import { getAuthAccessToken, getAuthIdToken } from "@/utils/token";
+import { getAuthIdToken } from "@/utils/token";
 import axios from "axios";
 
-export const getReportSetting = async (queryParams: any) => {
+export const getReportSetting = async (queryParams: object = {}) => {
   const token = await getAuthIdToken();
-  console.log(token);
-  
   
   try {
     const response = await axios.get(`${REPORT_BASE_URL}/report-settings`, {

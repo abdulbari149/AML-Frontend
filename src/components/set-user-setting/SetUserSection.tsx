@@ -37,7 +37,7 @@ const initialValues = {
   subOfficeTellerCode: [],
   highRiskCategories: [],
   minorLessThan: null,
-  Criteria: null,
+  criteria: null,
 };
 
 export default function SetUserSection() {
@@ -48,17 +48,14 @@ export default function SetUserSection() {
   const [steps, setSteps] = useState<string[]>(initialSteps);
 
   const [formData, setFormData] = useState<ReportSettings>(initialValues);
-
-  useEffect(() => {
-    console.log("formData", formData);
-  }, [formData]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
       if (userId) {
         const data = await getReportSetting({ user: userId });
-        console.log("edit", data);
-        if (data[0]) {
+        if (Array.isArray(data) && data.length > 0) {
+          console.log(data[0]);
           setFormData(data[0]);
         } else {
           router.push("/bank/list");
@@ -101,7 +98,7 @@ export default function SetUserSection() {
         return;
       }
       case 5: {
-        formData.Criteria && formData.Criteria
+        formData.criteria && formData.criteria
           ? setActiveStep((prevActiveStep) => prevActiveStep + 1)
           : errorToastify("Required All fields");
         return;
@@ -132,6 +129,8 @@ export default function SetUserSection() {
   };
 
   const handleEditApi = async (id: any) => {
+    if (!userId) return;
+
     delete formData.Id;
     const submitData = await editReportSettings(formData, id);
     if (submitData) {
@@ -143,13 +142,15 @@ export default function SetUserSection() {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     switch (activeStep) {
       case 5: {
-        formData.Criteria && formData.Criteria
+        formData.criteria && formData.criteria
           ? userId
             ? handleEditApi(formData?.Id)
             : handlePostApi()
           : errorToastify("Required All fields");
+        setLoading(false);
         return;
       }
       case 7: {
@@ -200,7 +201,11 @@ export default function SetUserSection() {
       </Stepper>
       <div className=" flex flex-col justify-between h-full w-full bg-white border-none rounded-[10px] pt-5 px-6 mt-5 overflow-y-auto">
         {activeStep === 1 && (
-          <UserInformation formData={formData} setFormData={setFormData} />
+          <UserInformation
+            formData={formData}
+            setFormData={setFormData}
+            isEdit={!!userId}
+          />
         )}
         {activeStep === 2 && (
           <MuleAge formData={formData} setFormData={setFormData} />
@@ -233,6 +238,7 @@ export default function SetUserSection() {
           <button
             onClick={activeStep === steps.length ? handleSubmit : handleNext}
             className=" bg-[#C4B454] text-white px-4 py-2 rounded-md "
+            disabled={loading}
           >
             {activeStep === steps.length ? "Submit" : "Next"}
           </button>

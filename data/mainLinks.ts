@@ -40,12 +40,19 @@ export const mainLinks: PagesRouteType[] = [
   },
 ];
 
-export const reportSettingsRoute = [
+export const bankReportSettingRoute = [
   {
-    id: 1,
-    heading: "Create",
-    title: "Set User Setting",
-    path: "/report-settings/create",
+    id: 6,
+    heading: "View",
+    title: "Bank Report Setting",
+    path: "/report-settings/view",
+    type: "report-route",
+  },
+  {
+    id: 5,
+    heading: "Monthly Reports",
+    title: "Monthly Reports",
+    path: "/report-settings/monthly-reports",
     type: "report-route",
   },
   {
@@ -62,19 +69,28 @@ export const reportSettingsRoute = [
     path: "/report-settings/upload-files",
     type: "report-route",
   },
+];
+
+export const reportSettingsRoute = [
   {
-    id: 5,
-    heading: "Monthly Reports",
-    title: "Monthly Reports",
-    path: "/report-settings/monthly-reports",
+    id: 1,
+    heading: "Create",
+    title: "Create Report Setting",
+    path: "/report-settings/create",
     type: "report-route",
   },
   {
-    id: 6,
+    id: 2,
+    heading: "Edit",
+    title: "Edit Report Setting",
+    path: "/report-settings/edit",
+    type: "report-route",
+  },
+  {
+    id: 3,
     heading: "View",
-    title: "Bank Report Setting",
+    title: "View Report Setting",
     path: "/report-settings/view",
-    // type: "view-user-report-setting",
     type: "report-route",
   },
 ];

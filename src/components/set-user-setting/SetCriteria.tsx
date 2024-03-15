@@ -228,14 +228,14 @@ const SetCritera = ({ formData, setFormData }: SetUserReportFormType) => {
   },[rows])
 
   useEffect(() => {
-    if (formData.Criteria) {
-      const changeToInitialRows = Object.keys(formData.Criteria).map(
+    if (formData.criteria) {
+      const changeToInitialRows = Object.keys(formData.criteria).map(
         (key, index) => ({
           id: `${index + 1}`,
           criteria: key,
-          description: formData.Criteria[key].description,
-          amount: formData.Criteria[key].amount,
-          isIncluded: formData.Criteria[key].isIncluded === true ? true : false,
+          description: formData.criteria[key].description,
+          amount: formData.criteria[key].amount,
+          isIncluded: formData.criteria[key].isIncluded === true ? true : false,
         })
       );
       console.log('change', changeToInitialRows);
@@ -249,7 +249,7 @@ const SetCritera = ({ formData, setFormData }: SetUserReportFormType) => {
   useEffect(() => {
     setFormData((prevFormData: any) => ({
       ...prevFormData,
-      ["Criteria"]: criteriaData,
+      ["criteria"]: criteriaData,
     }));
   }, [criteriaData]);
 

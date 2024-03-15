@@ -12,5 +12,5 @@ export const useAuth = async () => {
 
   return authSession?.tokens?.accessToken?.payload[
     "cognito:groups"
-  ]?.toString();
+  ];
 };

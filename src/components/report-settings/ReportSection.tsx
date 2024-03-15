@@ -238,35 +238,44 @@ const ReportSection = () => {
   const [switchStates, setSwitchStates] = useState<{ [key: string]: boolean }>(
     {}
   );
-  const [reportId, setReportId] = useState();
+  const [reportId, setReportId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       const authSession = await fetchAuthSession();
       const userId = authSession?.tokens?.accessToken?.payload.username;
-      console.log("userID", userId);
-      if (userId) {
-        const data = await getReportSetting({ user: userId });
-        setReportId(data[0].Id);
-        const userCriteria = data[0]?.Criteria;
-        if (criteriaData) {
-          console.log("data set criteria", data[0]);
-          const changeToInitialRows = Object.keys(userCriteria).map(
-            (key, index) => ({
-              id: `${index + 1}`,
-              criteria: key,
-              description: userCriteria[key].description,
-              amount: userCriteria[key].amount,
-              isIncluded: userCriteria[key].isIncluded === true ? true : false,
-            })
-          );
-          setRows(changeToInitialRows);
-        } else {
-          // router.push("/bank/list");
-          setRows(initialRows);
-          alert("REPORT DOES'T EXISTS");
-        }
+
+      if (!userId) {
+        setLoading(false);
+        return;
       }
+
+      const data = await getReportSetting({ user: userId });
+      if (!data || !Array.isArray(data) || data.length === 0) {
+        setReportId(null);
+        setLoading(false);
+        return;
+      }
+
+
+      setReportId(data[0]?.Id);
+      const userCriteria = data[0]?.criteria;
+      if (criteriaData) {
+        const changeToInitialRows = Object.keys(userCriteria).map(
+          (key, index) => ({
+            id: `${index + 1}`,
+            criteria: key,
+            description: userCriteria[key].description,
+            amount: userCriteria[key].amount,
+            isIncluded: userCriteria[key].isIncluded === true ? true : false,
+          })
+        );
+        setRows(changeToInitialRows);
+      } else {
+        setRows(initialRows);
+      }
+      setLoading(false);
     })();
   }, []);
 
@@ -418,6 +427,23 @@ const ReportSection = () => {
     pagination: { paginationModel: { pageSize: 25 } },
     rows: rows,
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[80vh]">
+        <h1 className="text-2xl font-bold">Loading...</h1>
+      </div>
+    );
+  }
+
+  if (reportId === null) {
+    return (
+      <div className="flex justify-center items-center h-[80vh]">
+        <h1 className="text-2xl font-bold">Report Doesn't Exist</h1>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className=" flex justify-between mb-3">

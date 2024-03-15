@@ -5,60 +5,100 @@ import CardView from "./CardView";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { usersReportSetting } from "../../../data/userReportSetting";
 import { getReportSetting } from "@/api/listReportSetting";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 const ViewUserReportSetting = () => {
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const [userReportData, setUserReportData] = useState<any>(null);
+  const [report, setReport] = useState<Record<string, any> | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const data = await getReportSetting({ user: params.get("user") });
-      if (data[0]) {
-        console.log(data);
-        setUserReportData(data[0] as any);
-      } else {
-        router.push("/bank/list");
+      const loggedInUser = await fetchAuthSession();
+
+      if (!loggedInUser) {
+        setLoading(false);
+        router.push("/login");
       }
+
+      const groups = (loggedInUser.tokens?.idToken?.payload["cognito:groups"] ??
+        []) as string[];
+
+      if (groups && groups?.includes("Admin") && !params.get("user")) {
+        router.push("/bank/list");
+
+        // setLoading(false);
+        return;
+      }
+
+      const queryParams: Record<string, string> = {};
+      const user = params.get("user");
+      if (user) {
+        queryParams["user"] = user;
+      }
+
+      const data: any = await getReportSetting(queryParams);
+
+      if (!data || !Array.isArray(data) || data.length === 0) {
+        setLoading(false);
+        return;
+      }
+
+      const latestReport = data.sort(
+        (a: any, b: any) =>
+          new Date(b.CreatedAt).getTime() - new Date(a.CreatedAt).getTime()
+      )[0];
+
+      setReport(latestReport);
+      setLoading(false);
     })();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[80vh]">
+        <h1 className="text-2xl font-bold">Loading...</h1>
+      </div>
+    );
+  }
+
+  if (report === null) {
+    return (
+      <div className="flex justify-center items-center h-[80vh]">
+        <h1 className="text-2xl font-bold">Report Doesn't Exist</h1>
+      </div>
+    );
+  }
 
   return (
     <section
       className={`${
-        userReportData?.platform.toLowerCase() === "scion"
-          ? " w-full"
-          : "w-[75%]"
+        report?.platform.toLowerCase() === "scion" ? " w-full" : "w-[75%]"
       } `}
     >
-      {/* <h3 className=" absolute top-[14px] z-[99999] text-4xl font-bold">
-        {pathname === "/report-settings/view" ? "Bank Report Setting" : ""}
-      </h3> */}
       <div
         className={`grid ${
-          userReportData?.platform.toLowerCase() === "scion"
+          report?.platform.toLowerCase() === "scion"
             ? "grid-cols-3"
             : "grid-cols-2"
         }  gap-8 mt-4`}
       >
-        <FieldView label={"Platform"} value={userReportData?.platform} />
-        <FieldView label={"Mule Age"} value={userReportData?.muleAge} />
-        {userReportData?.minorLessThan && (
-          <FieldView label={"Minor"} value={userReportData?.minorLessThan} />
+        <FieldView label={"Platform"} value={report?.platform} />
+        <FieldView label={"Mule Age"} value={report?.muleAge} />
+        {report?.minorLessThan && (
+          <FieldView label={"Minor"} value={report?.minorLessThan} />
         )}
-        <CardView
-          label={"Code Not To Use"}
-          data={userReportData?.codeNotToUse}
-        />
+        <CardView label={"Code Not To Use"} data={report?.codeNotToUse} />
         <CardView
           label={"Sub Office Teller Code"}
-          data={userReportData?.subOfficeTellerCode}
+          data={report?.subOfficeTellerCode}
         />
-        {userReportData?.highRiskCategories.length > 0 && (
+        {report?.highRiskCategories.length > 0 && (
           <CardView
             label={"High Risk Categories"}
-            data={userReportData?.highRiskCategories}
+            data={report?.highRiskCategories}
           />
         )}
       </div>

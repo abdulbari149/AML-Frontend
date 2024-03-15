@@ -47,7 +47,7 @@ const ListBanks = () => {
     router.push(`/report-settings/view?user=${rowData.id}`);
   };
   const handleEditUserReport = async (rowData: Row) => {
-    router.push(`/report-settings/create?user=${rowData.id}`);
+    router.push(`/report-settings/edit?user=${rowData.id}`);
   };
 
   const rows = userEmails && userEmails;

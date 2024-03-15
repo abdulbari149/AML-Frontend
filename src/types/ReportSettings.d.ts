@@ -56,6 +56,6 @@ declare type ReportSettings = {
     value: "yes" | "no";
   }>;
   minorLessThan?: number | null;
-  Criteria: Criteria | null;
+  criteria: Criteria | null;
   Id?: string;
 };
